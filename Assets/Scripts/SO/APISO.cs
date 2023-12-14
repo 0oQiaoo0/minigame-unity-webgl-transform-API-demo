@@ -1,8 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class APISO : ScriptableObject
+namespace SO
 {
+    // [CreateAssetMenu(menuName = "APISO", fileName = "APISO", order = )]
+    public class APISO : ScriptableObject
+    {
+        public List<CategorySO> categoryList;
     
+    
+    }
 }

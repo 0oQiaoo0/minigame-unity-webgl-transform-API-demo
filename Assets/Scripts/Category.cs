@@ -2,18 +2,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Category : MonoBehaviour
 {
-    public Text categoryText;
-    public Image categoryImage;
+    private RectTransform _contentRectTransform;
+    
+    [SerializeField] private GameObject entryBlocks;
+    [SerializeField] private Text categoryText;
+    [SerializeField] private Image categoryImage;
     
     public Sprite image;
     
     public float unfoldAlpha = 0.5f;
 
-    private bool isUnfold = false;
+    private bool _isUnfold = false;
+
+    private void Awake()
+    {
+        _contentRectTransform = transform.parent.GetComponent<RectTransform>();
+    }
 
     private void Start()
     {
@@ -21,34 +30,20 @@ public class Category : MonoBehaviour
         categoryImage.sprite = image;
     }
 
-    private Color SetColorWithAlpha(Color color, float alpha)
+    private static Color SetColorWithAlpha(Color color, float alpha)
     {
         return new Color(color.r, color.g, color.b, alpha);
     }
     
-    private void Unfold()
-    {
-        categoryText.color = SetColorWithAlpha(categoryText.color, unfoldAlpha);
-        categoryImage.color = SetColorWithAlpha(categoryImage.color, unfoldAlpha);
-    }
-    
-    private void Fold()
-    {
-        categoryText.color = SetColorWithAlpha(categoryText.color, 1f);
-        categoryImage.color = SetColorWithAlpha(categoryImage.color, 1f);
-    }
-    
     public void OnClick()
     {
-        if (isUnfold)
-        {
-            Fold();
-        }
-        else
-        {
-            Unfold();
-        }
+        _isUnfold = !_isUnfold;
+        
+        categoryText.color = SetColorWithAlpha(categoryText.color, _isUnfold ? unfoldAlpha : 1f);
+        categoryImage.color = SetColorWithAlpha(categoryImage.color, _isUnfold ? unfoldAlpha : 1f);
 
-        isUnfold = !isUnfold;
+        entryBlocks.SetActive(_isUnfold);
+        
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_contentRectTransform);
     }
 }
