@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace SO
 {
+    [CreateAssetMenu(menuName = "CategorySO")]
     public class CategorySO : ScriptableObject
     {
         public string categoryName;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SO
 {
-    // [CreateAssetMenu(menuName = "APISO", fileName = "APISO", order = )]
+    [CreateAssetMenu(menuName = "APISO")]
     public class APISO : ScriptableObject
     {
         public List<CategorySO> categoryList;
