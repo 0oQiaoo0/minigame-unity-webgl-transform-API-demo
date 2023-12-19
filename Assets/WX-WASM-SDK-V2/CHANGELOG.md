@@ -6,6 +6,13 @@ Removed - 删除功能/接口
 Fixed - 修复问题
 Others - 其他 
 -->
+## 2023-12-18
+【重要更新】包含重要bugfix、特性支持
+### Feature
+* 普通：TouchStart/TouchEnd去json性能优化
+### Fixed
+* 重要：修复TCP接口处理buffer
+
 ## 2023-12-12
 【重要更新】包含重要bugfix、特性支持
 ### Feature

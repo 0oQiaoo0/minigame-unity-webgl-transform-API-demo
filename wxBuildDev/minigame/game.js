@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import './weapp-adapter';
+import './events';
 import 'texture-config.js';
 import unityNamespace from './unity-namespace';
 import './webgl.wasm.framework.unityweb';
@@ -36,12 +37,12 @@ if (false) {
     checkUpdate();
 }
 const managerConfig = {
-    DATA_FILE_MD5: 'fdd98456a0ebf1af',
-    CODE_FILE_MD5: '3ae8deaed7b85d18',
+    DATA_FILE_MD5: '4cdb32f5df63a783',
+    CODE_FILE_MD5: '37a814d3941474cf',
     GAME_NAME: 'webgl',
     APPID: 'wxdbe7308e7eeb552b',
-    DATA_FILE_SIZE: "6447216",
-    OPT_DATA_FILE_SIZE: "$OPT_DATA_FILE_SIZE",
+    DATA_FILE_SIZE: '7491571',
+    OPT_DATA_FILE_SIZE: '$OPT_DATA_FILE_SIZE',
     DATA_CDN: '',
     // 资源包是否作为小游戏分包加载
     loadDataPackageFromSubpackage: true,
@@ -72,6 +73,8 @@ checkVersion().then((enable) => {
                     unityNamespace,
                     document,
                     canvas,
+                    events: GameGlobal.events,
+                    WXWASMSDK: GameGlobal.WXWASMSDK,
                 },
             }).default;
         }
@@ -215,5 +218,6 @@ checkVersion().then((enable) => {
         }
         gameManager.startGame();
         GameGlobal.manager = gameManager;
+        GameGlobal.events.on('launchOperaPushMsgToWasm', (callback, args) => GameGlobal.WXWASMSDK.WXLaunchOperaBridgeToC(callback, args));
     }
 });

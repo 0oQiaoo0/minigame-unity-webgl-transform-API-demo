@@ -964,6 +964,15 @@ mergeInto(LibraryManager.library, {
     WX_PrivacyAuthorizeResolve: function(option) {
         window.WXWASMSDK.WX_PrivacyAuthorizeResolve(_WXPointer_stringify_adaptor(option));
     },
+    WXLaunchOperaBridge: function(req) {
+        var res = window.WXWASMSDK.WXLaunchOperaBridge(_WXPointer_stringify_adaptor(req));
+        if (res) {
+            var bufferSize = lengthBytesUTF8(res) + 1;
+            var buffer = _malloc(bufferSize);
+            stringToUTF8(res, buffer, bufferSize);
+            return buffer;
+        }
+    },
     WX_OnTouchMove:function() {
         window.WXWASMSDK.WX_OnTouchMove();
     },

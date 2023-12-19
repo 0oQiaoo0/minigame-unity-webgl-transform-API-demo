@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import './weapp-adapter';
+import './events';
 import 'texture-config.js';
 import unityNamespace from './unity-namespace';
 import './$GAME_NAME.wasm.framework.unityweb';
@@ -40,8 +41,8 @@ const managerConfig = {
     CODE_FILE_MD5: '$CODE_MD5',
     GAME_NAME: '$GAME_NAME',
     APPID: '$APP_ID',
-    DATA_FILE_SIZE: "$DATA_FILE_SIZE",
-    OPT_DATA_FILE_SIZE: "$OPT_DATA_FILE_SIZE",
+    DATA_FILE_SIZE: '$DATA_FILE_SIZE',
+    OPT_DATA_FILE_SIZE: '$OPT_DATA_FILE_SIZE',
     DATA_CDN: '$DEPLOY_URL',
     // 资源包是否作为小游戏分包加载
     loadDataPackageFromSubpackage: $LOAD_DATA_FROM_SUBPACKAGE,
@@ -72,6 +73,8 @@ checkVersion().then((enable) => {
                     unityNamespace,
                     document,
                     canvas,
+                    events: GameGlobal.events,
+                    WXWASMSDK: GameGlobal.WXWASMSDK,
                 },
             }).default;
         }
@@ -215,5 +218,6 @@ checkVersion().then((enable) => {
         }
         gameManager.startGame();
         GameGlobal.manager = gameManager;
+        GameGlobal.events.on('launchOperaPushMsgToWasm', (callback, args) => GameGlobal.WXWASMSDK.WXLaunchOperaBridgeToC(callback, args));
     }
 });
