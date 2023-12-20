@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a9e19ed69c041c408533b50f5572d0f, type: 3}
   m_Name: FileSystemSO
   m_EditorClassIdentifier: 
-  categoryName: 
-  entryList: []
+  categoryName: "\u6587\u4EF6\u7CFB\u7EDF"
+  entryList:
+  - {fileID: 11400000, guid: d6030df8579cc4ac2aa1319e31f2cdcd, type: 2}

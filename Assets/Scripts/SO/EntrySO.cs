@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-namespace SO
+[CreateAssetMenu(menuName = "EntrySO")]
+public class EntrySO : ScriptableObject
 {
-    [CreateAssetMenu(menuName = "EntrySO")]
-    public class EntrySO : ScriptableObject
-    {
-        public string entryName;
-        
-        
-    }
+    public string entryName;
+
+    public string entryAPI;
+
+    public string explainText;
+
+    public List<Option> optionList;
 }
