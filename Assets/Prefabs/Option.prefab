@@ -440,6 +440,7 @@ GameObject:
   - component: {fileID: 1053325710190323433}
   - component: {fileID: 1053325710190323435}
   - component: {fileID: 1053325710190323434}
+  - component: {fileID: 7156999893514719826}
   m_Layer: 5
   m_Name: Item Label
   m_TagString: Untagged
@@ -506,6 +507,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Option A
+--- !u!114 &7156999893514719826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053325710190323432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad114bb7e387d46d7a9ad7af676060d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1053325710252790224
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,6 +865,7 @@ GameObject:
   - component: {fileID: 1053325710473407689}
   - component: {fileID: 1053325710473407691}
   - component: {fileID: 1053325710473407690}
+  - component: {fileID: 5192155406276113780}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -918,6 +932,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\u8C03\u7528\u65B9\u5F0F"
+--- !u!114 &5192155406276113780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053325710473407688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad114bb7e387d46d7a9ad7af676060d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1053325711393047545
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,6 +955,7 @@ GameObject:
   - component: {fileID: 1053325711393047546}
   - component: {fileID: 1053325711393047548}
   - component: {fileID: 1053325711393047547}
+  - component: {fileID: 1670773354506276222}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -995,6 +1022,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\u5F02\u6B65\u6267\u884C"
+--- !u!114 &1670773354506276222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053325711393047545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad114bb7e387d46d7a9ad7af676060d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1053325711702595844
 GameObject:
   m_ObjectHideFlags: 0

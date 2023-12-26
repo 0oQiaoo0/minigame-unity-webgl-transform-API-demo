@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: FileSystemSO
   m_EditorClassIdentifier: 
   categoryName: "\u6587\u4EF6\u7CFB\u7EDF"
+  categorySprite: {fileID: 0}
   entryList:
   - {fileID: 11400000, guid: d6030df8579cc4ac2aa1319e31f2cdcd, type: 2}

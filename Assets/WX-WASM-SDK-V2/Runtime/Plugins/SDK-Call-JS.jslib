@@ -332,9 +332,6 @@ WX_StartCompass:function(conf, callbackId) {
 WX_StartDeviceMotionListening:function(conf, callbackId) {
     window.WXWASMSDK.WX_StartDeviceMotionListening(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
-WX_StartGyroscope:function(conf, callbackId) {
-    window.WXWASMSDK.WX_StartGyroscope(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
-},
 WX_StopAccelerometer:function(conf, callbackId) {
     window.WXWASMSDK.WX_StopAccelerometer(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
@@ -352,9 +349,6 @@ WX_StopDeviceMotionListening:function(conf, callbackId) {
 },
 WX_StopFaceDetect:function(conf, callbackId) {
     window.WXWASMSDK.WX_StopFaceDetect(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
-},
-WX_StopGyroscope:function(conf, callbackId) {
-    window.WXWASMSDK.WX_StopGyroscope(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
 WX_UpdateKeyboard:function(conf, callbackId) {
     window.WXWASMSDK.WX_UpdateKeyboard(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
@@ -403,6 +397,9 @@ WX_RequestMidasPaymentGameItem:function(conf, callbackId) {
 },
 WX_RequestSubscribeLiveActivity:function(conf, callbackId) {
     window.WXWASMSDK.WX_RequestSubscribeLiveActivity(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
+},
+WX_OpenBusinessView:function(conf, callbackId) {
+    window.WXWASMSDK.WX_OpenBusinessView(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
 
 WX_ExitPointerLock:function() {
@@ -540,12 +537,6 @@ WX_OnError:function() {
 },
 WX_OffError:function() {
     window.WXWASMSDK.WX_OffError();
-},
-WX_OnGyroscopeChange:function() {
-    window.WXWASMSDK.WX_OnGyroscopeChange();
-},
-WX_OffGyroscopeChange:function() {
-    window.WXWASMSDK.WX_OffGyroscopeChange();
 },
 WX_OnHide:function() {
     window.WXWASMSDK.WX_OnHide();

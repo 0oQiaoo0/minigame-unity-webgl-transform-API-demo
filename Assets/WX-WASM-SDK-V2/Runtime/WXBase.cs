@@ -980,6 +980,7 @@ namespace WeChatWASM
             WXSDKManagerHandler.Instance.OffTouchStart(result);
         }
 #endregion
+
 #region TCPSocket
         /// <summary>
         /// [[TCPSocket](https://developers.weixin.qq.com/minigame/dev/api/network/tcp/TCPSocket.html) wx.createTCPSocket()](https://developers.weixin.qq.com/minigame/dev/api/network/tcp/wx.createTCPSocket.html)
@@ -997,6 +998,7 @@ namespace WeChatWASM
             return WXSDKManagerHandler.Instance.CreateTCPSocket();
         }
 #endregion
+
 #region UDPSocket
         /// <summary>
         /// [[UDPSocket](https://developers.weixin.qq.com/minigame/dev/api/network/udp/UDPSocket.html) wx.createUDPSocket()](https://developers.weixin.qq.com/minigame/dev/api/network/udp/wx.createUDPSocket.html)
@@ -1007,6 +1009,43 @@ namespace WeChatWASM
         public static WXUDPSocket CreateUDPSocket()
         {
             return WXSDKManagerHandler.Instance.CreateUDPSocket();
+        }
+#endregion
+
+#region 陀螺仪
+        /// <summary>
+        /// [wx.startGyroscope(Object object)](https://developers.weixin.qq.com/minigame/dev/api/device/gyroscope/wx.startGyroscope.html)
+        /// 需要基础库： `2.3.0`
+        /// 开始监听陀螺仪数据。
+        /// </summary>
+        public static void StartGyroscope(StartGyroscopeOption option)
+        {
+            WXSDKManagerHandler.Instance.StartGyroscope(option);
+        }
+        
+        /// <summary>
+        /// [wx.stopGyroscope(Object object)](https://developers.weixin.qq.com/minigame/dev/api/device/gyroscope/wx.stopGyroscope.html)
+        /// 需要基础库： `2.3.0`
+        /// 停止监听陀螺仪数据。
+        /// </summary>
+        public static void StopGyroscope(StopGyroscopeOption option)
+        {
+            WXSDKManagerHandler.Instance.StopGyroscope(option);
+        }
+
+        /// <summary>
+        /// [wx.onGyroscopeChange(function listener)](https://developers.weixin.qq.com/minigame/dev/api/device/gyroscope/wx.onGyroscopeChange.html)
+        /// 需要基础库： `2.3.0`
+        /// 监听陀螺仪数据变化事件。频率根据 [wx.startGyroscope()](https://developers.weixin.qq.com/minigame/dev/api/device/gyroscope/wx.startGyroscope.html) 的 interval 参数。可以使用 [wx.stopGyroscope()](https://developers.weixin.qq.com/minigame/dev/api/device/gyroscope/wx.stopGyroscope.html) 停止监听。
+        /// </summary>
+        public static void OnGyroscopeChange(Action<OnGyroscopeChangeListenerResult> result)
+        {
+            WXSDKManagerHandler.Instance.OnGyroscopeChange(result);
+        }
+
+        public static void OffGyroscopeChange(Action<OnGyroscopeChangeListenerResult> result = null)
+        {
+            WXSDKManagerHandler.Instance.OffGyroscopeChange(result);
         }
 #endregion
     }

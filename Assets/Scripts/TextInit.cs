@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using WeChatWASM;
 
+[RequireComponent(typeof(Text))]
 public class TextInit : MonoBehaviour
 {
     void Start()

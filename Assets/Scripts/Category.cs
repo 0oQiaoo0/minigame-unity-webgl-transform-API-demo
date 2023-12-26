@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -8,26 +6,41 @@ using UnityEngine.UI;
 public class Category : MonoBehaviour
 {
     private RectTransform _contentRectTransform;
-    
-    [SerializeField] private GameObject entryBlocks;
+
+    [Header("Category Data")] 
+    [SerializeField] private CategorySO categorySO;
+
+    [Header("References")]
     [SerializeField] private Text categoryText;
     [SerializeField] private Image categoryImage;
-    
-    public Sprite image;
-    
-    public float unfoldAlpha = 0.5f;
 
-    private bool _isUnfold = false;
+    [Header("Entry Prefab")]
+    [SerializeField] private GameObject entryPrefab;
+    [SerializeField] private Transform entryBlocksTransform;
+    
+    [Header("Expand")]
+    [SerializeField] private GameObject entries;
+    [SerializeField] private float unfoldAlpha = 0.5f;
+    private bool _isExpanded = false;
 
     private void Awake()
     {
         _contentRectTransform = transform.parent.GetComponent<RectTransform>();
     }
 
-    private void Start()
+    public void Init(CategorySO so)
     {
-        categoryText.text = gameObject.name;
-        categoryImage.sprite = image;
+        categorySO = so;
+        
+        gameObject.name = categorySO.categoryName;
+        categoryText.text = categorySO.categoryName;
+        categoryImage.sprite = categorySO.categorySprite;
+        
+        foreach (var entry in categorySO.entryList)
+        {
+            var entryObj = Instantiate(entryPrefab, entryBlocksTransform);
+            entryObj.GetComponent<Entry>().Init(entry);
+        }
     }
 
     private static Color SetColorWithAlpha(Color color, float alpha)
@@ -37,12 +50,12 @@ public class Category : MonoBehaviour
     
     public void OnClick()
     {
-        _isUnfold = !_isUnfold;
+        _isExpanded = !_isExpanded;
         
-        categoryText.color = SetColorWithAlpha(categoryText.color, _isUnfold ? unfoldAlpha : 1f);
-        categoryImage.color = SetColorWithAlpha(categoryImage.color, _isUnfold ? unfoldAlpha : 1f);
+        categoryText.color = SetColorWithAlpha(categoryText.color, _isExpanded ? unfoldAlpha : 1f);
+        categoryImage.color = SetColorWithAlpha(categoryImage.color, _isExpanded ? unfoldAlpha : 1f);
 
-        entryBlocks.SetActive(_isUnfold);
+        entries.SetActive(_isExpanded);
         
         LayoutRebuilder.ForceRebuildLayoutImmediate(_contentRectTransform);
     }
