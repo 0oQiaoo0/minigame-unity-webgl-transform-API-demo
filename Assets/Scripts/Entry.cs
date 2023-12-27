@@ -29,7 +29,7 @@ public class Entry : MonoBehaviour
 
     private void OnClick()
     {
-        UIController.Instance.SwitchCanvas();
-        UIController.Instance.detailsController.Init(entrySO);
+        GameManager.Instance.SwitchCanvas();
+        GameManager.Instance.detailsController.Init(entrySO);
     }
 }

@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
-using WeChatWASM;
 
 public class APIController : MonoBehaviour
 {
@@ -8,14 +6,6 @@ public class APIController : MonoBehaviour
     
     [SerializeField] private GameObject categoryPrefab;
     [SerializeField] private Transform categoriesTransform;
-    
-    private void Awake()
-    {
-        WX.InitSDK((code) =>
-        {
-            Debug.Log("InitSDK: " + code);
-        });
-    }
 
     private void ClearCategories()
     {

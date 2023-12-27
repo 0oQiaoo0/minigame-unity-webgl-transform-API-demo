@@ -1,22 +1,35 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using WeChatWASM;
 
 [RequireComponent(typeof(Text))]
 public class TextInit : MonoBehaviour
 {
-    void Start()
+    private Text _text;
+
+    private void Awake()
     {
-        // var text = GetComponent<Text>();
-        //
-        // // fallbackFont作为旧版本微信或者无法获得系统字体文件时的备选CDN URL
-        // var fallbackFont = Application.streamingAssetsPath + "/Fz.ttf";
-        // WX.GetWXFont(fallbackFont, (font) =>
-        // {
-        //     if (font)
-        //     {
-        //         text.font = font;
-        //     }
-        // });
+        _text = GetComponent<Text>();
+    }
+
+    private void Start()
+    {
+        if (GameManager.Instance.Font != null)
+        {
+            _text.font = GameManager.Instance.Font;
+        }
+        else
+        {
+            GameManager.Instance.OnFontLoaded += OnFontLoaded;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnFontLoaded -= OnFontLoaded;
+    }
+
+    private void OnFontLoaded(Font font)
+    {
+        _text.font = font;
     }
 }

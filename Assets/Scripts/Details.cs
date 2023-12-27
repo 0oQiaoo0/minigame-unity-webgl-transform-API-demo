@@ -6,14 +6,10 @@ public abstract class Details : MonoBehaviour
 
     public string[] options;
 
-    private void Start()
-    {
-        options = new string[entrySO.optionList.Count];
-    }
-
     public void Init(EntrySO so)
     {
         entrySO = so;
+        options = new string[entrySO.optionList.Count];
     }
 
     public void OnDropdownValueChanged(int dropdownIndex, int optionIndex)
