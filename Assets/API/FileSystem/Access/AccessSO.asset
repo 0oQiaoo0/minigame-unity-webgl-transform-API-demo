@@ -27,3 +27,4 @@ MonoBehaviour:
     - /exist/exist.txt
     - /notExist
     - /notExist/notExist.txt
+  buttonText: "\u8FD0\u884C"
