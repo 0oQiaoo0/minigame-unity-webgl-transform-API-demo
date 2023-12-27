@@ -11,6 +11,7 @@ public class EntrySO : ScriptableObject
     public string entryDescription;
     public string entryScriptTypeName;
     public List<Option> optionList;
+    public string buttonText = "运行";
 
     private Type _entryScriptType;
     

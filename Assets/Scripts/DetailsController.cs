@@ -12,18 +12,24 @@ public class DetailsController : MonoBehaviour
     [SerializeField] private Text APIText;
     [SerializeField] private Text descriptionText;
     [SerializeField] private Button startButton;
+    private Text _startButtonText;
     
     private Details _details;
-    
+
+    private void Awake()
+    {
+        _startButtonText = startButton.GetComponentInChildren<Text>();
+    }
+
     private void ClearDetails()
     {
         Destroy(_details);
         
-        int childCount = optionsTransform.childCount;
+        var childCount = optionsTransform.childCount;
         
-        for (int i = childCount - 1; i >= 0; i--)
+        for (var i = childCount - 1; i >= 0; i--)
         {
-            Transform child = optionsTransform.GetChild(i);
+            var child = optionsTransform.GetChild(i);
             Destroy(child.gameObject);
         }
         
@@ -50,6 +56,7 @@ public class DetailsController : MonoBehaviour
             optionObj.GetComponentInChildren<DropdownHandler>().Init(_details, i);
         }
         
+        _startButtonText.text = entrySO.buttonText;
         startButton.onClick.AddListener(() =>
         {
             _details.Run();
