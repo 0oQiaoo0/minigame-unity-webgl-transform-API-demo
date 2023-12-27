@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryName: "\u5224\u65AD\u6587\u4EF6/\u76EE\u5F55\u662F\u5426\u5B58\u5728"
   entryAPI: Access/AccessSync
-  entryDescription: "\u6CE8\u610F\uFF1A\u672CAPI\u4E0E\u6587\u6863\u63CF\u8FF0\u4E0D\u540C"
+  entryDescription: "\u6CE8\u610F\uFF1AAccessSync\u4E0E\u6587\u6863\u63CF\u8FF0\u4E0D\u540C\uFF0C\u65E0\u8BBA\u5982\u4F55\u90FD\u4F1A\u8FD4\u56DEstring\u3002\n\u6210\u529F\u4F1A\u8FD4\u56DE\"access:ok\"\uFF0C\u5931\u8D25\u4F1A\u8FD4\u56DE\u5177\u4F53\u7684\u9519\u8BEF\u4FE1\u606F\u3002"
   entryScriptTypeName: Access
   optionList:
   - optionName: "\u6267\u884C\u65B9\u5F0F"

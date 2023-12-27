@@ -1,4 +1,5 @@
-﻿using WeChatWASM;
+﻿using LitJson;
+using WeChatWASM;
 
 public class Access : Details
 {
@@ -9,8 +10,12 @@ public class Access : Details
     private void Start()
     {
         _fileSystemManager = WX.GetFileSystemManager();
-        
-        _fileSystemManager.MkdirSync(_pathPrefix + "/exist", true);
+
+        if (_fileSystemManager.AccessSync(_pathPrefix + "/exist") != "access:ok")
+        {
+            _fileSystemManager.MkdirSync(_pathPrefix + "/exist", true);
+        }
+            
         _fileSystemManager.OpenSync(new OpenSyncOption()
         {
             filePath = _pathPrefix + "/exist/exist.txt",
@@ -40,14 +45,14 @@ public class Access : Details
             {
                 WX.ShowModal(new ShowModalOption()
                 {
-                    content = "Access Success: " + res
+                    content = "Access Success: " + JsonMapper.ToJson(res)
                 });
             },
             fail = (res) =>
             {
                 WX.ShowModal(new ShowModalOption()
                 {
-                    content = "Access Fail: " + res
+                    content = "Access Fail: " + JsonMapper.ToJson(res)
                 });
             }
         });
@@ -55,9 +60,9 @@ public class Access : Details
     
     private void RunSync(string path)
     {
-        WX.ShowToast(new ShowToastOption()
+        WX.ShowModal(new ShowModalOption()
         {
-            title = _fileSystemManager.AccessSync(_pathPrefix + path)
+            content = "AccessSync Result: " + _fileSystemManager.AccessSync(_pathPrefix + path)
         });
     }
 }
