@@ -26,6 +26,8 @@ public class DetailsController : MonoBehaviour
             Transform child = optionsTransform.GetChild(i);
             Destroy(child.gameObject);
         }
+        
+        startButton.onClick.RemoveAllListeners();
     }
     
     public void Init(EntrySO so)
@@ -50,7 +52,6 @@ public class DetailsController : MonoBehaviour
         
         startButton.onClick.AddListener(() =>
         {
-            Debug.Log("Run");
             _details.Run();
         });
     }
