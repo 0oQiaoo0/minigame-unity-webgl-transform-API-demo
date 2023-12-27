@@ -6,9 +6,11 @@ public class DropdownHandler : MonoBehaviour
 {
     private Dropdown _dropdown;
     
-    [SerializeField] private Details details;
+    private Details _details;
     [SerializeField] private int dropdownIndex;
 
+    [SerializeField] private Text optionNameText;
+    
     private void Awake()
     {
         _dropdown = GetComponent<Dropdown>();
@@ -21,12 +23,16 @@ public class DropdownHandler : MonoBehaviour
     
     public void Init(Details details, int dropdownIndex)
     {
-        this.details = details;
+        _details = details;
         this.dropdownIndex = dropdownIndex;
+        
+        optionNameText.text = _details.entrySO.optionList[dropdownIndex].optionName;
+        _dropdown.ClearOptions();
+        _dropdown.AddOptions(_details.entrySO.optionList[dropdownIndex].availableOptions);
     }
 
     private void OnDropdownValueChanged(int selectedIndex)
     {
-        details.OnDropdownValueChanged(dropdownIndex, selectedIndex);
+        _details.OnDropdownValueChanged(dropdownIndex, selectedIndex);
     }
 }

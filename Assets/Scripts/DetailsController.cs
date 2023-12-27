@@ -43,7 +43,6 @@ public class DetailsController : MonoBehaviour
         
         for(var i = 0; i < entrySO.optionList.Count; i++)
         {
-            Debug.Log(entrySO.optionList[i].optionName);
             var optionObj = Instantiate(optionPrefab, optionsTransform);
             optionObj.name = entrySO.optionList[i].optionName;
             optionObj.GetComponentInChildren<DropdownHandler>().Init(_details, i);
@@ -51,6 +50,7 @@ public class DetailsController : MonoBehaviour
         
         startButton.onClick.AddListener(() =>
         {
+            Debug.Log("Run");
             _details.Run();
         });
     }

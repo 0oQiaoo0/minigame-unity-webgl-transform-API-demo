@@ -24,7 +24,13 @@ public class UIController : MonoBehaviour
     private bool _isMainCanvasActive = true;
     
     public DetailsController detailsController;
-    
+
+    private void Start()
+    {
+        mainCanvas.SetActive(true);
+        detailsCanvas.SetActive(false);
+    }
+
     public void SwitchCanvas()
     {
         _isMainCanvasActive = !_isMainCanvasActive;

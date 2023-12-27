@@ -763,8 +763,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d723a5f4dd62438cb0ba319e53b1eefb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  details: {fileID: 0}
   dropdownIndex: 0
+  optionNameText: {fileID: 1053325710473407690}
 --- !u!1 &1053325710368105150
 GameObject:
   m_ObjectHideFlags: 0
