@@ -19,7 +19,7 @@ MonoBehaviour:
     assetLoadType: 1
     compressDataPackage: 0
     VideoUrl: 
-    DST: /Users/rainhong/Documents/GitHub/minigame-unity-webgl-transform-API-demo/wxBuildDev
+    DST: /Users/rainhong/Documents/GitHub/minigame-unity-webgl-transform-API-demo/Dist
     StreamCDN: 
     bundleHashLength: 32
     bundlePathIdentifier: StreamingAssets;
