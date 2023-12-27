@@ -8,16 +8,22 @@ public class UIController : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(gameObject);
+            Destroy(this);
             return;
         }
         
         Instance = this;
+        
+        DontDestroyOnLoad(gameObject);
+        
+        detailsController = detailsCanvas.GetComponent<DetailsController>();
     }
     
     [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject detailsCanvas;
     private bool _isMainCanvasActive = true;
+    
+    public DetailsController detailsController;
     
     public void SwitchCanvas()
     {

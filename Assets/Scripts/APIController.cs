@@ -8,7 +8,7 @@ public class APIController : MonoBehaviour
     
     [SerializeField] private GameObject categoryPrefab;
     [SerializeField] private Transform categoriesTransform;
-
+    
     private void Awake()
     {
         WX.InitSDK((code) =>

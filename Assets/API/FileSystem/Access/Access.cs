@@ -32,7 +32,7 @@ public class Access : Details
     //     path = entrySO.optionList[1].availableOptions[index];
     // }
     //
-    public override void Run()
+    protected override void TestAPI(params string[] args)
     {
         // if (isSync)
         // {

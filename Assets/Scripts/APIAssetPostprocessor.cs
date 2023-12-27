@@ -7,83 +7,203 @@ public class APIAssetPostprocessor : AssetPostprocessor
 {
     private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
     {
-        foreach (string assetPath in importedAssets)
+        var addedAssets = importedAssets.Concat(movedAssets).ToArray();
+        
+        foreach (var assetPath in addedAssets)
         {
-            if (Path.GetExtension(assetPath) == ".asset")
+            switch (Path.GetExtension(assetPath))
             {
-                APISO apiSO = AssetDatabase.LoadAssetAtPath<APISO>(assetPath);
-                CategorySO categorySO = AssetDatabase.LoadAssetAtPath<CategorySO>(assetPath);
-                EntrySO entrySO = AssetDatabase.LoadAssetAtPath<EntrySO>(assetPath);
+                case ".asset":
+                {
+                    var apiSO = AssetDatabase.LoadAssetAtPath<APISO>(assetPath);
+                    var categorySO = AssetDatabase.LoadAssetAtPath<CategorySO>(assetPath);
+                    var entrySO = AssetDatabase.LoadAssetAtPath<EntrySO>(assetPath);
 
-                if (apiSO != null)
-                {
-                    UpdateAPISO(apiSO);
+                    if (apiSO != null)
+                    {
+                        UpdateAPISO(apiSO);
+                    }
+                    else if (categorySO != null)
+                    {
+                        UpdateAPISO(GetAPISOFromParentPath(assetPath));
+                        UpdateCategorySO(categorySO);
+                    }
+                    else if (entrySO != null)
+                    {
+                        UpdateCategorySO(GetCategorySOFromParentPath(assetPath));
+                        UpdateEntrySO(entrySO);
+                    }
+
+                    break;
                 }
-                else if (categorySO != null)
+                case ".cs":
                 {
-                    UpdateCategorySO(categorySO);
-                    UpdateAPISO(GetAPISOFromCategorySOPath(assetPath));
-                }
-                else if (entrySO != null)
-                {
-                    UpdateCategorySO(GetCategorySOFromEntrySOPath(assetPath));
+                    var entrySO = GetEntrySOFromSamePath(assetPath);
+
+                    if(entrySO) UpdateEntrySO(entrySO);
+
+                    break;
                 }
             }
         }
 
-        foreach (var assetPath in deletedAssets)
+        var removedAssets = deletedAssets.Concat(movedFromAssetPaths).ToArray();
+        foreach (var assetPath in removedAssets)
         {
-            APISO apiSO = GetAPISOFromCategorySOPath(assetPath);
-            CategorySO categorySO = GetCategorySOFromEntrySOPath(assetPath);
-            
+            var apiSO = GetAPISOFromParentPath(assetPath);
+            var categorySO = GetCategorySOFromParentPath(assetPath);
+            var entrySO = GetEntrySOFromSamePath(assetPath);
+
             if(apiSO) UpdateAPISO(apiSO);
             if(categorySO) UpdateCategorySO(categorySO);
+            if(entrySO) UpdateEntrySO(entrySO);
         }
     }
-    
-    public static void UpdateAPISO(APISO apiSO)
-    {
-        string assetDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(apiSO));
-        string[] categorySO_GUIDs = AssetDatabase.FindAssets("t:CategorySO", new[] { assetDirectory });
 
-        apiSO.categoryList = categorySO_GUIDs.Select(guid => AssetDatabase.LoadAssetAtPath<CategorySO>(AssetDatabase.GUIDToAssetPath(guid))).ToList();
+
+    private static void UpdateAPISO(APISO apiSO)
+    {
+        if (apiSO == null) return;
+
+        var assetDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(apiSO));
+        var subdirectories = Directory.GetDirectories(assetDirectory);
+
+        apiSO.categoryList.Clear();
+
+        foreach (var subdirectory in subdirectories)
+        {
+            var allFiles = Directory.GetFiles(subdirectory);
+
+            foreach (var file in allFiles)
+            {
+                if (Path.GetExtension(file) != ".asset") continue; // 只考虑 .asset 文件
+                
+                var categorySO = AssetDatabase.LoadAssetAtPath<CategorySO>(file);
+                if (categorySO != null)
+                {
+                    apiSO.categoryList.Add(categorySO);
+                }
+            }
+        }
+
         EditorUtility.SetDirty(apiSO);
     }
 
-    public static void UpdateCategorySO(CategorySO categorySO)
+    private static void UpdateCategorySO(CategorySO categorySO)
     {
-        string assetDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(categorySO));
-        string[] entrySO_GUIDs = AssetDatabase.FindAssets("t:EntrySO", new[] { assetDirectory });
+        if (categorySO == null) return;
 
-        categorySO.entryList = entrySO_GUIDs.Select(guid => AssetDatabase.LoadAssetAtPath<EntrySO>(AssetDatabase.GUIDToAssetPath(guid))).ToList();
+        var assetDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(categorySO));
+        var subdirectories = Directory.GetDirectories(assetDirectory);
+
+        categorySO.entryList.Clear();
+
+        foreach (var subdirectory in subdirectories)
+        {
+            var allFiles = Directory.GetFiles(subdirectory);
+
+            foreach (var file in allFiles)
+            {
+                if (Path.GetExtension(file) != ".asset") continue; // 只考虑 .asset 文件
+                
+                var entrySO = AssetDatabase.LoadAssetAtPath<EntrySO>(file);
+                if (entrySO != null)
+                {
+                    categorySO.entryList.Add(entrySO);
+                }
+            }
+        }
+
         EditorUtility.SetDirty(categorySO);
     }
-    
-    public static APISO GetAPISOFromCategorySOPath(string path)
-    {
-        string parentDirectory = Path.GetDirectoryName(Path.GetDirectoryName(path));
-        string[] apiSO_GUIDs = AssetDatabase.FindAssets("t:APISO", new[] { parentDirectory });
 
-        if (apiSO_GUIDs.Length > 0)
+    private static void UpdateEntrySO(EntrySO entrySO)
+    {
+        if (entrySO == null) return;
+        
+        var assetDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(entrySO));
+        // 获取与 EntrySO 相同目录下的所有 C# 脚本文件（.cs）
+        var scriptFiles = Directory.GetFiles(assetDirectory, "*.cs", SearchOption.TopDirectoryOnly);
+
+        entrySO.EntryScriptType = null;
+        
+        // 遍历所有脚本文件，检查是否包含 Details 子类
+        foreach (string scriptFile in scriptFiles)
         {
-            string apiSOPath = AssetDatabase.GUIDToAssetPath(apiSO_GUIDs[0]);
-            APISO apiSO = AssetDatabase.LoadAssetAtPath<APISO>(apiSOPath);
-            return apiSO;
+            var script = AssetDatabase.LoadAssetAtPath<MonoScript>(scriptFile);
+            var scriptType = script.GetClass();
+
+            // 如果找到 Details 子类，将其添加到 entrySO.entryScriptType
+            if (scriptType != null && scriptType.IsSubclassOf(typeof(Details)) && !scriptType.IsAbstract)
+            {
+                entrySO.EntryScriptType = scriptType;
+            }
+        }
+
+        EditorUtility.SetDirty(entrySO);
+    }
+
+    private static APISO GetAPISOFromParentPath(string path)
+    {
+        var parentDirectory = Path.GetDirectoryName(Path.GetDirectoryName(path));
+        
+        if (parentDirectory == null) return null;
+        
+        var allFiles = Directory.GetFiles(parentDirectory);
+
+        foreach (var file in allFiles)
+        {
+            if (Path.GetExtension(file) != ".asset") continue; // 只考虑 .asset 文件
+            
+            var apiSO = AssetDatabase.LoadAssetAtPath<APISO>(file);
+            if (apiSO != null)
+            {
+                return apiSO;
+            }
         }
 
         return null;
     }
-    
-    public static CategorySO GetCategorySOFromEntrySOPath(string path)
-    {
-        string parentDirectory = Path.GetDirectoryName(Path.GetDirectoryName(path));
-        string[] categorySO_GUIDs = AssetDatabase.FindAssets("t:CategorySO", new[] { parentDirectory });
 
-        if (categorySO_GUIDs.Length > 0)
+    private static CategorySO GetCategorySOFromParentPath(string path)
+    {
+        var parentDirectory = Path.GetDirectoryName(Path.GetDirectoryName(path));
+        
+        if (parentDirectory == null) return null;
+        
+        var allFiles = Directory.GetFiles(parentDirectory);
+
+        foreach (var file in allFiles)
         {
-            string categorySOPath = AssetDatabase.GUIDToAssetPath(categorySO_GUIDs[0]);
-            CategorySO categorySO = AssetDatabase.LoadAssetAtPath<CategorySO>(categorySOPath);
-            return categorySO;
+            if (Path.GetExtension(file) != ".asset") continue; // 只考虑 .asset 文件
+            
+            var categorySO = AssetDatabase.LoadAssetAtPath<CategorySO>(file);
+            if (categorySO != null)
+            {
+                return categorySO;
+            }
+        }
+
+        return null;
+    }
+
+    private static EntrySO GetEntrySOFromSamePath(string path)
+    {
+        var assetDirectory = Path.GetDirectoryName(path);
+        
+        if (assetDirectory == null) return null;
+        
+        var allFiles = Directory.GetFiles(assetDirectory);
+
+        foreach (var file in allFiles)
+        {
+            if (Path.GetExtension(file) != ".asset") continue; // 只考虑 .asset 文件
+            
+            var entrySO = AssetDatabase.LoadAssetAtPath<EntrySO>(file);
+            if (entrySO != null)
+            {
+                return entrySO;
+            }
         }
 
         return null;

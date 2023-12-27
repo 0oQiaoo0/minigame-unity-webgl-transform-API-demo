@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a9e19ed69c041c408533b50f5572d0f, type: 3}
   m_Name: VideoSO
   m_EditorClassIdentifier: 
-  categoryName: 
-  categorySprite: {fileID: 0}
+  categoryName: "\u89C6\u9891"
+  categorySprite: {fileID: 21300000, guid: 5914cbe47cb794caab37c4bae648c2f8, type: 3}
   entryList: []
