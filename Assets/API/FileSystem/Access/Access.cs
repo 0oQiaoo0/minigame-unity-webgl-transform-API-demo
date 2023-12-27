@@ -38,16 +38,16 @@ public class Access : Details
             path = _pathPrefix + path,
             success = (res) =>
             {
-                WX.ShowToast(new ShowToastOption()
+                WX.ShowModal(new ShowModalOption()
                 {
-                    title = "Access Success: " + res
+                    content = "Access Success: " + res
                 });
             },
             fail = (res) =>
             {
-                WX.ShowToast(new ShowToastOption()
+                WX.ShowModal(new ShowModalOption()
                 {
-                    title = "Access Fail: " + res
+                    content = "Access Fail: " + res
                 });
             }
         });
