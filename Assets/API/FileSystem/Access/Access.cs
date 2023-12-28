@@ -1,31 +1,51 @@
-﻿using LitJson;
+﻿using System;
+using LitJson;
 using WeChatWASM;
 
 public class Access : Details
 {
-    private WXFileSystemManager _fileSystemManager;
+    private static WXFileSystemManager _fileSystemManager;
     
-    private string _pathPrefix = WX.env.USER_DATA_PATH + "/Access";
+    // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
+    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Access";
+    
+    private static Action<WXTextResponse> onSuccess = (res) =>
+    {
+        WX.ShowModal(new ShowModalOption()
+        {
+            content = "Access Success: " + JsonMapper.ToJson(res)
+        });
+    };
+    private static Action<WXTextResponse> onFail = (res) =>
+    {
+        WX.ShowModal(new ShowModalOption()
+        {
+            content = "Access Fail: " + JsonMapper.ToJson(res)
+        });
+    };
     
     private void Start()
     {
         _fileSystemManager = WX.GetFileSystemManager();
 
-        if (_fileSystemManager.AccessSync(_pathPrefix + "/exist") != "access:ok")
+        if (_fileSystemManager.AccessSync(PathPrefix + "/exist") != "access:ok")
         {
-            _fileSystemManager.MkdirSync(_pathPrefix + "/exist", true);
+            _fileSystemManager.MkdirSync(PathPrefix + "/exist", true);
         }
             
         _fileSystemManager.OpenSync(new OpenSyncOption()
         {
-            filePath = _pathPrefix + "/exist/exist.txt",
+            filePath = PathPrefix + "/exist/exist.txt",
             flag = "w+"
         });
-        _fileSystemManager.WriteFileSync(_pathPrefix + "/exist/exist.txt", "String Data");
+        _fileSystemManager.WriteFileSync(PathPrefix + "/exist/exist.txt", "String Data");
     }
     
     protected override void TestAPI(params string[] args)
     {
+        if (args[0] == null) args[0] = "同步执行";
+        if (args[1] == null) args[1] = "/exist";
+        
         if (args[0] == "同步执行")
         {
             RunSync(args[1]);
@@ -37,24 +57,12 @@ public class Access : Details
     }
     
     private void RunAsync(string path)
-    {
+    {   
         _fileSystemManager.Access(new AccessParam()
         {
-            path = _pathPrefix + path,
-            success = (res) =>
-            {
-                WX.ShowModal(new ShowModalOption()
-                {
-                    content = "Access Success: " + JsonMapper.ToJson(res)
-                });
-            },
-            fail = (res) =>
-            {
-                WX.ShowModal(new ShowModalOption()
-                {
-                    content = "Access Fail: " + JsonMapper.ToJson(res)
-                });
-            }
+            path = PathPrefix + path,
+            success = onSuccess,
+            fail = onFail
         });
     }
     
@@ -62,7 +70,7 @@ public class Access : Details
     {
         WX.ShowModal(new ShowModalOption()
         {
-            content = "AccessSync Result: " + _fileSystemManager.AccessSync(_pathPrefix + path)
+            content = "AccessSync Result: " + _fileSystemManager.AccessSync(PathPrefix + path)
         });
     }
 }

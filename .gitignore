@@ -76,3 +76,7 @@ crashlytics-build.properties
 
 # Dist
 /Dist/*
+/D:/*
+
+# WXAssetsTools
+/TextToolDatas/*

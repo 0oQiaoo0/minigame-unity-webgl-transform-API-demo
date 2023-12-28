@@ -15,6 +15,28 @@ MonoBehaviour:
   entryName: "\u5728\u6587\u4EF6\u7ED3\u5C3E\u8FFD\u52A0\u5185\u5BB9"
   entryAPI: apendFile/appendFileSync
   entryDescription: 
-  entryScriptTypeName: 
-  optionList: []
+  entryScriptTypeName: AppendFile
+  optionList:
+  - optionName: "\u6267\u884C\u65B9\u5F0F"
+    availableOptions:
+    - "\u540C\u6B65\u6267\u884C"
+    - "\u5F02\u6B65\u6267\u884C"
+  - optionName: "data\u7C7B\u578B"
+    availableOptions:
+    - string
+    - byte[]
+  - optionName: encoding
+    availableOptions:
+    - null
+    - ascii
+    - base64
+    - binary
+    - hex
+    - ucs2
+    - ucs-2
+    - utf16le
+    - utf-16le
+    - utf-8
+    - utf8
+    - latin1
   buttonText: "\u8FD0\u884C"

@@ -15,6 +15,6 @@ MonoBehaviour:
   entryName: "\u5173\u95ED\u6587\u4EF6"
   entryAPI: Close
   entryDescription: 
-  entryScriptTypeName: 
+  entryScriptTypeName: Read
   optionList: []
   buttonText: "\u8FD0\u884C"
