@@ -1,6 +1,5 @@
 ﻿using System;
 using LitJson;
-using UnityEngine;
 using WeChatWASM;
 
 public class AppendFile : Details
@@ -21,7 +20,7 @@ public class AppendFile : Details
     {
         WX.ShowModal(new ShowModalOption()
         {
-            content = "AppendFile Success: " + JsonMapper.ToJson(res) 
+            content = "AppendFile Success, Result: " + JsonMapper.ToJson(res) 
                                              + "\nFile Content: " + _fileSystemManager.ReadFileSync(Path, "utf8")
         });
     };
@@ -29,7 +28,7 @@ public class AppendFile : Details
     {
         WX.ShowModal(new ShowModalOption()
         {
-            content = "AppendFile Fail: " + JsonMapper.ToJson(res)
+            content = "AppendFile Fail, Result: " + JsonMapper.ToJson(res)
         });
     };
     
@@ -146,7 +145,7 @@ public class AppendFile : Details
         
         WX.ShowModal(new ShowModalOption()
         {
-            content = "File Content: " + _fileSystemManager.ReadFileSync(Path, "utf8")
+            content = "AppendFileSync Success, File Content: " + _fileSystemManager.ReadFileSync(Path, "utf8")
         });
     }
 }

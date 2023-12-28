@@ -15,14 +15,14 @@ public class Access : Details
     {
         WX.ShowModal(new ShowModalOption()
         {
-            content = "Access Success: " + JsonMapper.ToJson(res)
+            content = "Access Success, Result: " + JsonMapper.ToJson(res)
         });
     };
     private static Action<WXTextResponse> onFail = (res) =>
     {
         WX.ShowModal(new ShowModalOption()
         {
-            content = "Access Fail: " + JsonMapper.ToJson(res)
+            content = "Access Fail, Result: " + JsonMapper.ToJson(res)
         });
     };
     

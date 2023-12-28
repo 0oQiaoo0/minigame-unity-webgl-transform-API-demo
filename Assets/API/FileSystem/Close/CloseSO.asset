@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: CloseSO
   m_EditorClassIdentifier: 
   entryName: "\u5173\u95ED\u6587\u4EF6"
-  entryAPI: Close
+  entryAPI: Close/CloseSync
   entryDescription: 
   entryScriptTypeName: Close
-  optionList: []
+  optionList:
+  - optionName: "\u6267\u884C\u65B9\u5F0F"
+    availableOptions:
+    - "\u540C\u6B65\u6267\u884C"
+    - "\u5F02\u6B65\u6267\u884C"
   buttonText: "\u8FD0\u884C"
