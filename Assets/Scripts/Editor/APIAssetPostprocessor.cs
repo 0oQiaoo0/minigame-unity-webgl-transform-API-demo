@@ -11,6 +11,8 @@ public class APIAssetPostprocessor : AssetPostprocessor
         
         foreach (var assetPath in addedAssets)
         {
+            if (!File.Exists(assetPath)) continue; // 跳过非法路径
+            
             switch (Path.GetExtension(assetPath))
             {
                 case ".asset":
@@ -50,6 +52,8 @@ public class APIAssetPostprocessor : AssetPostprocessor
         var removedAssets = deletedAssets.Concat(movedFromAssetPaths).ToArray();
         foreach (var assetPath in removedAssets)
         {
+            if (!File.Exists(assetPath)) continue; // 跳过非法路径
+
             var apiSO = GetAPISOFromParentPath(assetPath);
             var categorySO = GetCategorySOFromParentPath(assetPath);
             var entrySO = GetEntrySOFromSamePath(assetPath);
