@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryName: "\u5728\u6587\u4EF6\u7ED3\u5C3E\u8FFD\u52A0\u5185\u5BB9"
   entryAPI: apendFile/appendFileSync
-  entryDescription: 
+  entryDescription: "\u6CE8\uFF1A\u4EE5UTF-8\u7F16\u7801\u8BFB\u51FA\u6587\u4EF6\u5185\u5BB9"
   entryScriptTypeName: AppendFile
   optionList:
   - optionName: "\u6267\u884C\u65B9\u5F0F"

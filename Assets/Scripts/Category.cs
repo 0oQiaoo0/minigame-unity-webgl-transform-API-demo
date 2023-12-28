@@ -1,6 +1,4 @@
-﻿using Unity.Collections;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Category : MonoBehaviour
@@ -14,7 +12,7 @@ public class Category : MonoBehaviour
     [SerializeField] private Text categoryText;
     [SerializeField] private Image categoryImage;
 
-    [Header("Entry Prefab")]
+    [Header("Elements")]
     [SerializeField] private GameObject entryPrefab;
     [SerializeField] private Transform entryBlocksTransform;
     

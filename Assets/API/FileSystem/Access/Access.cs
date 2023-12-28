@@ -6,9 +6,11 @@ public class Access : Details
 {
     private static WXFileSystemManager _fileSystemManager;
     
+    // 路径
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
     private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Access";
     
+    // 回调函数
     private static Action<WXTextResponse> onSuccess = (res) =>
     {
         WX.ShowModal(new ShowModalOption()

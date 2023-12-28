@@ -1,20 +1,26 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using WeChatWASM;
+using SystemInfo = WeChatWASM.SystemInfo;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    
-    public Font Font { get; private set; }
 
-    public event Action<Font> OnFontLoaded;
+    [HideInInspector] public DetailsController detailsController;
     
+    [Header("Font")]
+    public Font font;
+    public Action<Font> onFontLoaded;
+    
+    [Header("Canvas Switch")]
     [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject detailsCanvas;
     private bool _isMainCanvasActive = true;
     
-    public DetailsController detailsController;
+    [Header("System Info")]
+    public SystemInfo systemInfo;
     
     private void Awake()
     {
@@ -37,12 +43,13 @@ public class GameManager : MonoBehaviour
             var fallbackFont = Application.streamingAssetsPath + "/Fz.ttf";
             WX.GetWXFont(fallbackFont, (font) =>
             {
-                if (font)
-                {
-                    Font = font;
-                    OnFontLoaded?.Invoke(font);
-                }
+                if (!font) return;
+                
+                this.font = font;
+                onFontLoaded?.Invoke(font);
             });
+            
+            systemInfo = WX.GetSystemInfoSync();
         });
     }
     

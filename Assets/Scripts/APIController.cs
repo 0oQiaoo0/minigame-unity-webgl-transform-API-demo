@@ -1,11 +1,22 @@
+using System;
 using UnityEngine;
 
 public class APIController : MonoBehaviour
 {
+    [Header("API Data")]
     [SerializeField] private APISO apiSO;
     
+    [Header("Elements")]
     [SerializeField] private GameObject categoryPrefab;
     [SerializeField] private Transform categoriesTransform;
+    
+    [Header("Title Transform")]
+    [SerializeField] private RectTransform title;
+    
+    private void Start()
+    {
+        title.anchoredPosition = new Vector2(title.anchoredPosition.x,  -125f - (float)GameManager.Instance.systemInfo.safeArea.top);
+    }
 
     private void ClearCategories()
     {

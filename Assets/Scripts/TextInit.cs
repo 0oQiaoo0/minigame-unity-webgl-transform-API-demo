@@ -13,19 +13,19 @@ public class TextInit : MonoBehaviour
 
     private void Start()
     {
-        if (GameManager.Instance.Font != null)
+        if (GameManager.Instance.font != null)
         {
-            _text.font = GameManager.Instance.Font;
+            _text.font = GameManager.Instance.font;
         }
         else
         {
-            GameManager.Instance.OnFontLoaded += OnFontLoaded;
+            GameManager.Instance.onFontLoaded += OnFontLoaded;
         }
     }
 
     private void OnDestroy()
     {
-        GameManager.Instance.OnFontLoaded -= OnFontLoaded;
+        GameManager.Instance.onFontLoaded -= OnFontLoaded;
     }
 
     private void OnFontLoaded(Font font)

@@ -1,18 +1,22 @@
 ﻿using System;
 using LitJson;
+using UnityEngine;
 using WeChatWASM;
 
 public class AppendFile : Details
 {
     private static WXFileSystemManager _fileSystemManager;
     
+    // 路径
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
     private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/AppendFile";
     private static readonly string Path = PathPrefix + "/hello.txt";
     
+    // 数据
     private static string _stringData = "String Data\n";
-    private static byte[] _bufferData = {66, 117, 102, 102, 101, 114, 32, 68, 97, 116, 97};
+    private static byte[] _bufferData = {66, 117, 102, 102, 101, 114, 32, 68, 97, 116, 97, 10};
     
+    // 回调函数
     private static Action<WXTextResponse> onSuccess = (res) =>
     {
         WX.ShowModal(new ShowModalOption()
@@ -53,7 +57,7 @@ public class AppendFile : Details
         if (args[1] == null) args[1] = "string";
         if (args[2] == null) args[2] = "null";
         
-        if (args[0] == "异步执行")
+        if (args[0] == "同步执行")
         {
             RunSync(args[1], args[2]);
         }
@@ -132,11 +136,11 @@ public class AppendFile : Details
         {
             if (encoding == "null")
             {
-                _fileSystemManager.AppendFileSync(Path, _bufferData);
+                _fileSystemManager.AppendFileSync(Path, _stringData);
             }
             else
             {
-                _fileSystemManager.AppendFileSync(Path, _bufferData, encoding);
+                _fileSystemManager.AppendFileSync(Path, _stringData, encoding);
             }
         }
         

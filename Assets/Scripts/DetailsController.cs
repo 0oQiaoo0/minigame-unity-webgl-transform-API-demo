@@ -1,24 +1,35 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DetailsController : MonoBehaviour
 {
+    [Header("Entry Data")]
     [SerializeField] private EntrySO entrySO;
     
+    [Header("Elements")]
     [SerializeField] private GameObject optionPrefab;
     [SerializeField] private Transform optionsTransform;
     
+    [Header("Text")]
     [SerializeField] private Text titleText;
     [SerializeField] private Text APIText;
     [SerializeField] private Text descriptionText;
+    [SerializeField] private Text startButtonText;
+    
+    [Header("Button")]
     [SerializeField] private Button startButton;
-    private Text _startButtonText;
+
+    [Header("Title Transform")] 
+    [SerializeField] private RectTransform title;
+    [SerializeField] private RectTransform backButton;
     
     private Details _details;
 
-    private void Awake()
+    private void Start()
     {
-        _startButtonText = startButton.GetComponentInChildren<Text>();
+        title.anchoredPosition = new Vector2(title.anchoredPosition.x,  -125f - (float)GameManager.Instance.systemInfo.safeArea.top);
+        backButton.anchoredPosition = new Vector2(backButton.anchoredPosition.x, -125f - (float)GameManager.Instance.systemInfo.safeArea.top);
     }
 
     private void ClearDetails()
@@ -56,7 +67,7 @@ public class DetailsController : MonoBehaviour
             optionObj.GetComponentInChildren<DropdownHandler>().Init(_details, i);
         }
         
-        _startButtonText.text = entrySO.buttonText;
+        startButtonText.text = entrySO.buttonText;
         startButton.onClick.AddListener(() =>
         {
             _details.Run();

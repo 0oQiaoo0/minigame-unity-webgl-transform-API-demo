@@ -52,9 +52,9 @@ MonoBehaviour:
     profilingFuncs: 1
     Webgl2: 0
     fbslim: 0
-    DeleteStreamingAssets: 1
+    DeleteStreamingAssets: 0
     ProfilingMemory: 0
-    CleanBuild: 1
+    CleanBuild: 0
     CustomNodePath: 
     showMonitorSuggestModal: 0
     enableProfileStats: 0
