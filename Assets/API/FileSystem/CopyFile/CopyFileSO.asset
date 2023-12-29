@@ -13,10 +13,20 @@ MonoBehaviour:
   m_Name: CopyFileSO
   m_EditorClassIdentifier: 
   entryScriptTypeName: CopyFile
-  entryName: "\u5173\u95ED\u6587\u4EF6"
-  entryAPI: Close
-  entryDescription: 
-  optionList: []
+  entryName: "\u590D\u5236\u6587\u4EF6"
+  entryAPI: CopyFile(Sync)
+  entryDescription: "<color=red>\u6CE8\u610F\uFF1ACopyFileSync\u8FD4\u56DE\u503C\u4E0E\u6587\u6863\u63CF\u8FF0\u4E0D\u540C\u3002\n\u6210\u529F\u4F1A\u8FD4\u56DE\"copyFile:ok\"\uFF0C\u5931\u8D25\u4F1A\u8FD4\u56DE\u5177\u4F53\u7684\u9519\u8BEF\u4FE1\u606F\u6216\"fail\"\u3002\n\u4E0D\u4F1A\u629B\u51FA\u5F02\u5E38\u3002</color>"
+  optionList:
+  - optionName: "\u6267\u884C\u65B9\u5F0F"
+    availableOptions:
+    - "\u540C\u6B65\u6267\u884C"
+    - "\u5F02\u6B65\u6267\u884C"
   initialButtonText: "\u8FD0\u884C"
   entryResultTitle: 
-  initialResultList: []
+  initialResultList:
+  - isDisableInitially: 0
+    initialContent: /originFile.txt
+  - isDisableInitially: 1
+    initialContent: /copysync
+  - isDisableInitially: 1
+    initialContent: 
