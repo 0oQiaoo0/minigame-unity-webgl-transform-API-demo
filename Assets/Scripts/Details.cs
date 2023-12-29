@@ -24,5 +24,5 @@ public abstract class Details : MonoBehaviour
         TestAPI(options);
     }
 
-    protected abstract void TestAPI(params string[] args);
+    protected abstract void TestAPI(string[] args);
 }

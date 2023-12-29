@@ -1,8 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DropdownHandler : MonoBehaviour
+public class OptionDropdownHandler : MonoBehaviour
 {
     private Dropdown _dropdown;
     

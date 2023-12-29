@@ -12,19 +12,20 @@ public class AppendFile : Details
     private static readonly string Path = PathPrefix + "/hello.txt";
     
     // 数据
-    private static string _stringData = "String Data\n";
-    private static byte[] _bufferData = {66, 117, 102, 102, 101, 114, 32, 68, 97, 116, 97, 10};
+    private string _stringData = "String Data ";
+    private byte[] _bufferData = {66, 117, 102, 102, 101, 114, 32, 68, 97, 116, 97, 32};
     
     // 回调函数
-    private static Action<WXTextResponse> onSuccess = (res) =>
+    private Action<WXTextResponse> onSuccess = (res) =>
     {
         WX.ShowModal(new ShowModalOption()
         {
-            content = "AppendFile Success, Result: " + JsonMapper.ToJson(res) 
-                                             + "\nFile Content: " + _fileSystemManager.ReadFileSync(Path, "utf8")
+            content = "AppendFile Success, Result: " + JsonMapper.ToJson(res)
         });
+        GameManager.Instance.detailsController.resultObjects[0].GetComponent<ResultController>()
+            .ChangeContent(_fileSystemManager.ReadFileSync(Path, "utf8"));
     };
-    private static Action<WXTextResponse> onFail = (res) =>
+    private Action<WXTextResponse> onFail = (res) =>
     {
         WX.ShowModal(new ShowModalOption()
         {
@@ -34,6 +35,7 @@ public class AppendFile : Details
     
     private void Start()
     {
+        // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
             
         if (_fileSystemManager.AccessSync(PathPrefix) != "access:ok")
@@ -47,10 +49,10 @@ public class AppendFile : Details
             flag = "w+"
         });
         
-        _fileSystemManager.WriteFileSync(Path, "Original Data\n");
+        _fileSystemManager.WriteFileSync(Path, "Original Data ");
     }
     
-    protected override void TestAPI(params string[] args)
+    protected override void TestAPI(string[] args)
     {
         if (args[0] == null) args[0] = "同步执行";
         if (args[1] == null) args[1] = "string";
@@ -143,9 +145,11 @@ public class AppendFile : Details
             }
         }
         
-        WX.ShowModal(new ShowModalOption()
+        WX.ShowToast(new ShowToastOption()
         {
-            content = "AppendFileSync Success, File Content: " + _fileSystemManager.ReadFileSync(Path, "utf8")
+            title = "AppendFileSync Success"
         });
+        GameManager.Instance.detailsController.resultObjects[0].GetComponent<ResultController>()
+            .ChangeContent(_fileSystemManager.ReadFileSync(Path, "utf8"));
     }
 }

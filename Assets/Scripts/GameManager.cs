@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using WeChatWASM;
 using SystemInfo = WeChatWASM.SystemInfo;
 

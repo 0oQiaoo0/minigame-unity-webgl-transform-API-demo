@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb48e4613a53bb941a20036d7c08fefb, type: 3}
   m_Name: UnzipSO
   m_EditorClassIdentifier: 
+  entryScriptTypeName: Unzip
   entryName: "\u5173\u95ED\u6587\u4EF6"
   entryAPI: Close
   entryDescription: 
-  entryScriptTypeName: Unzip
   optionList: []
-  buttonText: "\u8FD0\u884C"
+  initialButtonText: "\u8FD0\u884C"
+  entryResultTitle: 
+  initialResultList: []

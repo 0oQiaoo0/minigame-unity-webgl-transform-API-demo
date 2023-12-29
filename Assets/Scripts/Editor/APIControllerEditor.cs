@@ -2,17 +2,17 @@
 using UnityEngine;
 
 [CustomEditor(typeof(APIController))]
-public class APICustomEditor : Editor
+public class APIControllerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
 
-        var api = (APIController)target;
+        var apiController = (APIController)target;
 
-        if (GUILayout.Button("Generate API"))
+        if (GUILayout.Button("生成API"))
         {
-            api.Init();
+            apiController.Init();
         }
     }
 }

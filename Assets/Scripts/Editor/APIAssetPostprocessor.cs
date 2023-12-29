@@ -65,7 +65,7 @@ public class APIAssetPostprocessor : AssetPostprocessor
     }
 
 
-    private static void UpdateAPISO(APISO apiSO)
+    public static void UpdateAPISO(APISO apiSO)
     {
         if (apiSO == null) return;
 
@@ -93,7 +93,7 @@ public class APIAssetPostprocessor : AssetPostprocessor
         EditorUtility.SetDirty(apiSO);
     }
 
-    private static void UpdateCategorySO(CategorySO categorySO)
+    public static void UpdateCategorySO(CategorySO categorySO)
     {
         if (categorySO == null) return;
 
@@ -121,7 +121,7 @@ public class APIAssetPostprocessor : AssetPostprocessor
         EditorUtility.SetDirty(categorySO);
     }
 
-    private static void UpdateEntrySO(EntrySO entrySO)
+    public static void UpdateEntrySO(EntrySO entrySO)
     {
         if (entrySO == null) return;
         

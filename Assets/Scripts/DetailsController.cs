@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +19,12 @@ public class DetailsController : MonoBehaviour
     
     [Header("Button")]
     [SerializeField] private Button startButton;
+    
+    [Header("Result")]
+    [SerializeField] private Text resultTitleText;
+    [SerializeField] private GameObject resultPrefab;
+    [SerializeField] private Transform resultsTransform;
+    [HideInInspector] public List<GameObject> resultObjects;
 
     [Header("Title Transform")] 
     [SerializeField] private RectTransform title;
@@ -36,15 +42,20 @@ public class DetailsController : MonoBehaviour
     {
         Destroy(_details);
         
-        var childCount = optionsTransform.childCount;
-        
-        for (var i = childCount - 1; i >= 0; i--)
+        for (var i = optionsTransform.childCount - 1; i >= 0; i--)
         {
             var child = optionsTransform.GetChild(i);
             Destroy(child.gameObject);
         }
         
         startButton.onClick.RemoveAllListeners();
+
+        resultObjects = new List<GameObject>();
+        for(var i = resultsTransform.childCount - 1; i >= 0; i--)
+        {
+            var child = resultsTransform.GetChild(i);
+            Destroy(child.gameObject);
+        }
     }
     
     public void Init(EntrySO so)
@@ -64,13 +75,57 @@ public class DetailsController : MonoBehaviour
         {
             var optionObj = Instantiate(optionPrefab, optionsTransform);
             optionObj.name = entrySO.optionList[i].optionName;
-            optionObj.GetComponentInChildren<DropdownHandler>().Init(_details, i);
+            optionObj.GetComponentInChildren<OptionDropdownHandler>().Init(_details, i);
         }
         
-        startButtonText.text = entrySO.buttonText;
+        ChangeButtonText(entrySO.initialButtonText);
         startButton.onClick.AddListener(() =>
         {
             _details.Run();
         });
+        
+        resultTitleText.text = entrySO.entryResultTitle;
+        foreach (var result in entrySO.initialResultList)
+        {
+            AddResult(result);
+        }
+    }
+    
+    public void ChangeButtonText(string text)
+    {
+        startButtonText.text = text;
+    }
+    
+    public int AddResult(Result result)
+    {
+        var resultObj = Instantiate(resultPrefab, resultsTransform);
+        resultObj.GetComponent<ResultController>().ChangeContent(result.initialContent);
+        resultObjects.Add(resultObj);
+        if (result.isDisableInitially)
+        {
+            resultObj.SetActive(false);
+        }
+        return resultObjects.Count - 1;
+    }
+    
+    public void RemoveResult(int index)
+    {
+        Destroy(resultObjects[index]);
+        resultObjects.RemoveAt(index);
+    }
+    
+    public void EnableResult(int index)
+    {
+        resultObjects[index].SetActive(true);
+    }
+    
+    public void DisableResult(int index)
+    {
+        resultObjects[index].SetActive(false);
+    }
+    
+    public void ChangeResultContent(int index, string content)
+    {
+        resultObjects[index].GetComponent<ResultController>().ChangeContent(content);
     }
 }

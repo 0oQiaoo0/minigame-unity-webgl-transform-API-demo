@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "EntrySO")]
 public class EntrySO : ScriptableObject
 {
-    public string entryName;
-    public string entryAPI;
-    [TextArea]
-    public string entryDescription;
     public string entryScriptTypeName;
-    public List<Option> optionList;
-    public string buttonText = "运行";
-
+    
     private Type _entryScriptType;
     
     public Type EntryScriptType
@@ -32,4 +27,15 @@ public class EntrySO : ScriptableObject
             // Debug.Log($"EntryScriptType changed to: {entryScriptTypeName}");
         }
     }
+    
+    public string entryName;
+    
+    public string entryAPI;
+    [TextArea] public string entryDescription;
+    
+    public List<Option> optionList;
+    public string initialButtonText = "运行";
+
+    public string entryResultTitle;
+    public List<Result> initialResultList;
 }

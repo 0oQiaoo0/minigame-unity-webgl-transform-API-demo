@@ -10,15 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb48e4613a53bb941a20036d7c08fefb, type: 3}
-  m_Name: CloseSO
+  m_Name: OpenAndCloseSO
   m_EditorClassIdentifier: 
-  entryName: "\u5173\u95ED\u6587\u4EF6"
-  entryAPI: Close/CloseSync
+  entryScriptTypeName: OpenAndClose
+  entryName: "\u6253\u5F00/\u5173\u95ED\u6587\u4EF6"
+  entryAPI: Open(Sync)/Close(Sync)
   entryDescription: 
-  entryScriptTypeName: Close
   optionList:
   - optionName: "\u6267\u884C\u65B9\u5F0F"
     availableOptions:
     - "\u540C\u6B65\u6267\u884C"
     - "\u5F02\u6B65\u6267\u884C"
-  buttonText: "\u8FD0\u884C"
+  initialButtonText: "\u6253\u5F00\u6587\u4EF6"
+  entryResultTitle: "\u5DF2\u6253\u5F00\u6587\u4EF6\uFF1A"
+  initialResultList:
+  - isDisableInitially: 1
+    initialContent: /hello.txt
