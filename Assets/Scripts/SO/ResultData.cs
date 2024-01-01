@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public class Result
+public class ResultData
 {
     public bool isDisableInitially;
     

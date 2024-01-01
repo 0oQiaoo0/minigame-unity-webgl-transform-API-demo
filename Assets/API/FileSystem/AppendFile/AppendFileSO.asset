@@ -40,6 +40,7 @@ MonoBehaviour:
     - utf8
     - latin1
   initialButtonText: "\u8FD0\u884C"
+  extraButtonList: []
   entryResultTitle: "\u6587\u4EF6\u5185\u5BB9\uFF1A"
   initialResultList:
   - isDisableInitially: 0

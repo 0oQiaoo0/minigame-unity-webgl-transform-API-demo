@@ -22,6 +22,7 @@ MonoBehaviour:
     - "\u540C\u6B65\u6267\u884C"
     - "\u5F02\u6B65\u6267\u884C"
   initialButtonText: "\u6253\u5F00\u6587\u4EF6"
+  extraButtonList: []
   entryResultTitle: "\u5DF2\u6253\u5F00\u6587\u4EF6\uFF1A"
   initialResultList:
   - isDisableInitially: 1

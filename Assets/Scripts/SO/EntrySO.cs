@@ -33,9 +33,11 @@ public class EntrySO : ScriptableObject
     public string entryAPI;
     [TextArea] public string entryDescription;
     
-    public List<Option> optionList;
+    public List<OptionData> optionList;
+    
     public string initialButtonText = "运行";
+    public List<ButtonData> extraButtonList;
 
     public string entryResultTitle;
-    public List<Result> initialResultList;
+    public List<ResultData> initialResultList;
 }

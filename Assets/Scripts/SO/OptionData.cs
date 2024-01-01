@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class Option
+public class OptionData
 {
     public string optionName;
     

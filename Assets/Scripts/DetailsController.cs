@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class DetailsController : MonoBehaviour
@@ -18,7 +19,9 @@ public class DetailsController : MonoBehaviour
     [SerializeField] private Text startButtonText;
     
     [Header("Button")]
-    [SerializeField] private Button startButton;
+    [SerializeField] private Button initialButton;
+    [SerializeField] private GameObject extraButtonPrefab;
+    [SerializeField] private Transform extraButtonsTransform;
     
     [Header("Result")]
     [SerializeField] private Text resultTitleText;
@@ -48,7 +51,7 @@ public class DetailsController : MonoBehaviour
             Destroy(child.gameObject);
         }
         
-        startButton.onClick.RemoveAllListeners();
+        initialButton.onClick.RemoveAllListeners();
 
         resultObjects = new List<GameObject>();
         for(var i = resultsTransform.childCount - 1; i >= 0; i--)
@@ -71,6 +74,7 @@ public class DetailsController : MonoBehaviour
         _details = (Details)gameObject.AddComponent(entrySO.EntryScriptType);
         _details.Init(entrySO);
         
+        // generate options
         for(var i = 0; i < entrySO.optionList.Count; i++)
         {
             var optionObj = Instantiate(optionPrefab, optionsTransform);
@@ -78,12 +82,24 @@ public class DetailsController : MonoBehaviour
             optionObj.GetComponentInChildren<OptionDropdownHandler>().Init(_details, i);
         }
         
+        // set the initial button
         ChangeButtonText(entrySO.initialButtonText);
-        startButton.onClick.AddListener(() =>
+        initialButton.onClick.AddListener(() =>
         {
             _details.Run();
         });
+        // generate extra buttons
+        foreach (var button in entrySO.extraButtonList)
+        {
+            var extraButton = Instantiate(extraButtonPrefab, extraButtonsTransform);
+            extraButton.GetComponentInChildren<Text>().text = button.buttonText;
+            // extraButton.onClick.AddListener(() =>
+            // {
+            //     button.buttonAction.Invoke();
+            // });
+        }
         
+        // generate results
         resultTitleText.text = entrySO.entryResultTitle;
         foreach (var result in entrySO.initialResultList)
         {
@@ -96,23 +112,23 @@ public class DetailsController : MonoBehaviour
         startButtonText.text = text;
     }
     
-    public int AddResult(Result result)
+    public int AddResult(ResultData resultData)
     {
         var resultObj = Instantiate(resultPrefab, resultsTransform);
-        resultObj.GetComponent<ResultController>().ChangeContent(result.initialContent);
         resultObjects.Add(resultObj);
-        if (result.isDisableInitially)
+        ChangeResultContent(resultObjects.Count - 1, resultData.initialContent);
+        if (resultData.isDisableInitially)
         {
             resultObj.SetActive(false);
         }
         return resultObjects.Count - 1;
     }
     
-    public void RemoveResult(int index)
-    {
-        Destroy(resultObjects[index]);
-        resultObjects.RemoveAt(index);
-    }
+    // public void RemoveResult(int index)
+    // {
+    //     Destroy(resultObjects[index]);
+    //     resultObjects.RemoveAt(index);
+    // }
     
     public void EnableResult(int index)
     {
