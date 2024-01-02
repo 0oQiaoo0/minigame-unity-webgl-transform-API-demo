@@ -54,15 +54,7 @@ public class Ftruncate : Details
         });
         
         // 绑定还原按钮
-        GameManager.Instance.detailsController.extraButtonObjects[0].GetComponent<ButtonController>()
-            .AddButtonListener(() =>
-            {
-                _fileSystemManager.WriteSync(new WriteSyncStringOption()
-                {
-                    fd = _fd,
-                    data = "Original Data "
-                });
-            });
+        GameManager.Instance.detailsController.BindExtraButtonAction(0, ResetFile);
     }
     
     protected override void TestAPI(string[] args)
@@ -111,5 +103,25 @@ public class Ftruncate : Details
     {
         GameManager.Instance.detailsController.resultObjects[0].GetComponent<ResultController>()
             .ChangeContent(_fileSystemManager.ReadFileSync(Path, "utf8"));
+    }
+
+    private void ResetFile()
+    {
+        _fd = _fileSystemManager.OpenSync(new OpenSyncOption()
+        {
+            filePath = Path,
+            flag = "w+"
+        });
+        _fileSystemManager.WriteSync(new WriteSyncStringOption()
+        {
+            fd = _fd,
+            data = "Original Data "
+        });
+        UpdateResult();
+        
+        WX.ShowToast(new ShowToastOption()
+        {
+            title = "已重置文件"
+        });
     }
 }

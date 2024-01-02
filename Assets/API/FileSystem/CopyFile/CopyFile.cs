@@ -62,8 +62,7 @@ public class CopyFile : Details
             _fileSystemManager.UnlinkSync(AsyncPath);
         }
 
-        GameManager.Instance.detailsController.extraButtonObjects[0].GetComponent<ButtonController>()
-            .AddButtonListener(ClearCopyFile);
+        GameManager.Instance.detailsController.BindExtraButtonAction(0, ClearCopyFile);
     }
     
     protected override void TestAPI(string[] args)

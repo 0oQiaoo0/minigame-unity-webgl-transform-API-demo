@@ -62,7 +62,7 @@ public class OpenAndClose : Details
             _fileSystemManager.UnlinkSync(Path);
         }
         
-        GameManager.Instance.detailsController.ChangeButtonText("打开文件");
+        GameManager.Instance.detailsController.ChangeInitialButtonText("打开文件");
     }
     
     protected override void TestAPI(string[] args)
@@ -73,14 +73,14 @@ public class OpenAndClose : Details
         {
             Close(args[0]);
             
-            GameManager.Instance.detailsController.ChangeButtonText("打开文件");
+            GameManager.Instance.detailsController.ChangeInitialButtonText("打开文件");
             GameManager.Instance.detailsController.DisableResult(0);
         }
         else
         {
             Open(args[0]);
             
-            GameManager.Instance.detailsController.ChangeButtonText("关闭文件");
+            GameManager.Instance.detailsController.ChangeInitialButtonText("关闭文件");
             GameManager.Instance.detailsController.EnableResult(0);
         }
         _isOpened = !_isOpened;

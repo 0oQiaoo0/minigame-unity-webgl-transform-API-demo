@@ -48,5 +48,5 @@
    例如：`/Assets/API/FileSystem/Access/Access.cs`中的
 
    ```c#
-       protected override void TestAPI(params string[] args)
+       protected override void TestAPI(string[] args)
 

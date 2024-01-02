@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -64,12 +65,7 @@ public class DetailsController : MonoBehaviour
         }
 
         // clear results
-        resultObjects = new List<GameObject>();
-        for(var i = resultsTransform.childCount - 1; i >= 0; i--)
-        {
-            var child = resultsTransform.GetChild(i);
-            Destroy(child.gameObject);
-        }
+        RemoveAllResult();
     }
     
     public void Init(EntrySO so)
@@ -94,7 +90,7 @@ public class DetailsController : MonoBehaviour
         }
         
         // set the initial button
-        ChangeButtonText(entrySO.initialButtonText);
+        ChangeInitialButtonText(entrySO.initialButtonText);
         initialButton.onClick.AddListener(() =>
         {
             _details.Run();
@@ -119,9 +115,15 @@ public class DetailsController : MonoBehaviour
         }
     }
     
-    public void ChangeButtonText(string text)
+    public void ChangeInitialButtonText(string text)
     {
         startButtonText.text = text;
+    }
+    
+    public void BindExtraButtonAction(int index, UnityAction action)
+    {
+        extraButtonObjects[index].GetComponent<ButtonController>()
+            .AddButtonListener(action);
     }
     
     public int AddResult(ResultData resultData)
@@ -136,11 +138,15 @@ public class DetailsController : MonoBehaviour
         return resultObjects.Count - 1;
     }
     
-    // public void RemoveResult(int index)
-    // {
-    //     Destroy(resultObjects[index]);
-    //     resultObjects.RemoveAt(index);
-    // }
+    public void RemoveAllResult()
+    {
+        resultObjects = new List<GameObject>();
+        for(var i = resultsTransform.childCount - 1; i >= 0; i--)
+        {
+            var child = resultsTransform.GetChild(i);
+            Destroy(child.gameObject);
+        }
+    }
     
     public void EnableResult(int index)
     {

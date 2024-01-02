@@ -53,16 +53,8 @@ public class AppendFile : Details
             fd = fd,
             data = "Original Data "
         });
-        
-        GameManager.Instance.detailsController.extraButtonObjects[0].GetComponent<ButtonController>()
-            .AddButtonListener(() =>
-            {
-                _fileSystemManager.WriteSync(new WriteSyncStringOption()
-                {
-                    fd = fd,
-                    data = "Original Data "
-                });
-            });
+
+        GameManager.Instance.detailsController.BindExtraButtonAction(0, ResetFile);
     }
     
     protected override void TestAPI(string[] args)
@@ -170,5 +162,25 @@ public class AppendFile : Details
     {
         GameManager.Instance.detailsController.resultObjects[0].GetComponent<ResultController>()
             .ChangeContent(_fileSystemManager.ReadFileSync(Path, "utf8"));
+    }
+
+    private void ResetFile()
+    {
+        var fd = _fileSystemManager.OpenSync(new OpenSyncOption()
+        {
+            filePath = Path,
+            flag = "w+"
+        });
+        _fileSystemManager.WriteSync(new WriteSyncStringOption()
+        {
+            fd = fd,
+            data = "Original Data "
+        });
+        UpdateResult();
+        
+        WX.ShowToast(new ShowToastOption()
+        {
+            title = "已重置文件"
+        });
     }
 }
