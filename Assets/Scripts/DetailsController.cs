@@ -22,6 +22,7 @@ public class DetailsController : MonoBehaviour
     [SerializeField] private Button initialButton;
     [SerializeField] private GameObject extraButtonPrefab;
     [SerializeField] private Transform extraButtonsTransform;
+    [HideInInspector] public List<GameObject> extraButtonObjects;
     
     [Header("Result")]
     [SerializeField] private Text resultTitleText;
@@ -43,16 +44,26 @@ public class DetailsController : MonoBehaviour
 
     private void ClearDetails()
     {
+        // destroy details
         Destroy(_details);
         
+        // clear options
         for (var i = optionsTransform.childCount - 1; i >= 0; i--)
         {
             var child = optionsTransform.GetChild(i);
             Destroy(child.gameObject);
         }
         
+        // clear buttons
         initialButton.onClick.RemoveAllListeners();
+        extraButtonObjects = new List<GameObject>();
+        for(var i = extraButtonsTransform.childCount - 1; i >= 0; i--)
+        {
+            var child = extraButtonsTransform.GetChild(i);
+            Destroy(child.gameObject);
+        }
 
+        // clear results
         resultObjects = new List<GameObject>();
         for(var i = resultsTransform.childCount - 1; i >= 0; i--)
         {
@@ -92,6 +103,7 @@ public class DetailsController : MonoBehaviour
         foreach (var button in entrySO.extraButtonList)
         {
             var extraButton = Instantiate(extraButtonPrefab, extraButtonsTransform);
+            extraButtonObjects.Add(extraButton);
             extraButton.GetComponentInChildren<Text>().text = button.buttonText;
             // extraButton.onClick.AddListener(() =>
             // {

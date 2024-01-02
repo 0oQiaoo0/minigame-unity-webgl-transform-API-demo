@@ -43,13 +43,17 @@ public class AppendFile : Details
             _fileSystemManager.MkdirSync(PathPrefix, true);
         }
         
-        _fileSystemManager.OpenSync(new OpenSyncOption()
+        var fd = _fileSystemManager.OpenSync(new OpenSyncOption()
         {
             filePath = Path,
             flag = "w+"
         });
         
-        _fileSystemManager.WriteFileSync(Path, "Original Data ");
+        _fileSystemManager.WriteSync(new WriteSyncStringOption()
+        {
+            fd = fd,
+            data = "Original Data "
+        });
     }
     
     protected override void TestAPI(string[] args)

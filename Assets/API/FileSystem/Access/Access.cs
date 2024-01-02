@@ -8,7 +8,9 @@ public class Access : Details
     
     // 路径
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
-    private readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Access";
+    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Access";
+    private readonly string DictionaryPath = PathPrefix + "/exist";
+    private readonly string FilePath = PathPrefix + "/exist/exist.txt";
     
     // 回调函数
     private Action<WXTextResponse> onSuccess = (res) =>
@@ -31,17 +33,21 @@ public class Access : Details
         // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
 
-        if (_fileSystemManager.AccessSync(PathPrefix + "/exist") != "access:ok")
+        if (_fileSystemManager.AccessSync(DictionaryPath) != "access:ok")
         {
-            _fileSystemManager.MkdirSync(PathPrefix + "/exist", true);
+            _fileSystemManager.MkdirSync(DictionaryPath, true);
         }
             
-        _fileSystemManager.OpenSync(new OpenSyncOption()
+        var fd = _fileSystemManager.OpenSync(new OpenSyncOption()
         {
-            filePath = PathPrefix + "/exist/exist.txt",
+            filePath = FilePath,
             flag = "w+"
         });
-        _fileSystemManager.WriteFileSync(PathPrefix + "/exist/exist.txt", "String Data");
+        _fileSystemManager.WriteSync(new WriteSyncStringOption()
+        {
+            fd = fd,
+            data = "Original Data "
+        });
     }
     
     protected override void TestAPI(string[] args)

@@ -56,6 +56,11 @@ public class OpenAndClose : Details
         {
             _fileSystemManager.MkdirSync(PathPrefix, true);
         }
+
+        if (_fileSystemManager.AccessSync(Path) == "access:ok")
+        {
+            _fileSystemManager.UnlinkSync(Path);
+        }
         
         GameManager.Instance.detailsController.ChangeButtonText("打开文件");
     }
