@@ -10,14 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb48e4613a53bb941a20036d7c08fefb, type: 3}
-  m_Name: FTruncateSO
+  m_Name: FtruncateSO
   m_EditorClassIdentifier: 
-  entryScriptTypeName: FTruncate
-  entryName: "\u5173\u95ED\u6587\u4EF6"
-  entryAPI: Close
+  entryScriptTypeName: Ftruncate
+  entryName: "\u5BF9\u6587\u4EF6\u5185\u5BB9\u8FDB\u884C\u622A\u65AD\u64CD\u4F5C"
+  entryAPI: Ftruncate(Sync)
   entryDescription: 
-  optionList: []
+  optionList:
+  - optionName: "\u6267\u884C\u65B9\u5F0F"
+    availableOptions:
+    - "\u540C\u6B65\u6267\u884C"
+    - "\u5F02\u6B65\u6267\u884C"
+  - optionName: length
+    availableOptions:
+    - 4
+    - 20
   initialButtonText: "\u8FD0\u884C"
-  extraButtonList: []
-  entryResultTitle: 
-  initialResultList: []
+  extraButtonList:
+  - buttonText: "\u6062\u590D\u6587\u4EF6\u5185\u5BB9"
+  entryResultTitle: "\u6587\u4EF6\u5185\u5BB9\uFF1A"
+  initialResultList:
+  - isDisableInitially: 0
+    initialContent: 'Original Data '

@@ -1,68 +1,89 @@
-﻿using LitJson;
+﻿using System;
+using LitJson;
 using WeChatWASM;
 
-public class FStat : Details
+public class Fstat : Details
 {
     private WXFileSystemManager _fileSystemManager;
     
-    private readonly string _pathPrefix = WX.env.USER_DATA_PATH + "/Access";
+    // 路径
+    // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
+    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Fstat";
+    private static readonly string Path = PathPrefix + "/hello.txt";
     
-    private void Start()
-    {
-        _fileSystemManager = WX.GetFileSystemManager();
-
-        if (_fileSystemManager.AccessSync(_pathPrefix + "/exist") != "access:ok")
-        {
-            _fileSystemManager.MkdirSync(_pathPrefix + "/exist", true);
-        }
-            
-        _fileSystemManager.OpenSync(new OpenSyncOption()
-        {
-            filePath = _pathPrefix + "/exist/exist.txt",
-            flag = "w+"
-        });
-        _fileSystemManager.WriteFileSync(_pathPrefix + "/exist/exist.txt", "String Data");
-    }
-    
-    protected override void TestAPI(params string[] args)
-    {
-        if (args[0] == "同步执行")
-        {
-            RunSync(args[1]);
-        }
-        else
-        {
-            RunAsync(args[1]);
-        }
-    }
-    
-    private void RunAsync(string path)
-    {   
-        _fileSystemManager.Access(new AccessParam()
-        {
-            path = _pathPrefix + path,
-            success = (res) =>
-            {
-                WX.ShowModal(new ShowModalOption()
-                {
-                    content = "Access Success: " + JsonMapper.ToJson(res)
-                });
-            },
-            fail = (res) =>
-            {
-                WX.ShowModal(new ShowModalOption()
-                {
-                    content = "Access Fail: " + JsonMapper.ToJson(res)
-                });
-            }
-        });
-    }
-    
-    private void RunSync(string path)
+    // 回调函数
+    private Action<FstatSuccessCallbackResult> onSuccess = (res) =>
     {
         WX.ShowModal(new ShowModalOption()
         {
-            content = "AccessSync Result: " + _fileSystemManager.AccessSync(_pathPrefix + path)
+            content = "Fstat Success, Result: " + JsonMapper.ToJson(res)
+        });
+    };
+    private Action<FileError> onFail = (res) =>
+    {
+        WX.ShowModal(new ShowModalOption()
+        {
+            content = "Fstat Fail, Result: " + JsonMapper.ToJson(res)
+        });
+    };
+    
+    // 文件描述符
+    private string _fd;
+    
+    private void Start()
+    {
+        // 获取全局唯一的文件管理器
+        _fileSystemManager = WX.GetFileSystemManager();
+
+        if (_fileSystemManager.AccessSync(PathPrefix) != "access:ok")
+        {
+            _fileSystemManager.MkdirSync(PathPrefix, true);
+        }
+            
+        _fd = _fileSystemManager.OpenSync(new OpenSyncOption()
+        {
+            filePath = Path,
+            flag = "w+"
+        });
+        _fileSystemManager.WriteSync(new WriteSyncStringOption()
+        {
+            fd = _fd,
+            data = "Original Data "
+        });
+    }
+    
+    protected override void TestAPI(string[] args)
+    {
+        if (args[0] == null) args[0] = "同步执行";
+        
+        if (args[0] == "同步执行")
+        {
+            RunSync();
+        }
+        else
+        {
+            RunAsync();
+        }
+    }
+    
+    private void RunAsync()
+    {   
+        _fileSystemManager.Fstat(new FstatOption()
+        {
+            fd = _fd,
+            success = onSuccess,
+            fail = onFail
+        });
+    }
+    
+    private void RunSync()
+    {
+        WX.ShowModal(new ShowModalOption()
+        {
+            content = "FstatSync Result: " + JsonMapper.ToJson(_fileSystemManager.FstatSync(new FstatSyncOption()
+            {
+                fd = _fd
+            }))
         });
     }
 }

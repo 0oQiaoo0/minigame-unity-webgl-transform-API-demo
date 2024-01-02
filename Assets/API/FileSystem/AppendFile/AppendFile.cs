@@ -22,8 +22,7 @@ public class AppendFile : Details
         {
             content = "AppendFile Success, Result: " + JsonMapper.ToJson(res)
         });
-        GameManager.Instance.detailsController.resultObjects[0].GetComponent<ResultController>()
-            .ChangeContent(_fileSystemManager.ReadFileSync(Path, "utf8"));
+        UpdateResult();
     };
     private Action<WXTextResponse> onFail = (res) =>
     {
@@ -54,6 +53,16 @@ public class AppendFile : Details
             fd = fd,
             data = "Original Data "
         });
+        
+        GameManager.Instance.detailsController.extraButtonObjects[0].GetComponent<ButtonController>()
+            .AddButtonListener(() =>
+            {
+                _fileSystemManager.WriteSync(new WriteSyncStringOption()
+                {
+                    fd = fd,
+                    data = "Original Data "
+                });
+            });
     }
     
     protected override void TestAPI(string[] args)
@@ -153,6 +162,12 @@ public class AppendFile : Details
         {
             title = "AppendFileSync Success"
         });
+        
+        UpdateResult();
+    }
+
+    private static void UpdateResult()
+    {
         GameManager.Instance.detailsController.resultObjects[0].GetComponent<ResultController>()
             .ChangeContent(_fileSystemManager.ReadFileSync(Path, "utf8"));
     }
