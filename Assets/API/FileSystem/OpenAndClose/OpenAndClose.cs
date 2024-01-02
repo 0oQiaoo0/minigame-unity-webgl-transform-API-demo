@@ -1,5 +1,4 @@
-﻿using System;
-using LitJson;
+﻿using LitJson;
 using WeChatWASM;
 
 public class OpenAndClose : Details
@@ -12,38 +11,7 @@ public class OpenAndClose : Details
     private static readonly string Path = PathPrefix + "/hello.txt";
     
     // 文件描述符
-    private static string _fd;
-    
-    // 回调函数
-    private Action<OpenSuccessCallbackResult> onOpenSuccess = (res) =>
-    {
-        _fd = res.fd;
-        WX.ShowModal(new ShowModalOption()
-        {
-            content = "Open Success, Result: " + JsonMapper.ToJson(res)
-        });
-    };
-    private Action<FileError> onOpenFail = (res) =>
-    {
-        WX.ShowModal(new ShowModalOption()
-        {
-            content = "Open Fail, Result: " + JsonMapper.ToJson(res)
-        });
-    };
-    private Action<FileError> onCloseSuccess = (res) =>
-    {
-        WX.ShowModal(new ShowModalOption()
-        {
-            content = "Close Success, Result: " + JsonMapper.ToJson(res)
-        });
-    };
-    private Action<FileError> onCloseFail = (res) =>
-    {
-        WX.ShowModal(new ShowModalOption()
-        {
-            content = "Close Fail, Result: " + JsonMapper.ToJson(res)
-        });
-    };
+    private string _fd;
     
     private bool _isOpened = false;
     
@@ -117,8 +85,21 @@ public class OpenAndClose : Details
         {
             filePath = Path,
             flag = "w+",
-            success = onOpenSuccess,
-            fail = onOpenFail
+            success = (res) =>
+            {
+                _fd = res.fd;
+                WX.ShowModal(new ShowModalOption()
+                {
+                    content = "Open Success, Result: " + JsonMapper.ToJson(res)
+                });
+            },
+            fail = (res) =>
+            {
+                WX.ShowModal(new ShowModalOption()
+                {
+                    content = "Open Fail, Result: " + JsonMapper.ToJson(res)
+                });
+            }
         });
     }
     
@@ -152,8 +133,20 @@ public class OpenAndClose : Details
         _fileSystemManager.Close(new FileSystemManagerCloseOption()
         {
             fd = _fd,
-            success = onCloseSuccess,
-            fail = onCloseFail
+            success = (res) =>
+            {
+                WX.ShowModal(new ShowModalOption()
+                {
+                    content = "Close Success, Result: " + JsonMapper.ToJson(res)
+                });
+            },
+            fail = (res) =>
+            {
+                WX.ShowModal(new ShowModalOption()
+                {
+                    content = "Close Fail, Result: " + JsonMapper.ToJson(res)
+                });
+            }
         });
     }
 }

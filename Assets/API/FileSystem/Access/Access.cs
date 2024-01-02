@@ -1,5 +1,4 @@
-﻿using System;
-using LitJson;
+﻿using LitJson;
 using WeChatWASM;
 
 public class Access : Details
@@ -11,22 +10,6 @@ public class Access : Details
     private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Access";
     private static readonly string DictionaryPath = PathPrefix + "/exist";
     private static readonly string FilePath = PathPrefix + "/exist/exist.txt";
-    
-    // 回调函数
-    private Action<WXTextResponse> onSuccess = (res) =>
-    {
-        WX.ShowModal(new ShowModalOption()
-        {
-            content = "Access Success, Result: " + JsonMapper.ToJson(res)
-        });
-    };
-    private Action<WXTextResponse> onFail = (res) =>
-    {
-        WX.ShowModal(new ShowModalOption()
-        {
-            content = "Access Fail, Result: " + JsonMapper.ToJson(res)
-        });
-    };
     
     private void Start()
     {
@@ -70,8 +53,20 @@ public class Access : Details
         _fileSystemManager.Access(new AccessParam()
         {
             path = PathPrefix + path,
-            success = onSuccess,
-            fail = onFail
+            success = (res) =>
+            {
+                WX.ShowModal(new ShowModalOption()
+                {
+                    content = "Access Success, Result: " + JsonMapper.ToJson(res)
+                });
+            },
+            fail = (res) =>
+            {
+                WX.ShowModal(new ShowModalOption()
+                {
+                    content = "Access Fail, Result: " + JsonMapper.ToJson(res)
+                });
+            }
         });
     }
     

@@ -1,5 +1,4 @@
-﻿using System;
-using LitJson;
+﻿using LitJson;
 using WeChatWASM;
 
 public class Fstat : Details
@@ -10,22 +9,6 @@ public class Fstat : Details
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
     private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Fstat";
     private static readonly string Path = PathPrefix + "/hello.txt";
-    
-    // 回调函数
-    private Action<FstatSuccessCallbackResult> onSuccess = (res) =>
-    {
-        WX.ShowModal(new ShowModalOption()
-        {
-            content = "Fstat Success, Result: " + JsonMapper.ToJson(res)
-        });
-    };
-    private Action<FileError> onFail = (res) =>
-    {
-        WX.ShowModal(new ShowModalOption()
-        {
-            content = "Fstat Fail, Result: " + JsonMapper.ToJson(res)
-        });
-    };
     
     // 文件描述符
     private string _fd;
@@ -71,8 +54,20 @@ public class Fstat : Details
         _fileSystemManager.Fstat(new FstatOption()
         {
             fd = _fd,
-            success = onSuccess,
-            fail = onFail
+            success = (res) =>
+            {
+                WX.ShowModal(new ShowModalOption()
+                {
+                    content = "Fstat Success, Result: " + JsonMapper.ToJson(res)
+                });
+            },
+            fail = (res) =>
+            {
+                WX.ShowModal(new ShowModalOption()
+                {
+                    content = "Fstat Fail, Result: " + JsonMapper.ToJson(res)
+                });
+            }
         });
     }
     

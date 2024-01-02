@@ -1,10 +1,9 @@
-﻿using System;
-using LitJson;
+﻿using LitJson;
 using WeChatWASM;
 
 public class CopyFile : Details
 {
-    private static WXFileSystemManager _fileSystemManager;
+    private WXFileSystemManager _fileSystemManager;
     
     // 路径
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
@@ -12,24 +11,6 @@ public class CopyFile : Details
     private static readonly string Path = PathPrefix + "/hello.txt";
     private static readonly string SyncPath = PathPrefix + "/copyFileSync.txt";
     private static readonly string AsyncPath = PathPrefix + "/copyFileAsync.txt";
-    
-    // 回调函数
-    private Action<WXTextResponse> onSuccess = (res) =>
-    {
-        WX.ShowModal(new ShowModalOption()
-        {
-            content = "CopeFile Success, Result: " + JsonMapper.ToJson(res)
-            + "\nCopied File Content: " + _fileSystemManager.ReadFileSync(AsyncPath, "utf8")
-        });
-        GameManager.Instance.detailsController.resultObjects[2].SetActive(true);
-    };
-    private Action<WXTextResponse> onFail = (res) =>
-    {
-        WX.ShowModal(new ShowModalOption()
-        {
-            content = "CopyFile Fail, Result: " + JsonMapper.ToJson(res)
-        });
-    };
     
     private void Start()
     {
@@ -85,8 +66,22 @@ public class CopyFile : Details
         {
             srcPath = Path,
             destPath = AsyncPath,
-            success = onSuccess,
-            fail = onFail
+            success = (res) =>
+            {
+                WX.ShowModal(new ShowModalOption()
+                {
+                    content = "CopeFile Success, Result: " + JsonMapper.ToJson(res)
+                                                           + "\nCopied File Content: " + _fileSystemManager.ReadFileSync(AsyncPath, "utf8")
+                });
+                GameManager.Instance.detailsController.EnableResult(2);
+            },
+            fail = (res) =>
+            {
+                WX.ShowModal(new ShowModalOption()
+                {
+                    content = "CopyFile Fail, Result: " + JsonMapper.ToJson(res)
+                });
+            }
         });
     }
 
@@ -97,16 +92,22 @@ public class CopyFile : Details
             content = "CopyFileSync Result: "  + _fileSystemManager.CopyFileSync(Path, SyncPath)
             + "\nCopied File Content: " + _fileSystemManager.ReadFileSync(Path, "utf8")
         });
-        GameManager.Instance.detailsController.resultObjects[1].SetActive(true);
+        GameManager.Instance.detailsController.EnableResult(1);
     }
     
     private void ClearCopyFile()
     {
-        _fileSystemManager.UnlinkSync(SyncPath);
-        _fileSystemManager.UnlinkSync(AsyncPath);
+        if (_fileSystemManager.AccessSync(SyncPath) == "access:ok")
+        {
+            _fileSystemManager.UnlinkSync(SyncPath);
+        }
+        if (_fileSystemManager.AccessSync(AsyncPath) == "access:ok")
+        {
+            _fileSystemManager.UnlinkSync(AsyncPath);
+        }
         
-        GameManager.Instance.detailsController.resultObjects[1].SetActive(false);
-        GameManager.Instance.detailsController.resultObjects[2].SetActive(false);
+        GameManager.Instance.detailsController.DisableResult(1);
+        GameManager.Instance.detailsController.DisableResult(2);
         
         WX.ShowToast(new ShowToastOption()
         {

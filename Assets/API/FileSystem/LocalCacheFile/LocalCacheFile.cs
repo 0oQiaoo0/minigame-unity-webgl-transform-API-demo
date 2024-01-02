@@ -3,7 +3,7 @@ using WeChatWASM;
 
 public class LocalCacheFile : Details
 {
-    private static WXFileSystemManager _fileSystemManager;
+    private WXFileSystemManager _fileSystemManager;
     
     private void Start()
     {
