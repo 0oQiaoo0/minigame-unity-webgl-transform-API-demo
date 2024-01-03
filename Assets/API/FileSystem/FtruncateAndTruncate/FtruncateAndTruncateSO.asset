@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryScriptTypeName: FtruncateAndTruncate
   entryName: "\u5BF9\u6587\u4EF6\u5185\u5BB9\u8FDB\u884C\u622A\u65AD\u64CD\u4F5C"
-  entryAPI: (F)truncate(Sync)
+  entryAPI: Ftruncate(Sync)/Truncate(Sync)
   entryDescription: 
   optionList:
   - optionName: "\u6587\u4EF6\u83B7\u53D6\u65B9\u5F0F"

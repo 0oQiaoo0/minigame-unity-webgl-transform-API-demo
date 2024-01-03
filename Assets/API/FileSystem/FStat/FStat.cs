@@ -37,8 +37,6 @@ public class Fstat : Details
     
     protected override void TestAPI(string[] args)
     {
-        if (args[0] == null) args[0] = "同步执行";
-        
         if (args[0] == "同步执行")
         {
             RunSync();

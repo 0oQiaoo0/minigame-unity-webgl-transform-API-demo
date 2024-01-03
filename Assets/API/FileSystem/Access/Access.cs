@@ -35,9 +35,6 @@ public class Access : Details
     
     protected override void TestAPI(string[] args)
     {
-        if (args[0] == null) args[0] = "同步执行";
-        if (args[1] == null) args[1] = "/exist";
-        
         if (args[0] == "同步执行")
         {
             RunSync(args[1]);

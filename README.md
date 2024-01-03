@@ -43,10 +43,28 @@
 
 ## 注意
 
-1. 对于API使用方法，开发者仅需要关心`Details`子类的`TestAPI`函数。
+1. 对于有一个按钮的用例开发者仅需要关心`Details`子类的`TestAPI`函数。
 
    例如：`/Assets/API/FileSystem/Access/Access.cs`中的
 
    ```c#
        protected override void TestAPI(string[] args)
+
+2. 有多个按钮的用例开发者需要关心`TestAPI`及其后紧挨着的n-1个函数（n为按钮数量）。
+
+   例如：`/Assets/API/FileSystem/LocalCacheFile/LocalCacheFile.cs`中的
+
+   ```c#
+       ...
+   		protected override void TestAPI(string[] args) {...}
+   		
+   		// 生成缓存文件
+       private void GenerateCacheFile() {...}
+   
+   		// 清空缓存文件
+       private void ClearCacheFile() {...}
+   
+   		// 获取缓存文件信息
+       private void GetCacheFileInfo() {...}
+   		...
 

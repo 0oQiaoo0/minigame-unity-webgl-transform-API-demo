@@ -30,7 +30,7 @@ public class EntrySO : ScriptableObject
     public string entryName;
     
     public string entryAPI;
-    [TextArea] public string entryDescription;
+    [TextArea(5,15)] public string entryDescription;
     
     public List<OptionData> optionList;
     

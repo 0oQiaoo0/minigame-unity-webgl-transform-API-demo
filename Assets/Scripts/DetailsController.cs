@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class DetailsController : MonoBehaviour
@@ -21,8 +20,8 @@ public class DetailsController : MonoBehaviour
     
     [Header("Button")]
     [SerializeField] private Button initialButton;
-    [SerializeField] private GameObject extraButtonPrefab;
-    [SerializeField] private Transform extraButtonsTransform;
+    [SerializeField] private GameObject buttonPrefab;
+    [SerializeField] private Transform buttonsTransform;
     [HideInInspector] public List<GameObject> extraButtonObjects;
     
     [Header("Result")]
@@ -57,12 +56,11 @@ public class DetailsController : MonoBehaviour
         
         // clear buttons
         initialButton.onClick.RemoveAllListeners();
-        extraButtonObjects = new List<GameObject>();
-        for(var i = extraButtonsTransform.childCount - 1; i >= 0; i--)
+        foreach (var i in extraButtonObjects)
         {
-            var child = extraButtonsTransform.GetChild(i);
-            Destroy(child.gameObject);
+            Destroy(i);
         }
+        extraButtonObjects = new List<GameObject>();
 
         // clear results
         RemoveAllResult();
@@ -98,7 +96,7 @@ public class DetailsController : MonoBehaviour
         // generate extra buttons
         foreach (var button in entrySO.extraButtonList)
         {
-            var extraButton = Instantiate(extraButtonPrefab, extraButtonsTransform);
+            var extraButton = Instantiate(buttonPrefab, buttonsTransform);
             extraButtonObjects.Add(extraButton);
             extraButton.GetComponentInChildren<Text>().text = button.buttonText;
             // extraButton.onClick.AddListener(() =>

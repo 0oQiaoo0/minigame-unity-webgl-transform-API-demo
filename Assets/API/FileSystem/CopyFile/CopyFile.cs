@@ -7,7 +7,7 @@ public class CopyFile : Details
     
     // 路径
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
-    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/AppendFile";
+    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/CopyFile";
     private static readonly string Path = PathPrefix + "/hello.txt";
     private static readonly string SyncPath = PathPrefix + "/copyFileSync.txt";
     private static readonly string AsyncPath = PathPrefix + "/copyFileAsync.txt";
@@ -48,8 +48,6 @@ public class CopyFile : Details
     
     protected override void TestAPI(string[] args)
     {
-        if (args[0] == null) args[0] = "同步执行";
-        
         if (args[0] == "同步执行")
         {
             RunSync();

@@ -7,7 +7,7 @@ public class FtruncateAndTruncate : Details
     
     // 路径
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
-    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Ftruncate";
+    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/FtruncateAndTruncate";
     private static readonly string Path = PathPrefix + "/hello.txt";
     
     // 文件描述符
@@ -40,10 +40,6 @@ public class FtruncateAndTruncate : Details
     
     protected override void TestAPI(string[] args)
     {
-        if (args[0] == null) args[0] = "文件描述符";
-        if (args[1] == null) args[1] = "同步执行";
-        if (args[2] == null) args[2] = "4";
-        
         if (args[0] == "文件描述符")
         {
             RunFtruncate(args[1], args[2]);

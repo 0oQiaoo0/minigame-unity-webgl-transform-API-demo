@@ -35,8 +35,6 @@ public class OpenAndClose : Details
     
     protected override void TestAPI(string[] args)
     {
-        if (args[0] == null) args[0] = "同步执行";
-
         if (_isOpened)
         {
             Close(args[0]);

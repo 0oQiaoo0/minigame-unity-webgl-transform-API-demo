@@ -15,15 +15,6 @@ public class LocalCacheFile : Details
         GameManager.Instance.detailsController.BindExtraButtonAction(2, GetCacheFileInfo);
     }
     
-    protected override void TestAPI(string[] args)
-    {
-        RefreshCacheFileList();
-        WX.ShowToast(new ShowToastOption()
-        {
-            title = "刷新缓存文件列表成功"
-        });
-    }
-    
     // 刷新缓存文件列表
     private void RefreshCacheFileList()
     {
@@ -53,6 +44,15 @@ public class LocalCacheFile : Details
                     content = "GetSavedFileList Fail, Result: " + JsonMapper.ToJson(res)
                 });
             }
+        });
+    }
+    
+    protected override void TestAPI(string[] args)
+    {
+        RefreshCacheFileList();
+        WX.ShowToast(new ShowToastOption()
+        {
+            title = "刷新缓存文件列表成功"
         });
     }
     

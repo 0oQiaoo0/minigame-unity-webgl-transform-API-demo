@@ -10,14 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb48e4613a53bb941a20036d7c08fefb, type: 3}
-  m_Name: MkDirAndRmDirSO
+  m_Name: MkdirAndRmdirSO
   m_EditorClassIdentifier: 
-  entryScriptTypeName: MkDir
-  entryName: "\u5173\u95ED\u6587\u4EF6"
-  entryAPI: Close
-  entryDescription: 
-  optionList: []
-  initialButtonText: "\u8FD0\u884C"
-  extraButtonList: []
-  entryResultTitle: 
-  initialResultList: []
+  entryScriptTypeName: MkdirAndRmdir
+  entryName: "\u521B\u5EFA/\u5220\u9664\u76EE\u5F55"
+  entryAPI: MkDir(Sync)/RmDir(Sync)
+  entryDescription: "<color=red>\u6CE8\u610F\uFF1AMkDirSync\u8FD4\u56DE\u503C\u4E0E\u6587\u6863\u63CF\u8FF0\u4E0D\u540C\u3002\n\u6210\u529F\u4F1A\u8FD4\u56DE\"mkdir:ok\"\uFF0C\u5931\u8D25\u4F1A\u8FD4\u56DE\u5177\u4F53\u7684\u9519\u8BEF\u4FE1\u606F\u6216\"fail\"\u3002\n\u4E0D\u4F1A\u629B\u51FA\u5F02\u5E38\u3002</color>\n<color=red>\u6CE8\u610F\uFF1ARmDirSync\u8FD4\u56DE\u503C\u4E0E\u6587\u6863\u63CF\u8FF0\u4E0D\u540C\u3002\n\u6210\u529F\u4F1A\u8FD4\u56DE\"rmdirSync:ok\"\uFF0C\u5931\u8D25\u4F1A\u8FD4\u56DE\u5177\u4F53\u7684\u9519\u8BEF\u4FE1\u606F\u6216\"fail\"\u3002\n\u4E0D\u4F1A\u629B\u51FA\u5F02\u5E38\u3002</color>"
+  optionList:
+  - optionName: "\u6267\u884C\u65B9\u5F0F"
+    availableOptions:
+    - "\u540C\u6B65\u6267\u884C"
+    - "\u5F02\u6B65\u6267\u884C"
+  - optionName: dirPath
+    availableOptions:
+    - /a
+    - /a/b
+  - optionName: recursive
+    availableOptions:
+    - false
+    - true
+  initialButtonText: "\u521B\u5EFA\u6587\u4EF6\u5939"
+  extraButtonList:
+  - buttonText: "\u5220\u9664\u6587\u4EF6\u5939"
+  entryResultTitle: "\u5DF2\u5B58\u5728\u6587\u4EF6\u5939\uFF1A"
+  initialResultList:
+  - isDisableInitially: 1
+    initialContent: /a
+  - isDisableInitially: 1
+    initialContent: /a/b
