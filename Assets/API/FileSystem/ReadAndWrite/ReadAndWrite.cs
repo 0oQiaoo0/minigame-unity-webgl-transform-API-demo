@@ -1,17 +1,19 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using LitJson;
 using UnityEngine;
 using WeChatWASM;
 
 public class ReadAndWrite : Details
 {
-    private WXFileSystemManager _fileSystemManager;
+    private static WXFileSystemManager _fileSystemManager;
     
     // 路径
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
     private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/ReadAndWrite";
     private static readonly string Path = PathPrefix + "/hello.txt";
     
+    // 用于读取数据的缓存
     private byte[] _buffer;
     
     // 文件描述符
@@ -20,6 +22,23 @@ public class ReadAndWrite : Details
     // 数据
     private string _stringData = "String Data ";
     private byte[] _bufferData = {66, 117, 102, 102, 101, 114, 32, 68, 97, 116, 97, 32};
+    
+    // 回调函数
+    private Action<WriteSuccessCallbackResult> onWriteSuccess = (res) =>
+    {
+        UpdateFileContent();
+        WX.ShowModal(new ShowModalOption()
+        {
+            content = "Write Success, Result: " + JsonMapper.ToJson(res)
+        });
+    };
+    private Action<FileError> onWriteFail = (res) =>
+    {
+        WX.ShowModal(new ShowModalOption()
+        {
+            content = "Write Fail, Result: " + JsonMapper.ToJson(res)
+        });
+    };
     
     private void Start()
     {
@@ -133,9 +152,10 @@ public class ReadAndWrite : Details
 
     private void WriteSync(string dataType, string offset, string length, string encoding, string position)
     {
+        WriteResult writeResult;
         if (dataType == "string")
         {
-            var writeResult = _fileSystemManager.WriteSync(new WriteSyncStringOption()
+            writeResult = _fileSystemManager.WriteSync(new WriteSyncStringOption()
             {
                 data = _stringData,
                 fd = _fd,
@@ -144,14 +164,10 @@ public class ReadAndWrite : Details
                 offset = offset == "null" ? null : (double?)int.Parse(offset),
                 position = position == "null" ? null : (double?)int.Parse(position)
             });
-            WX.ShowModal(new ShowModalOption()
-            {
-                content = "Write String Success, Result: " + JsonMapper.ToJson(writeResult)
-            });
         }
         else
         {
-            var writeResult = _fileSystemManager.WriteSync(new WriteSyncOption()
+            writeResult = _fileSystemManager.WriteSync(new WriteSyncOption()
             {
                 data = _bufferData,
                 fd = _fd,
@@ -160,12 +176,12 @@ public class ReadAndWrite : Details
                 offset = offset == "null" ? null : (double?)int.Parse(offset),
                 position = position == "null" ? null : (double?)int.Parse(position)
             });
-            WX.ShowModal(new ShowModalOption()
-            {
-                content = "Write Buffer Success, Result: " + JsonMapper.ToJson(writeResult)
-            });
         }
         UpdateFileContent();
+        WX.ShowModal(new ShowModalOption()
+        {
+            content = "Write Success, Result: " + JsonMapper.ToJson(writeResult)
+        });
     }
     
     private void WriteAsync(string dataType, string offset, string length, string encoding, string position)
@@ -180,21 +196,8 @@ public class ReadAndWrite : Details
                 length = length == "null" ? null : (double?)int.Parse(length),
                 offset = offset == "null" ? null : (double?)int.Parse(offset),
                 position = position == "null" ? null : (double?)int.Parse(position),
-                success = (res) =>
-                {
-                    WX.ShowModal(new ShowModalOption()
-                    {
-                        content = "Write String Success, Result: " + JsonMapper.ToJson(res)
-                    });
-                    UpdateFileContent();
-                },
-                fail = (res) =>
-                {
-                    WX.ShowModal(new ShowModalOption()
-                    {
-                        content = "Write Fail, Result: " + JsonMapper.ToJson(res)
-                    });
-                }
+                success = onWriteSuccess,
+                fail = onWriteFail
             });
         }
         else
@@ -207,21 +210,8 @@ public class ReadAndWrite : Details
                 length = length == "null" ? null : (double?)int.Parse(length),
                 offset = offset == "null" ? null : (double?)int.Parse(offset),
                 position = position == "null" ? null : (double?)int.Parse(position),
-                success = (res) =>
-                {
-                    WX.ShowModal(new ShowModalOption()
-                    {
-                        content = "Write Buffer Success, Result: " + JsonMapper.ToJson(res)
-                    });
-                    UpdateFileContent();
-                },
-                fail = (res) =>
-                {
-                    WX.ShowModal(new ShowModalOption()
-                    {
-                        content = "Write Fail, Result: " + JsonMapper.ToJson(res)
-                    });
-                }
+                success = onWriteSuccess,
+                fail = onWriteFail
             });
         }
     }
@@ -232,8 +222,9 @@ public class ReadAndWrite : Details
         GameManager.Instance.detailsController.ChangeResultContent(0, Encoding.UTF8.GetString(_buffer));
     }
 
-    private void UpdateFileContent()
+    private static void UpdateFileContent()
     {
+        // 使用UTF8编码显示文件内容
         GameManager.Instance.detailsController.ChangeResultContent(1, _fileSystemManager.ReadFileSync(Path, "utf8"));
     }
 }

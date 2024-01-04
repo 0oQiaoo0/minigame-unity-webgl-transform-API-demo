@@ -177,6 +177,7 @@ public class LocalCacheFile : Details
                     // 获取第一个缓存文件的文件信息
                     _fileSystemManager.GetFileInfo(new GetFileInfoOption()
                     {
+                        // 路径可以是代码包绝对路径、本地临时路径、本地路径和本地缓存路径
                         filePath = res.fileList[0].filePath,
                         success = (res2) =>
                         {
