@@ -5,26 +5,42 @@ public class Rename : Details
 {
     private WXFileSystemManager _fileSystemManager;
     
-    private readonly string _pathPrefix = WX.env.USER_DATA_PATH + "/Access";
+    // 路径
+    // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
+    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Rename";
+    private static readonly string Path1 = PathPrefix + "/hello.txt";
+    private static readonly string Path2 = PathPrefix + "/world.txt";
+    private static readonly string Path3 = PathPrefix + "/dir/hello.txt";
+    
+    // 文件描述符
+    private string _fd;
+
+    // 当前路径
+    private string _oldPath = "/hello.txt";
     
     private void Start()
     {
+        // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
 
-        if (_fileSystemManager.AccessSync(_pathPrefix + "/exist") != "access:ok")
+        if (_fileSystemManager.AccessSync(PathPrefix + "/dir") != "access:ok")
         {
-            _fileSystemManager.MkdirSync(_pathPrefix + "/exist", true);
+            _fileSystemManager.MkdirSync(PathPrefix + "/dir", true);
         }
             
-        _fileSystemManager.OpenSync(new OpenSyncOption()
+        _fd = _fileSystemManager.OpenSync(new OpenSyncOption()
         {
-            filePath = _pathPrefix + "/exist/exist.txt",
+            filePath = Path1,
             flag = "w+"
         });
-        _fileSystemManager.WriteFileSync(_pathPrefix + "/exist/exist.txt", "String Data");
+        _fileSystemManager.WriteSync(new WriteSyncStringOption()
+        {
+            fd = _fd,
+            data = "Original Data "
+        });
     }
     
-    protected override void TestAPI(params string[] args)
+    protected override void TestAPI(string[] args)
     {
         if (args[0] == "同步执行")
         {
@@ -36,33 +52,47 @@ public class Rename : Details
         }
     }
     
-    private void RunAsync(string path)
+    private void RunAsync(string newPath)
     {   
-        _fileSystemManager.Access(new AccessParam()
-        {
-            path = _pathPrefix + path,
-            success = (res) =>
-            {
-                WX.ShowModal(new ShowModalOption()
-                {
-                    content = "Access Success: " + JsonMapper.ToJson(res)
-                });
-            },
-            fail = (res) =>
-            {
-                WX.ShowModal(new ShowModalOption()
-                {
-                    content = "Access Fail: " + JsonMapper.ToJson(res)
-                });
-            }
-        });
+       _fileSystemManager.Rename(new RenameOption()
+       {
+           newPath = PathPrefix + newPath,
+           oldPath = PathPrefix + _oldPath,
+           success = (res) =>
+           {
+               _oldPath = newPath;
+               UpdateResults();
+               WX.ShowModal(new ShowModalOption()
+               {
+                   content = "Rename Success, Result: " + JsonMapper.ToJson(res)
+               });
+           },
+           fail = (res) =>
+           {
+               WX.ShowModal(new ShowModalOption()
+               {
+                   content = "Rename Fail, Result: " + JsonMapper.ToJson(res)
+               });
+           }
+       });
     }
     
-    private void RunSync(string path)
+    private void RunSync(string newPath)
     {
-        WX.ShowModal(new ShowModalOption()
+        _fileSystemManager.RenameSync(PathPrefix + _oldPath, PathPrefix + newPath);
+
+        _oldPath = newPath;
+        UpdateResults();
+        WX.ShowToast(new ShowToastOption()
         {
-            content = "AccessSync Result: " + _fileSystemManager.AccessSync(_pathPrefix + path)
+            title = "Rename Success"
         });
+    }
+
+    private void UpdateResults()
+    {
+        GameManager.Instance.detailsController.SetResultActive(0, _fileSystemManager.AccessSync(Path1) == "access:ok");
+        GameManager.Instance.detailsController.SetResultActive(1, _fileSystemManager.AccessSync(Path2) == "access:ok");
+        GameManager.Instance.detailsController.SetResultActive(2, _fileSystemManager.AccessSync(Path3) == "access:ok");
     }
 }
