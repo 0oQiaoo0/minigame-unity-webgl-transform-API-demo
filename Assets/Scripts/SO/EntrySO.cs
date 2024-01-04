@@ -36,7 +36,6 @@ public class EntrySO : ScriptableObject
     
     public string initialButtonText = "运行";
     public List<ButtonData> extraButtonList;
-
-    public string entryResultTitle;
+    
     public List<ResultData> initialResultList;
 }

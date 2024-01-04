@@ -29,9 +29,10 @@ MonoBehaviour:
     - /notExist/notExist.txt
   initialButtonText: "\u8FD0\u884C"
   extraButtonList: []
-  entryResultTitle: "\u5DF2\u5B58\u5728\u76EE\u5F55/\u6587\u4EF6\uFF1A"
   initialResultList:
   - isDisableInitially: 0
-    initialContent: /exist
+    initialTitleText: "\u5DF2\u5B58\u5728\u76EE\u5F55/\u6587\u4EF6\uFF1A"
+    initialContentText: /exist
   - isDisableInitially: 0
-    initialContent: /exist/exist.txt
+    initialTitleText: 
+    initialContentText: /exist/exist.txt

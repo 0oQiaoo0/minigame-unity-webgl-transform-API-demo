@@ -33,7 +33,7 @@ public class LocalCacheFile : Details
                                   "文件路径：" + file.filePath;
                     GameManager.Instance.detailsController.AddResult(new ResultData()
                     {
-                        initialContent = content
+                        initialContentText = content
                     });
                 }
             },

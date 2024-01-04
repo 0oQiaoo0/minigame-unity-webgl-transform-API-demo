@@ -23,5 +23,7 @@ MonoBehaviour:
   - buttonText: "\u6DFB\u52A0\u672C\u5730\u7F13\u5B58\u6587\u4EF6"
   - buttonText: "\u6E05\u7A7A\u672C\u5730\u7F13\u5B58\u6587\u4EF6"
   - buttonText: "\u83B7\u53D6\u7F13\u5B58\u6587\u4EF6\u4FE1\u606F"
-  entryResultTitle: "\u672C\u5730\u7F13\u5B58\u6587\u4EF6\u5217\u8868\uFF1A"
-  initialResultList: []
+  initialResultList:
+  - isDisableInitially: 0
+    initialTitleText: "\u672C\u5730\u7F13\u5B58\u6587\u4EF6\u5217\u8868\uFF1A"
+    initialContentText: 

@@ -8,7 +8,7 @@ public class ButtonController : MonoBehaviour
 
     private void Awake()
     {
-        _button = GetComponent<Button>();
+        _button = transform.Find("Button").GetComponent<Button>();
     }
     
     public void AddButtonListener(UnityAction action)

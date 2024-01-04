@@ -156,8 +156,7 @@ public class AppendFile : Details
 
     private static void UpdateResult()
     {
-        GameManager.Instance.detailsController.resultObjects[0].GetComponent<ResultController>()
-            .ChangeContent(_fileSystemManager.ReadFileSync(Path, "utf8"));
+        GameManager.Instance.detailsController.ChangeResultContent(0, _fileSystemManager.ReadFileSync(Path, "utf8"));
     }
 
     private void ResetFile()

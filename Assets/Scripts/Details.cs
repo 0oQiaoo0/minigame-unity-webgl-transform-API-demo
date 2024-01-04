@@ -4,7 +4,7 @@ public abstract class Details : MonoBehaviour
 {
     public EntrySO entrySO;
 
-    public string[] options;
+    protected string[] options;
 
     public void Init(EntrySO so)
     {

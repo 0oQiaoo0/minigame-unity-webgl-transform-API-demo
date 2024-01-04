@@ -7,7 +7,7 @@ public class MkdirAndRmdir : Details
     
     // 路径
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
-    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/MkDirAndRmDir";
+    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/MkdirAndRmdir";
     private static readonly string PathA = PathPrefix + "/a";
     private static readonly string PathB = PathPrefix + "/a/b";
     
@@ -127,9 +127,7 @@ public class MkdirAndRmdir : Details
 
     private void UpdateResult()
     {
-        GameManager.Instance.detailsController.resultObjects[0]
-            .SetActive(_fileSystemManager.AccessSync(PathA) == "access:ok");
-        GameManager.Instance.detailsController.resultObjects[1]
-            .SetActive(_fileSystemManager.AccessSync(PathB) == "access:ok");
+        GameManager.Instance.detailsController.SetResultActive(0, _fileSystemManager.AccessSync(PathA) == "access:ok");
+        GameManager.Instance.detailsController.SetResultActive(1, _fileSystemManager.AccessSync(PathB) == "access:ok");
     }
 }

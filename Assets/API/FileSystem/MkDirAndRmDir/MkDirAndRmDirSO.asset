@@ -32,9 +32,10 @@ MonoBehaviour:
   initialButtonText: "\u521B\u5EFA\u6587\u4EF6\u5939"
   extraButtonList:
   - buttonText: "\u5220\u9664\u6587\u4EF6\u5939"
-  entryResultTitle: "\u5DF2\u5B58\u5728\u6587\u4EF6\u5939\uFF1A"
   initialResultList:
   - isDisableInitially: 1
-    initialContent: /a
+    initialTitleText: "\u5DF2\u5B58\u5728\u6587\u4EF6\u5939\uFF1A"
+    initialContentText: /a
   - isDisableInitially: 1
-    initialContent: /a/b
+    initialTitleText: 
+    initialContentText: /a/b

@@ -71,7 +71,7 @@ public class CopyFile : Details
                     content = "CopeFile Success, Result: " + JsonMapper.ToJson(res)
                                                            + "\nCopied File Content: " + _fileSystemManager.ReadFileSync(AsyncPath, "utf8")
                 });
-                GameManager.Instance.detailsController.EnableResult(2);
+                GameManager.Instance.detailsController.SetResultActive(2, true);
             },
             fail = (res) =>
             {
@@ -90,7 +90,7 @@ public class CopyFile : Details
             content = "CopyFileSync Result: "  + _fileSystemManager.CopyFileSync(Path, SyncPath)
             + "\nCopied File Content: " + _fileSystemManager.ReadFileSync(Path, "utf8")
         });
-        GameManager.Instance.detailsController.EnableResult(1);
+        GameManager.Instance.detailsController.SetResultActive(1, true);
     }
     
     private void ClearCopyFile()
@@ -104,8 +104,8 @@ public class CopyFile : Details
             _fileSystemManager.UnlinkSync(AsyncPath);
         }
         
-        GameManager.Instance.detailsController.DisableResult(1);
-        GameManager.Instance.detailsController.DisableResult(2);
+        GameManager.Instance.detailsController.SetResultActive(1, false);
+        GameManager.Instance.detailsController.SetResultActive(2, false);
         
         WX.ShowToast(new ShowToastOption()
         {

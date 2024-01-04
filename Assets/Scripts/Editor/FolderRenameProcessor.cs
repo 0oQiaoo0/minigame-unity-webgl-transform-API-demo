@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System;
 using UnityEditor;
 using System.IO;
 
@@ -9,6 +10,8 @@ public class FolderRenameProcessor : AssetPostprocessor
         foreach (var movedAsset in movedAssets)
         {
             if (!AssetDatabase.IsValidFolder(movedAsset)) continue; // 跳过非文件夹
+            
+            if (!IsSubdirectory(movedAsset, "Assets/API")) continue; // 跳过非 Assets/API 下的文件夹
             
             var newFolderName = Path.GetFileName(movedAsset);
                 
@@ -37,6 +40,22 @@ public class FolderRenameProcessor : AssetPostprocessor
                 AssetDatabase.MoveAsset(filePath, newFilePath);
             }
         }
+    }
+    
+    private static bool IsSubdirectory(string folderPath, string parentFolderPath)
+    {
+        // 获取绝对路径
+        var absoluteFolderPath = Path.GetFullPath(folderPath);
+        var absoluteParentFolderPath = Path.GetFullPath(parentFolderPath);
+
+        // 确保路径以目录分隔符结尾
+        if (!absoluteParentFolderPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+        {
+            absoluteParentFolderPath += Path.DirectorySeparatorChar;
+        }
+
+        // 判断第一个文件夹的路径是否以第二个文件夹的路径开头
+        return absoluteFolderPath.StartsWith(absoluteParentFolderPath, StringComparison.OrdinalIgnoreCase);
     }
 }
 #endif

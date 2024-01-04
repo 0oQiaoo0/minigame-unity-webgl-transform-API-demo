@@ -19,20 +19,20 @@
 
 ```
 .
-├── Assets                   		// 资产目录
-│   ├── API                      	// API示例目录           
-│   │   ├── FileSystem              // 文件系统目录
-│   │   │	├── Access				// Access目录
-│   │   │	│	└──	Access.cs		// Access实现脚本
-│   │   │	└── ...					// 其他API目录
-│   │   └── ...		                // 其他类别目录
-│   ├── Images						// 图片资源目录
-│   ├── Plugins        
-│   ├── Prefabs						// 预制体目录
-│   ├── Scenes						// 场景目录
-│   ├── Scripts						// 脚本目录
-│   └── WX-WASM-SDK-V2				// 微信小游戏适配插件目录
-│   └── WebGLTemplates				// 微信小游戏适配插件目录
+├── Assets                      // 资产目录
+│   ├── API                     // API示例目录           
+│   │   ├── FileSystem          // 文件系统目录
+│   │   │   ├── Access          // Access目录
+│   │   │   │   └──	Access.cs		// Access实现脚本
+│   │   │   └── ...             // 其他API目录
+│   │   └── ...		              // 其他类别目录
+│   ├── Images                  // 图片资源目录
+│   ├── Plugins
+│   ├── Prefabs                 // 预制体目录
+│   ├── Scenes                  // 场景目录
+│   ├── Scripts                 // 脚本目录
+│   └── WX-WASM-SDK-V2          // 微信小游戏适配插件目录
+│   └── WebGLTemplates          // 微信小游戏适配插件目录
 ├── Packages            
 ├── ProjectSettings  
 ├── TextToolDatas 
@@ -56,7 +56,7 @@
 
    ```c#
        ...
-   		protected override void TestAPI(string[] args) {...}
+       protected override void TestAPI(string[] args) {...}
    		
    		// 生成缓存文件
        private void GenerateCacheFile() {...}
@@ -66,5 +66,5 @@
    
    		// 获取缓存文件信息
        private void GetCacheFileInfo() {...}
-   		...
+       ...
 

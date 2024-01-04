@@ -1,11 +1,11 @@
 ﻿using LitJson;
 using WeChatWASM;
 
-public class ReadFile : Details
+public class ReadFileAndWriteFile : Details
 {
     private WXFileSystemManager _fileSystemManager;
     
-    private readonly string _pathPrefix = WX.env.USER_DATA_PATH + "/Access";
+    private readonly string _pathPrefix = WX.env.USER_DATA_PATH + "/ReadFileAndWriteFile";
     
     private void Start()
     {

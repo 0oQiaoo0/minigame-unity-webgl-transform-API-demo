@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class DetailsController : MonoBehaviour
@@ -20,26 +21,25 @@ public class DetailsController : MonoBehaviour
     
     [Header("Button")]
     [SerializeField] private Button initialButton;
-    [SerializeField] private GameObject buttonPrefab;
+    [SerializeField] private GameObject buttonBlockPrefab;
     [SerializeField] private Transform buttonsTransform;
-    [HideInInspector] public List<GameObject> extraButtonObjects;
+    [HideInInspector] public List<GameObject> extraButtonBlockObjects;
     
     [Header("Result")]
-    [SerializeField] private Text resultTitleText;
     [SerializeField] private GameObject resultPrefab;
     [SerializeField] private Transform resultsTransform;
     [HideInInspector] public List<GameObject> resultObjects;
-
+    
     [Header("Title Transform")] 
-    [SerializeField] private RectTransform title;
-    [SerializeField] private RectTransform backButton;
+    [SerializeField] private RectTransform titleTransform;
+    [SerializeField] private RectTransform backButtonTransform;
     
     private Details _details;
 
     private void Start()
     {
-        title.anchoredPosition = new Vector2(title.anchoredPosition.x,  -125f - (float)GameManager.Instance.systemInfo.safeArea.top);
-        backButton.anchoredPosition = new Vector2(backButton.anchoredPosition.x, -125f - (float)GameManager.Instance.systemInfo.safeArea.top);
+        titleTransform.anchoredPosition = new Vector2(titleTransform.anchoredPosition.x,  -125f - (float)GameManager.Instance.systemInfo.safeArea.top);
+        backButtonTransform.anchoredPosition = new Vector2(backButtonTransform.anchoredPosition.x, -125f - (float)GameManager.Instance.systemInfo.safeArea.top);
     }
 
     private void ClearDetails()
@@ -56,11 +56,11 @@ public class DetailsController : MonoBehaviour
         
         // clear buttons
         initialButton.onClick.RemoveAllListeners();
-        foreach (var i in extraButtonObjects)
+        foreach (var i in extraButtonBlockObjects)
         {
             Destroy(i);
         }
-        extraButtonObjects = new List<GameObject>();
+        extraButtonBlockObjects = new List<GameObject>();
 
         // clear results
         RemoveAllResult();
@@ -96,9 +96,9 @@ public class DetailsController : MonoBehaviour
         // generate extra buttons
         foreach (var button in entrySO.extraButtonList)
         {
-            var extraButton = Instantiate(buttonPrefab, buttonsTransform);
-            extraButtonObjects.Add(extraButton);
-            extraButton.GetComponentInChildren<Text>().text = button.buttonText;
+            var extraButtonBlock = Instantiate(buttonBlockPrefab, buttonsTransform);
+            extraButtonBlockObjects.Add(extraButtonBlock);
+            extraButtonBlock.GetComponentInChildren<Text>().text = button.buttonText;
             // extraButton.onClick.AddListener(() =>
             // {
             //     button.buttonAction.Invoke();
@@ -106,7 +106,6 @@ public class DetailsController : MonoBehaviour
         }
         
         // generate results
-        resultTitleText.text = entrySO.entryResultTitle;
         foreach (var result in entrySO.initialResultList)
         {
             AddResult(result);
@@ -120,7 +119,7 @@ public class DetailsController : MonoBehaviour
     
     public void BindExtraButtonAction(int index, UnityAction action)
     {
-        extraButtonObjects[index].GetComponent<ButtonController>()
+        extraButtonBlockObjects[index].GetComponent<ButtonController>()
             .AddButtonListener(action);
     }
     
@@ -128,7 +127,9 @@ public class DetailsController : MonoBehaviour
     {
         var resultObj = Instantiate(resultPrefab, resultsTransform);
         resultObjects.Add(resultObj);
-        ChangeResultContent(resultObjects.Count - 1, resultData.initialContent);
+        
+        ChangeResultTitle(resultObjects.Count - 1, resultData.initialTitleText);
+        ChangeResultContent(resultObjects.Count - 1, resultData.initialContentText);
         if (resultData.isDisableInitially)
         {
             resultObj.SetActive(false);
@@ -146,14 +147,14 @@ public class DetailsController : MonoBehaviour
         }
     }
     
-    public void EnableResult(int index)
+    public void SetResultActive(int index, bool isActive)
     {
-        resultObjects[index].SetActive(true);
+        resultObjects[index].SetActive(isActive);
     }
-    
-    public void DisableResult(int index)
+
+    public void ChangeResultTitle(int index, string title)
     {
-        resultObjects[index].SetActive(false);
+        resultObjects[index].GetComponent<ResultController>().ChangeTitle(title);
     }
     
     public void ChangeResultContent(int index, string content)

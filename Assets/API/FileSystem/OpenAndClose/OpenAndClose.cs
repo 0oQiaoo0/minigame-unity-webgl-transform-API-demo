@@ -40,14 +40,14 @@ public class OpenAndClose : Details
             Close(args[0]);
             
             GameManager.Instance.detailsController.ChangeInitialButtonText("打开文件");
-            GameManager.Instance.detailsController.DisableResult(0);
+            GameManager.Instance.detailsController.SetResultActive(0, false);
         }
         else
         {
             Open(args[0]);
             
             GameManager.Instance.detailsController.ChangeInitialButtonText("关闭文件");
-            GameManager.Instance.detailsController.EnableResult(0);
+            GameManager.Instance.detailsController.SetResultActive(0, true);
         }
         _isOpened = !_isOpened;
     }
