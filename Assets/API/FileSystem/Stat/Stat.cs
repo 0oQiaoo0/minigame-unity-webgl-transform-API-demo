@@ -139,12 +139,7 @@ public class Stat : Details
     
     private void ClearResults()
     {
-        var resultsRef = GameManager.Instance.detailsController.resultObjects;
-        for (var i = 5; i < resultsRef.Count; i++)
-        {
-            Destroy(resultsRef[i]);
-        }
-        resultsRef.RemoveRange(5, resultsRef.Count - 5);
+        GameManager.Instance.detailsController.KeepFirstNResults(5);
     }
     
     private void UpdateResults(WXStat[] fileStats)

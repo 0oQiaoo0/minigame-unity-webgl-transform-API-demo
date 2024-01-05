@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class DetailsController : MonoBehaviour
@@ -139,12 +138,22 @@ public class DetailsController : MonoBehaviour
     
     public void RemoveAllResult()
     {
-        resultObjects = new List<GameObject>();
-        for(var i = resultsTransform.childCount - 1; i >= 0; i--)
+        foreach (var obj in resultObjects)
         {
-            var child = resultsTransform.GetChild(i);
-            Destroy(child.gameObject);
+            Destroy(obj);
         }
+
+        resultObjects = new List<GameObject>();
+    }
+
+    public void KeepFirstNResults(int n)
+    {
+        for (var i = n; i < resultObjects.Count; i++)
+        {
+            Destroy(resultObjects[i]);
+        }
+        
+        resultObjects.RemoveRange(n, resultObjects.Count - n);
     }
     
     public void SetResultActive(int index, bool isActive)

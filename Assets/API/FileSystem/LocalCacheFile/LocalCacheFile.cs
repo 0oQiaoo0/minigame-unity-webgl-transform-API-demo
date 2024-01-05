@@ -18,7 +18,7 @@ public class LocalCacheFile : Details
     // 刷新缓存文件列表
     private void RefreshCacheFileList()
     {
-        GameManager.Instance.detailsController.RemoveAllResult();
+        GameManager.Instance.detailsController.KeepFirstNResults(1);
         
         // 获取缓存文件列表
         _fileSystemManager.GetSavedFileList(new GetSavedFileListOption()

@@ -15,15 +15,48 @@ MonoBehaviour:
   entryScriptTypeName: OpenAndClose
   entryName: "\u6253\u5F00/\u5173\u95ED\u6587\u4EF6"
   entryAPI: Open(Sync)/Close(Sync)
-  entryDescription: 
+  entryDescription: "\u6CE8\u610F\uFF1A\u67D0\u4E9Bflag\u4F1A\u622A\u65AD\u5148\u524D\u7684\u6587\u4EF6"
   optionList:
   - optionName: "\u6267\u884C\u65B9\u5F0F"
     availableOptions:
     - "\u540C\u6B65\u6267\u884C"
     - "\u5F02\u6B65\u6267\u884C"
+  - optionName: filePath
+    availableOptions:
+    - /exist.txt
+    - /notExist.txt
+  - optionName: "flag\uFF08\u4EC5\u6253\u5F00\uFF09"
+    availableOptions:
+    - null
+    - a
+    - ax
+    - a+
+    - ax+
+    - as
+    - as+
+    - r
+    - r+
+    - w
+    - wx
+    - w+
+    - wx+
   initialButtonText: "\u6253\u5F00\u6587\u4EF6"
-  extraButtonList: []
+  extraButtonList:
+  - buttonText: "\u5173\u95ED\u6587\u4EF6"
+  - buttonText: "\u91CD\u7F6E"
   initialResultList:
+  - isDisableInitially: 0
+    initialTitleText: "\u5DF2\u5B58\u5728\u6587\u4EF6\uFF1A"
+    initialContentText: /exist.txt
   - isDisableInitially: 1
+    initialTitleText: 
+    initialContentText: /notExist.txt
+  - isDisableInitially: 0
     initialTitleText: "\u5DF2\u6253\u5F00\u6587\u4EF6\uFF1A"
-    initialContentText: /hello.txt
+    initialContentText: 
+  - isDisableInitially: 1
+    initialTitleText: 
+    initialContentText: /exist.txt
+  - isDisableInitially: 1
+    initialTitleText: 
+    initialContentText: /notExist.txt

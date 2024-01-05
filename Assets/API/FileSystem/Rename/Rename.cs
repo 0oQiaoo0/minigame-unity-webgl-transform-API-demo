@@ -8,6 +8,7 @@ public class Rename : Details
     // 路径
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
     private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Rename";
+    private static readonly string DirPath = PathPrefix + "/dir";
     private static readonly string Path1 = PathPrefix + "/hello.txt";
     private static readonly string Path2 = PathPrefix + "/world.txt";
     private static readonly string Path3 = PathPrefix + "/dir/hello.txt";
@@ -20,9 +21,9 @@ public class Rename : Details
         // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
 
-        if (_fileSystemManager.AccessSync(PathPrefix + "/dir") != "access:ok")
+        if (_fileSystemManager.AccessSync(DirPath) != "access:ok")
         {
-            _fileSystemManager.MkdirSync(PathPrefix + "/dir", true);
+            _fileSystemManager.MkdirSync(DirPath, true);
         }
             
         var fd = _fileSystemManager.OpenSync(new OpenSyncOption()

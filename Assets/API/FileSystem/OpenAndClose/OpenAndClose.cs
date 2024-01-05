@@ -1,4 +1,5 @@
-﻿using LitJson;
+﻿using System;
+using LitJson;
 using WeChatWASM;
 
 public class OpenAndClose : Details
@@ -24,7 +25,22 @@ public class OpenAndClose : Details
             _fileSystemManager.MkdirSync(PathPrefix, true);
         }
 
-        ResetDetails();
+        _fd = new string[2];
+        var fd = _fileSystemManager.OpenSync(new OpenSyncOption()
+        {
+            filePath = Path1,
+            flag = "w+"
+        });
+        _fileSystemManager.WriteSync(new WriteSyncStringOption()
+        {
+            fd = fd,
+            data = "Original Data "
+        });
+        
+        if (_fileSystemManager.AccessSync(Path2) == "access:ok")
+        {
+            _fileSystemManager.UnlinkSync(Path2);
+        }
         
         GameManager.Instance.detailsController.BindExtraButtonAction(0, Close);
         GameManager.Instance.detailsController.BindExtraButtonAction(1, ResetDetails);
@@ -79,17 +95,33 @@ public class OpenAndClose : Details
         UpdateResults();
         GameManager.Instance.detailsController.SetResultActive(3, false);
         GameManager.Instance.detailsController.SetResultActive(4, false);
+        
+        WX.ShowToast(new ShowToastOption()
+        {
+            title = "已重置"
+        });
     }
 
     private void OpenSync(string filePath, string flag)
     {
         var index = filePath == "/exist.txt" ? 0 : 1;
 
-        _fd[index] = _fileSystemManager.OpenSync(new OpenSyncOption()
+        try
         {
-            filePath = PathPrefix + filePath,
-            flag = flag
-        });
+            _fd[index] = _fileSystemManager.OpenSync(new OpenSyncOption()
+            {
+                filePath = PathPrefix + filePath,
+                flag = flag == "null" ? null : flag
+            });
+        }
+        catch (Exception e)
+        {
+            WX.ShowModal(new ShowModalOption()
+            {
+                content = "OpenSync Fail, Exception: " + e.Message
+            });
+            return;
+        }
 
         GameManager.Instance.detailsController.SetResultActive(index + 3, true);
         
@@ -106,7 +138,7 @@ public class OpenAndClose : Details
         _fileSystemManager.Open(new OpenOption()
         {
             filePath = filePath,
-            flag = flag,
+            flag = flag == "null" ? null : flag,
             success = (res) =>
             {
                 _fd[index] = res.fd;
