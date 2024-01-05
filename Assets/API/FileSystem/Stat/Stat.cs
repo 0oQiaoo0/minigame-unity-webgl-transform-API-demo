@@ -1,30 +1,66 @@
-﻿using LitJson;
+﻿using System;
+using UnityEngine;
 using WeChatWASM;
 
 public class Stat : Details
 {
     private WXFileSystemManager _fileSystemManager;
     
-    private readonly string _pathPrefix = WX.env.USER_DATA_PATH + "/Access";
+    // 路径
+    // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
+    private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/Stat";
+    private static readonly string Path5 = PathPrefix + "/Five.txt";
+    private static readonly string DirPath = PathPrefix + "/dir";
+    private static readonly string Path6 = PathPrefix + "/dir/Six.txt";
+    private static readonly string Path8 = PathPrefix + "/dir/Eight.txt";
+    private static readonly string Path9 = PathPrefix + "/dir/Nine.txt";
+    
+    private Action<WXStatResponse> onFail = (res) =>
+    {
+        WX.ShowModal(new ShowModalOption()
+        {
+            content = "Stat Fail"
+        });
+    };
     
     private void Start()
     {
+        // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
 
-        if (_fileSystemManager.AccessSync(_pathPrefix + "/exist") != "access:ok")
+        if (_fileSystemManager.AccessSync(DirPath) != "access:ok")
         {
-            _fileSystemManager.MkdirSync(_pathPrefix + "/exist", true);
+            _fileSystemManager.MkdirSync(DirPath, true);
         }
-            
+
         _fileSystemManager.OpenSync(new OpenSyncOption()
         {
-            filePath = _pathPrefix + "/exist/exist.txt",
+            filePath = Path5,
             flag = "w+"
         });
-        _fileSystemManager.WriteFileSync(_pathPrefix + "/exist/exist.txt", "String Data");
+        _fileSystemManager.OpenSync(new OpenSyncOption()
+        {
+            filePath = Path6,
+            flag = "w+"
+        });
+        _fileSystemManager.OpenSync(new OpenSyncOption()
+        {
+            filePath = Path8,
+            flag = "w+"
+        });
+        _fileSystemManager.OpenSync(new OpenSyncOption()
+        {
+            filePath = Path9,
+            flag = "w+"
+        });
+        
+        _fileSystemManager.WriteFileSync(Path5, "Five words form this statement.");
+        _fileSystemManager.WriteFileSync(Path6, "Six words make up this sentence.");
+        _fileSystemManager.WriteFileSync(Path8, "This phrase has a total of eight words.");
+        _fileSystemManager.WriteFileSync(Path9, "Here, you'll find a sentence with nine words.");
     }
     
-    protected override void TestAPI(params string[] args)
+    protected override void TestAPI(string[] args)
     {
         if (args[0] == "同步执行")
         {
@@ -32,37 +68,112 @@ public class Stat : Details
         }
         else
         {
-            RunAsync(args[1]);
+            RunAsync(args[1], args[2]);
         }
-    }
-    
-    private void RunAsync(string path)
-    {   
-        _fileSystemManager.Access(new AccessParam()
-        {
-            path = _pathPrefix + path,
-            success = (res) =>
-            {
-                WX.ShowModal(new ShowModalOption()
-                {
-                    content = "Access Success: " + JsonMapper.ToJson(res)
-                });
-            },
-            fail = (res) =>
-            {
-                WX.ShowModal(new ShowModalOption()
-                {
-                    content = "Access Fail: " + JsonMapper.ToJson(res)
-                });
-            }
-        });
     }
     
     private void RunSync(string path)
     {
         WX.ShowModal(new ShowModalOption()
         {
-            content = "AccessSync Result: " + _fileSystemManager.AccessSync(_pathPrefix + path)
+            content = "StatSync暂无法运行"
+        });
+        return;
+        var fileStats = _fileSystemManager.StatSync(PathPrefix + path);
+
+        UpdateResults(fileStats);
+        WX.ShowToast(new ShowToastOption()
+        {
+            title = "StatSync Success"
+        });
+    }
+    
+    private void RunAsync(string path, string recursive)
+    {
+        if (recursive == "null")
+        {
+            _fileSystemManager.Stat(new WXStatOption()
+            {
+                path = PathPrefix + path,
+                success = (res) =>
+                {
+                    UpdateResults(res.stats.ToArray());
+                    WX.ShowToast(new ShowToastOption()
+                    {
+                        title = "Stat Success"
+                    });
+                },
+                fail = onFail
+            });
+        }
+        else
+        {
+            _fileSystemManager.Stat(new WXStatOption()
+            {
+                path = PathPrefix + path,
+                recursive = recursive == "true",
+                success = (res) =>
+                {
+                    if (recursive == "true")
+                    {
+                        UpdateResults(res.stats.ToArray());
+                        WX.ShowToast(new ShowToastOption()
+                        {
+                            title = "Stat Success"
+                        });
+                    }
+                    else
+                    {
+                        UpdateResults(res.one_stat);
+                        WX.ShowToast(new ShowToastOption()
+                        {
+                            title = "Stat Success"
+                        });
+                    }
+                    
+                },
+                fail = onFail
+            });
+        }
+    }
+    
+    private void ClearResults()
+    {
+        var resultsRef = GameManager.Instance.detailsController.resultObjects;
+        for (var i = 5; i < resultsRef.Count; i++)
+        {
+            Destroy(resultsRef[i]);
+        }
+        resultsRef.RemoveRange(5, resultsRef.Count - 5);
+    }
+    
+    private void UpdateResults(WXStat[] fileStats)
+    {
+        ClearResults();
+
+        foreach (var fileStat in fileStats)
+        {
+            GameManager.Instance.detailsController.AddResult(new ResultData()
+            {
+                initialContentText = "文件路径：" + fileStat.path
+                                                    + "\n文件的类型和存取的权限：" + fileStat.stats.mode
+                                                    + "\n文件大小，单位：B：" + fileStat.stats.size
+                                                    + "\n文件最近一次被存取或被执行的时间：" + fileStat.stats.lastAccessedTime
+                                                    + "\n文件最后一次被修改的时间：" + fileStat.stats.lastModifiedTime
+            });
+        }
+    }
+    
+    private void UpdateResults(WXStatInfo stats)
+    {
+        ClearResults();
+
+        GameManager.Instance.detailsController.AddResult(new ResultData()
+        {
+            initialContentText = "文件的类型和存取的权限：" + stats.mode
+                                                + "\n文件大小，单位：B：" + stats.size
+                                                + "\n文件最近一次被存取或被执行的时间：" + stats.lastAccessedTime
+                                                + "\n文件最后一次被修改的时间：" + stats.lastModifiedTime
         });
     }
 }

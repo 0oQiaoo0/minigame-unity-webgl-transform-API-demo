@@ -8,12 +8,11 @@ public class OpenAndClose : Details
     // 路径
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
     private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/OpenAndClose";
-    private static readonly string Path = PathPrefix + "/hello.txt";
+    private static readonly string Path1 = PathPrefix + "/exist.txt";
+    private static readonly string Path2 = PathPrefix + "/notExist.txt";
     
     // 文件描述符
-    private string _fd;
-    
-    private bool _isOpened = false;
+    private string[] _fd;
     
     private void Start()
     {
@@ -25,67 +24,93 @@ public class OpenAndClose : Details
             _fileSystemManager.MkdirSync(PathPrefix, true);
         }
 
-        if (_fileSystemManager.AccessSync(Path) == "access:ok")
-        {
-            _fileSystemManager.UnlinkSync(Path);
-        }
+        ResetDetails();
         
-        GameManager.Instance.detailsController.ChangeInitialButtonText("打开文件");
+        GameManager.Instance.detailsController.BindExtraButtonAction(0, Close);
+        GameManager.Instance.detailsController.BindExtraButtonAction(1, ResetDetails);
     }
     
+    // 打开文件
     protected override void TestAPI(string[] args)
     {
-        if (_isOpened)
+        if(args[0] == "同步执行")
         {
-            Close(args[0]);
-            
-            GameManager.Instance.detailsController.ChangeInitialButtonText("打开文件");
-            GameManager.Instance.detailsController.SetResultActive(0, false);
+            OpenSync(args[1], args[2]);
         }
         else
         {
-            Open(args[0]);
-            
-            GameManager.Instance.detailsController.ChangeInitialButtonText("关闭文件");
-            GameManager.Instance.detailsController.SetResultActive(0, true);
+            OpenAsync(args[1], args[2]);
         }
-        _isOpened = !_isOpened;
     }
     
-    private void Open(string mode)
+    // 关闭文件
+    private void Close()
     {
-        if (mode == "同步执行")
+        if (options[0] == "同步执行")
         {
-            OpenSync();
+            CloseSync(options[1]);
         }
         else
         {
-            OpenAsync();
+            CloseAsync(options[1]);
         }
     }
-
-    private void OpenSync()
+    
+    // 重置
+    private void ResetDetails()
     {
-        _fd = _fileSystemManager.OpenSync(new OpenSyncOption()
+        _fd = new string[2];
+        var fd = _fileSystemManager.OpenSync(new OpenSyncOption()
         {
-            filePath = Path,
+            filePath = Path1,
             flag = "w+"
         });
+        _fileSystemManager.WriteSync(new WriteSyncStringOption()
+        {
+            fd = fd,
+            data = "Original Data "
+        });
+        
+        if (_fileSystemManager.AccessSync(Path2) == "access:ok")
+        {
+            _fileSystemManager.UnlinkSync(Path2);
+        }
+        
+        UpdateResults();
+        GameManager.Instance.detailsController.SetResultActive(3, false);
+        GameManager.Instance.detailsController.SetResultActive(4, false);
+    }
+
+    private void OpenSync(string filePath, string flag)
+    {
+        var index = filePath == "/exist.txt" ? 0 : 1;
+
+        _fd[index] = _fileSystemManager.OpenSync(new OpenSyncOption()
+        {
+            filePath = PathPrefix + filePath,
+            flag = flag
+        });
+
+        GameManager.Instance.detailsController.SetResultActive(index + 3, true);
+        
         WX.ShowModal(new ShowModalOption()
         {
-            content = "OpenSync Success, fd: " + _fd
+            content = "OpenSync Success, fd: " + _fd[index]
         });
     }
     
-    private void OpenAsync()
+    private void OpenAsync(string filePath, string flag)
     {
+        var index = filePath == "/exist.txt" ? 0 : 1;
+        
         _fileSystemManager.Open(new OpenOption()
         {
-            filePath = Path,
-            flag = "w+",
+            filePath = filePath,
+            flag = flag,
             success = (res) =>
             {
-                _fd = res.fd;
+                _fd[index] = res.fd;
+                GameManager.Instance.detailsController.SetResultActive(index + 3, true);
                 WX.ShowModal(new ShowModalOption()
                 {
                     content = "Open Success, Result: " + JsonMapper.ToJson(res)
@@ -101,24 +126,16 @@ public class OpenAndClose : Details
         });
     }
     
-    private void Close(string mode)
+    private void CloseSync(string filePath)
     {
-        if (mode == "同步执行")
-        {
-            CloseSync();
-        }
-        else
-        {
-            CloseAsync();
-        }
-    }
-    
-    private void CloseSync()
-    {
+        var index = filePath == "/exist.txt" ? 0 : 1;
+        
         _fileSystemManager.CloseSync(new CloseSyncOption()
         {
-            fd = _fd
+            fd = _fd[index]
         });
+        
+        GameManager.Instance.detailsController.SetResultActive(index + 3, false);
         
         WX.ShowToast(new ShowToastOption()
         {
@@ -126,13 +143,16 @@ public class OpenAndClose : Details
         });
     }
     
-    private void CloseAsync()
+    private void CloseAsync(string filePath)
     {
+        var index = filePath == "/exist.txt" ? 0 : 1;
+        
         _fileSystemManager.Close(new FileSystemManagerCloseOption()
         {
-            fd = _fd,
+            fd = _fd[index],
             success = (res) =>
             {
+                GameManager.Instance.detailsController.SetResultActive(index + 3, false);
                 WX.ShowModal(new ShowModalOption()
                 {
                     content = "Close Success, Result: " + JsonMapper.ToJson(res)
@@ -146,5 +166,11 @@ public class OpenAndClose : Details
                 });
             }
         });
+    }
+
+    private void UpdateResults()
+    {
+        GameManager.Instance.detailsController.SetResultActive(0, _fileSystemManager.AccessSync(Path1) == "access:ok");
+        GameManager.Instance.detailsController.SetResultActive(1, _fileSystemManager.AccessSync(Path1) == "access:ok");
     }
 }

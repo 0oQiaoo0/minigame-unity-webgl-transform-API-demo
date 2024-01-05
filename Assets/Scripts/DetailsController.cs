@@ -123,7 +123,7 @@ public class DetailsController : MonoBehaviour
             .AddButtonListener(action);
     }
     
-    public int AddResult(ResultData resultData)
+    public GameObject AddResult(ResultData resultData)
     {
         var resultObj = Instantiate(resultPrefab, resultsTransform);
         resultObjects.Add(resultObj);
@@ -134,7 +134,7 @@ public class DetailsController : MonoBehaviour
         {
             resultObj.SetActive(false);
         }
-        return resultObjects.Count - 1;
+        return resultObj;
     }
     
     public void RemoveAllResult()

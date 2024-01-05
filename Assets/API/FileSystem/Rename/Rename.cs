@@ -11,9 +11,6 @@ public class Rename : Details
     private static readonly string Path1 = PathPrefix + "/hello.txt";
     private static readonly string Path2 = PathPrefix + "/world.txt";
     private static readonly string Path3 = PathPrefix + "/dir/hello.txt";
-    
-    // 文件描述符
-    private string _fd;
 
     // 当前路径
     private string _oldPath = "/hello.txt";
@@ -28,14 +25,14 @@ public class Rename : Details
             _fileSystemManager.MkdirSync(PathPrefix + "/dir", true);
         }
             
-        _fd = _fileSystemManager.OpenSync(new OpenSyncOption()
+        var fd = _fileSystemManager.OpenSync(new OpenSyncOption()
         {
             filePath = Path1,
             flag = "w+"
         });
         _fileSystemManager.WriteSync(new WriteSyncStringOption()
         {
-            fd = _fd,
+            fd = fd,
             data = "Original Data "
         });
     }

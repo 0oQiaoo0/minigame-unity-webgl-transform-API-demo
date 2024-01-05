@@ -71,7 +71,7 @@ public class CopyFile : Details
                     content = "CopeFile Success, Result: " + JsonMapper.ToJson(res)
                                                            + "\nCopied File Content: " + _fileSystemManager.ReadFileSync(AsyncPath, "utf8")
                 });
-                GameManager.Instance.detailsController.SetResultActive(2, true);
+                UpdateResults();
             },
             fail = (res) =>
             {
@@ -90,7 +90,7 @@ public class CopyFile : Details
             content = "CopyFileSync Result: "  + _fileSystemManager.CopyFileSync(Path, SyncPath)
             + "\nCopied File Content: " + _fileSystemManager.ReadFileSync(Path, "utf8")
         });
-        GameManager.Instance.detailsController.SetResultActive(1, true);
+        UpdateResults();
     }
     
     private void ClearCopyFile()
@@ -104,12 +104,18 @@ public class CopyFile : Details
             _fileSystemManager.UnlinkSync(AsyncPath);
         }
         
-        GameManager.Instance.detailsController.SetResultActive(1, false);
-        GameManager.Instance.detailsController.SetResultActive(2, false);
+        UpdateResults();
         
         WX.ShowToast(new ShowToastOption()
         {
             title = "已清除复制文件"
         });
+    }
+    
+    private void UpdateResults()
+    {
+        GameManager.Instance.detailsController.SetResultActive(0, _fileSystemManager.AccessSync(Path) == "access:ok");
+        GameManager.Instance.detailsController.SetResultActive(1, _fileSystemManager.AccessSync(SyncPath) == "access:ok");
+        GameManager.Instance.detailsController.SetResultActive(2, _fileSystemManager.AccessSync(AsyncPath) == "access:ok");
     }
 }

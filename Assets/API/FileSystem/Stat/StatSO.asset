@@ -13,10 +13,41 @@ MonoBehaviour:
   m_Name: StatSO
   m_EditorClassIdentifier: 
   entryScriptTypeName: Stat
-  entryName: "\u5173\u95ED\u6587\u4EF6"
-  entryAPI: Close
-  entryDescription: 
-  optionList: []
+  entryName: "\u83B7\u53D6\u6587\u4EF6/\u6587\u4EF6\u5939\u7684\u72B6\u6001\u4FE1\u606F"
+  entryAPI: Stat(Sync)
+  entryDescription: "<color=red>\u6CE8\u610F\uFF1ASDK StatSync\u6682\u4E0D\u652F\u6301recursive\u53C2\u6570\uFF0Crecursive\u53C2\u6570\u5F3A\u5236\u4E3Atrue</color>\n<color=red>\u6CE8\u610F\uFF1ASDK
+    Stat recursive\u9ED8\u8BA4\u503C\u4E3Atrue\u800C\u975Efalse</color>\n<color=red>\u6CE8\u610F\uFF1ASDK
+    Stat\u3001StatSync\u8FD4\u56DE\u7C7B\u578B\u4E0E\u6587\u6863\u6709\u8F83\u591A\u4E0D\u4E00\u81F4\uFF0C\u8BE6\u89C1\u4EE3\u7801</color>"
+  optionList:
+  - optionName: "\u6267\u884C\u65B9\u5F0F"
+    availableOptions:
+    - "\u540C\u6B65\u6267\u884C"
+    - "\u5F02\u6B65\u6267\u884C"
+  - optionName: path
+    availableOptions:
+    - /Five.txt
+    - /dir
+    - /dir/Six.txt
+  - optionName: "recursive\uFF08\u4EC5Stat\uFF09"
+    availableOptions:
+    - null
+    - false
+    - true
   initialButtonText: "\u8FD0\u884C"
   extraButtonList: []
-  initialResultList: []
+  initialResultList:
+  - isDisableInitially: 0
+    initialTitleText: "\u6587\u4EF6\u5217\u8868\uFF1A"
+    initialContentText: /Five.txt
+  - isDisableInitially: 0
+    initialTitleText: 
+    initialContentText: /dir/Six.txt
+  - isDisableInitially: 0
+    initialTitleText: 
+    initialContentText: /dir/Eight.txt
+  - isDisableInitially: 0
+    initialTitleText: 
+    initialContentText: /dir/Nine.txt
+  - isDisableInitially: 0
+    initialTitleText: "\u8FD0\u884C\u7ED3\u679C\uFF1A"
+    initialContentText: 
