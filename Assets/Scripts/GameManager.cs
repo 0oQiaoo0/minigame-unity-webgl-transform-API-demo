@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using WeChatWASM;
 using SystemInfo = WeChatWASM.SystemInfo;
 
@@ -14,8 +18,8 @@ public class GameManager : MonoBehaviour
     public Action<Font> onFontLoaded;
     
     [Header("Canvas Switch")]
-    [SerializeField] private GameObject mainCanvas;
-    [SerializeField] private GameObject detailsCanvas;
+    [SerializeField]private GameObject _mainCanvas;
+    [SerializeField]private GameObject _detailsCanvas;
     private bool _isMainCanvasActive = true;
     
     [Header("System Info")]
@@ -33,7 +37,7 @@ public class GameManager : MonoBehaviour
         
         DontDestroyOnLoad(gameObject);
         
-        detailsController = detailsCanvas.GetComponent<DetailsController>();
+        GetReferences();
         
         WX.InitSDK((code) =>
         {
@@ -54,14 +58,51 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
-        mainCanvas.SetActive(true);
-        detailsCanvas.SetActive(false);
+        _mainCanvas.SetActive(true);
+        _detailsCanvas.SetActive(false);
     }
 
     public void SwitchCanvas()
     {
         _isMainCanvasActive = !_isMainCanvasActive;
-        mainCanvas.SetActive(_isMainCanvasActive);
-        detailsCanvas.SetActive(!_isMainCanvasActive);
+        _mainCanvas.SetActive(_isMainCanvasActive);
+        _detailsCanvas.SetActive(!_isMainCanvasActive);
+    }
+    
+    public void LoadScene(string sceneName)
+    {
+        StartCoroutine(LoadSceneAsync(sceneName));
+    }
+
+    private IEnumerator LoadSceneAsync(string sceneName)
+    {
+        var asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+
+        // 等待场景加载完成
+        while (!asyncOperation.isDone)
+        {
+            yield return null;
+        }
+
+        // 场景加载完成后执行的操作
+        if (sceneName == "MainScene")
+        {
+            GetReferences();
+        }
+    }
+
+    private void GetReferences()
+    {
+        _mainCanvas = GetSceneRootGO("Main Canvas");
+        _detailsCanvas = GetSceneRootGO("Details Canvas");
+        detailsController = _detailsCanvas.GetComponent<DetailsController>();
+    }
+
+    public GameObject GetSceneRootGO(string name)
+    {
+        // 获取当前场景中的所有根物体
+        var rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+        // 遍历所有顶层游戏对象，找到名字为name的游戏对象则返回，否则返回null
+        return rootObjects.FirstOrDefault(obj => obj.name == name);
     }
 }

@@ -5,4 +5,6 @@ using UnityEngine;
 public class APISO : ScriptableObject
 {
     public List<CategorySO> categoryList;
+
+    public List<AbilitySO> abilityList;
 }

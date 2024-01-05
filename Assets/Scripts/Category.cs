@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Category : MonoBehaviour
@@ -12,12 +13,11 @@ public class Category : MonoBehaviour
     [SerializeField] private Text categoryText;
     [SerializeField] private Image categoryImage;
 
-    [Header("Elements")]
+    [Header("Entries")]
     [SerializeField] private GameObject entryPrefab;
-    [SerializeField] private Transform entryBlocksTransform;
+    [SerializeField] private GameObject entries;
     
     [Header("Expand")]
-    [SerializeField] private GameObject entries;
     [SerializeField] private float unfoldAlpha = 0.5f;
     private bool _isExpanded = false;
 
@@ -36,7 +36,7 @@ public class Category : MonoBehaviour
         
         foreach (var entry in categorySO.entryList)
         {
-            var entryObj = Instantiate(entryPrefab, entryBlocksTransform);
+            var entryObj = Instantiate(entryPrefab, entries.transform);
             entryObj.GetComponent<Entry>().Init(entry);
         }
     }

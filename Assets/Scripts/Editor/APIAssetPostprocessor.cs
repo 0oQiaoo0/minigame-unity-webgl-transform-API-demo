@@ -20,6 +20,7 @@ public class APIAssetPostprocessor : AssetPostprocessor
                     var apiSO = AssetDatabase.LoadAssetAtPath<APISO>(assetPath);
                     var categorySO = AssetDatabase.LoadAssetAtPath<CategorySO>(assetPath);
                     var entrySO = AssetDatabase.LoadAssetAtPath<EntrySO>(assetPath);
+                    var abilitySO = AssetDatabase.LoadAssetAtPath<AbilitySO>(assetPath);
 
                     if (apiSO != null)
                     {
@@ -35,6 +36,11 @@ public class APIAssetPostprocessor : AssetPostprocessor
                         UpdateCategorySO(GetCategorySOFromParentPath(assetPath));
                         UpdateEntrySO(entrySO);
                     }
+                    else if (abilitySO != null) 
+                    {
+                        UpdateAPISO(GetAPISOFromParentPath(assetPath));
+                        // UpdateAbilitySO(abilitySO);
+                    }
 
                     break;
                 }
@@ -42,7 +48,7 @@ public class APIAssetPostprocessor : AssetPostprocessor
                 {
                     var entrySO = GetEntrySOFromSamePath(assetPath);
 
-                    if(entrySO) UpdateEntrySO(entrySO);
+                    if (entrySO) UpdateEntrySO(entrySO);
 
                     break;
                 }
@@ -73,6 +79,7 @@ public class APIAssetPostprocessor : AssetPostprocessor
         var subdirectories = Directory.GetDirectories(assetDirectory);
 
         apiSO.categoryList.Clear();
+        apiSO.abilityList.Clear();
 
         foreach (var subdirectory in subdirectories)
         {
@@ -86,6 +93,12 @@ public class APIAssetPostprocessor : AssetPostprocessor
                 if (categorySO != null)
                 {
                     apiSO.categoryList.Add(categorySO);
+                }
+
+                var abilitySO = AssetDatabase.LoadAssetAtPath<AbilitySO>(file);
+                if (abilitySO != null)
+                {
+                    apiSO.abilityList.Add(abilitySO);
                 }
             }
         }
