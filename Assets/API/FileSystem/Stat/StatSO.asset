@@ -26,7 +26,7 @@ MonoBehaviour:
     - /Five.txt
     - /dir
     - /dir/Six.txt
-  - optionName: "recursive\uFF08\u4EC5Stat\uFF09"
+  - optionName: "recursive\n(\u4EC5\u5F02\u6B65)"
     availableOptions:
     - null
     - false

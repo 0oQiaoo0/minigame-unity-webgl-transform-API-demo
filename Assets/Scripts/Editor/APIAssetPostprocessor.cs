@@ -11,7 +11,8 @@ public class APIAssetPostprocessor : AssetPostprocessor
         
         foreach (var assetPath in addedAssets)
         {
-            if (!File.Exists(assetPath)) continue; // 跳过非法路径
+            // 跳过非法路径
+            if (!File.Exists(assetPath)) continue;
             
             switch (Path.GetExtension(assetPath))
             {
@@ -58,7 +59,8 @@ public class APIAssetPostprocessor : AssetPostprocessor
         var removedAssets = deletedAssets.Concat(movedFromAssetPaths).ToArray();
         foreach (var assetPath in removedAssets)
         {
-            if (!File.Exists(assetPath)) continue; // 跳过非法路径
+            // 跳过非法路径
+            if (!File.Exists(assetPath)) continue;
 
             var apiSO = GetAPISOFromParentPath(assetPath);
             var categorySO = GetCategorySOFromParentPath(assetPath);
@@ -87,7 +89,8 @@ public class APIAssetPostprocessor : AssetPostprocessor
 
             foreach (var file in allFiles)
             {
-                if (Path.GetExtension(file) != ".asset") continue; // 只考虑 .asset 文件
+                // 只考虑 .asset 文件
+                if (Path.GetExtension(file) != ".asset") continue;
                 
                 var categorySO = AssetDatabase.LoadAssetAtPath<CategorySO>(file);
                 if (categorySO != null)
@@ -121,7 +124,8 @@ public class APIAssetPostprocessor : AssetPostprocessor
 
             foreach (var file in allFiles)
             {
-                if (Path.GetExtension(file) != ".asset") continue; // 只考虑 .asset 文件
+                // 只考虑 .asset 文件
+                if (Path.GetExtension(file) != ".asset") continue;
                 
                 var entrySO = AssetDatabase.LoadAssetAtPath<EntrySO>(file);
                 if (entrySO != null)
@@ -170,7 +174,8 @@ public class APIAssetPostprocessor : AssetPostprocessor
 
         foreach (var file in allFiles)
         {
-            if (Path.GetExtension(file) != ".asset") continue; // 只考虑 .asset 文件
+            // 只考虑 .asset 文件
+            if (Path.GetExtension(file) != ".asset") continue;
             
             var apiSO = AssetDatabase.LoadAssetAtPath<APISO>(file);
             if (apiSO != null)

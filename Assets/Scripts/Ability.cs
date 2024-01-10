@@ -10,6 +10,7 @@ public class Ability : MonoBehaviour
     [SerializeField] private Text abilityText;
     [SerializeField] private Image abilityImage;
 
+    // 初始化 Ability，设置对应的 AbilitySO 和文本、图片
     public void Init(AbilitySO so)
     {
         abilitySO = so;
@@ -19,8 +20,10 @@ public class Ability : MonoBehaviour
         abilityImage.sprite = abilitySO.abilitySprite;
     }
 
+    // 点击事件处理
     public void OnClick()
     {
+        // 加载对应的场景
         GameManager.Instance.LoadScene(abilitySO.abilitySceneName);
     }
 }

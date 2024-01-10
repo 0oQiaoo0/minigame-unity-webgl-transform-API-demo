@@ -21,7 +21,7 @@ MonoBehaviour:
     availableOptions:
     - "\u540C\u6B65\u6267\u884C"
     - "\u5F02\u6B65\u6267\u884C"
-  - optionName: "filePath\uFF08\u4EC5\u521B\u5EFA/\u5220\u9664\u6587\u4EF6\uFF09"
+  - optionName: "filePath\n(\u4EC5\u521B\u5EFA/\u5220\u9664\u6587\u4EF6)"
     availableOptions:
     - /hello.txt
     - /world.txt

@@ -7,11 +7,14 @@ public class FolderRenameProcessor : AssetPostprocessor
 {
     private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
     {
+        // 重命名文件夹下的脚本与SO
         foreach (var movedAsset in movedAssets)
         {
-            if (!AssetDatabase.IsValidFolder(movedAsset)) continue; // 跳过非文件夹
+            // 跳过非文件夹
+            if (!AssetDatabase.IsValidFolder(movedAsset)) continue;
             
-            if (!IsSubdirectory(movedAsset, "Assets/API")) continue; // 跳过非 Assets/API 下的文件夹
+            // 跳过非 Assets/API 下的文件夹
+            if (!IsSubdirectory(movedAsset, "Assets/API")) continue;
             
             var newFolderName = Path.GetFileName(movedAsset);
                 
@@ -36,7 +39,7 @@ public class FolderRenameProcessor : AssetPostprocessor
 
                 var newFilePath = Path.Combine(movedAsset, newFileName);
 
-                // 使用 AssetDatabase.MoveAsset 重命名文件
+                // 重命名文件
                 AssetDatabase.MoveAsset(filePath, newFilePath);
             }
         }

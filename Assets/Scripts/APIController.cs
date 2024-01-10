@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class APIController : MonoBehaviour
 {
@@ -18,9 +16,11 @@ public class APIController : MonoBehaviour
     
     private void Start()
     {
+        // 根据系统安全区域调整标题的位置
         title.anchoredPosition = new Vector2(title.anchoredPosition.x,  -125f - (float)GameManager.Instance.systemInfo.safeArea.top);
     }
 
+    // 清除所有分类
     private void ClearCategories()
     {
         var childCount = apiCategoriesTransform.childCount;
@@ -32,6 +32,7 @@ public class APIController : MonoBehaviour
         }
     }
     
+    // 清除所有能力
     private void ClearAbilities()
     {
         var childCount = abilitiesTransform.childCount;
@@ -43,17 +44,20 @@ public class APIController : MonoBehaviour
         }
     }
     
+    // 初始化 APIController，创建分类和能力
     public void Init()
     {
         ClearCategories();
         ClearAbilities();
         
+        // 为每个分类实例化一个预制体并初始化
         foreach (var category in apiSO.categoryList)
         {
             var categoryObj = Instantiate(categoryPrefab, apiCategoriesTransform);
             categoryObj.GetComponent<Category>().Init(category);
         }
 
+        // 为每个能力实例化一个预制体并初始化
         foreach (var ability in apiSO.abilityList)
         {
             var abilityObj = Instantiate(abilityPrefab, abilitiesTransform);

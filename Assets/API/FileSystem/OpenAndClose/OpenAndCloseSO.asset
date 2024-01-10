@@ -25,7 +25,7 @@ MonoBehaviour:
     availableOptions:
     - /exist.txt
     - /notExist.txt
-  - optionName: "flag\uFF08\u4EC5\u6253\u5F00\uFF09"
+  - optionName: "flag\n(\u4EC5\u6253\u5F00)"
     availableOptions:
     - null
     - a

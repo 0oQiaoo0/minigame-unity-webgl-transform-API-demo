@@ -22,7 +22,7 @@ MonoBehaviour:
     availableOptions:
     - "\u540C\u6B65\u6267\u884C"
     - "\u5F02\u6B65\u6267\u884C"
-  - optionName: "data\u7C7B\u578B(\u4EC5\u5199\u5165)"
+  - optionName: "data\u7C7B\u578B\n(\u4EC5\u5199\u5165)"
     availableOptions:
     - string
     - byte[]
@@ -40,12 +40,12 @@ MonoBehaviour:
     - utf-8
     - utf8
     - latin1
-  - optionName: "position(\u4EC5\u8BFB\u53D6)"
+  - optionName: "position\n(\u4EC5\u8BFB\u53D6)"
     availableOptions:
     - null
     - 4
     - 20
-  - optionName: "length(\u4EC5\u8BFB\u53D6)"
+  - optionName: "length\n(\u4EC5\u8BFB\u53D6)"
     availableOptions:
     - null
     - 4

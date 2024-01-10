@@ -40,6 +40,7 @@ public class ReadAndWrite : Details
         });
     };
     
+    // 条目初始化
     private void Start()
     {
         // 获取全局唯一的文件管理器
@@ -64,7 +65,8 @@ public class ReadAndWrite : Details
 
         GameManager.Instance.detailsController.BindExtraButtonAction(0, Write);
     }
-    
+
+    /***** Buttons *****/
     // 读取文件
     protected override void TestAPI(string[] args)
     {
@@ -92,7 +94,9 @@ public class ReadAndWrite : Details
             WriteAsync(options[1], options[2], options[3], options[4], options[5]);
         }
     }
+    /***** Buttons *****/
 
+    // 同步读取
     private void ReadSync(string offset, string length, string position)
     {
         WX.ShowModal(new ShowModalOption()
@@ -120,6 +124,7 @@ public class ReadAndWrite : Details
         Debug.Log("result buffer: " + JsonMapper.ToJson(readResult.arrayBuffer));
     }
     
+    // 异步读取
     private void ReadAsync(string offset, string length, string position)
     {
         _fileSystemManager.Read(new ReadOption()
@@ -150,6 +155,7 @@ public class ReadAndWrite : Details
         });
     }
 
+    // 同步写入
     private void WriteSync(string dataType, string offset, string length, string encoding, string position)
     {
         WriteResult writeResult;
@@ -184,6 +190,7 @@ public class ReadAndWrite : Details
         });
     }
     
+    // 异步写入
     private void WriteAsync(string dataType, string offset, string length, string encoding, string position)
     {
         if (dataType == "string")
@@ -216,12 +223,14 @@ public class ReadAndWrite : Details
         }
     }
 
+    // 更新读取结果
     private void UpdateReadResult()
     {
         // 使用UTF8编码显示读取内容
         GameManager.Instance.detailsController.ChangeResultContent(0, Encoding.UTF8.GetString(_buffer));
     }
 
+    // 更新文件内容
     private static void UpdateFileContent()
     {
         // 使用UTF8编码显示文件内容

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Category : MonoBehaviour
@@ -23,9 +22,11 @@ public class Category : MonoBehaviour
 
     private void Awake()
     {
+        // 获取父对象的 RectTransform 组件
         _contentRectTransform = transform.parent.GetComponent<RectTransform>();
     }
 
+    // 初始化 Category，设置对应的 CategorySO 和条目
     public void Init(CategorySO so)
     {
         categorySO = so;
@@ -34,6 +35,7 @@ public class Category : MonoBehaviour
         categoryText.text = categorySO.categoryName;
         categoryImage.sprite = categorySO.categorySprite;
         
+        // 为每个条目实例化一个预制体并初始化
         foreach (var entry in categorySO.entryList)
         {
             var entryObj = Instantiate(entryPrefab, entries.transform);
@@ -41,20 +43,26 @@ public class Category : MonoBehaviour
         }
     }
 
+    // 设置颜色的透明度
     private static Color SetColorWithAlpha(Color color, float alpha)
     {
         return new Color(color.r, color.g, color.b, alpha);
     }
     
+    // 点击事件处理
     public void OnClick()
     {
+        // 切换展开状态
         _isExpanded = !_isExpanded;
         
+        // 根据展开状态设置文本和图片的透明度
         categoryText.color = SetColorWithAlpha(categoryText.color, _isExpanded ? unfoldAlpha : 1f);
         categoryImage.color = SetColorWithAlpha(categoryImage.color, _isExpanded ? unfoldAlpha : 1f);
 
+        // 根据展开状态设置条目的活跃状态
         entries.SetActive(_isExpanded);
         
+        // 强制立即重新构建布局
         LayoutRebuilder.ForceRebuildLayoutImmediate(_contentRectTransform);
     }
 }

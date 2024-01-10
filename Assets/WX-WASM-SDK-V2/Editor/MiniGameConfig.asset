@@ -40,7 +40,7 @@ MonoBehaviour:
     needCheckUpdate: 0
     disableHighPerformanceFallback: 0
   SDKOptions:
-    UseFriendRelation: 0
+    UseFriendRelation: 1
     UseCompressedTexture: 0
     UseMiniGameChat: 0
     PreloadWXFont: 0

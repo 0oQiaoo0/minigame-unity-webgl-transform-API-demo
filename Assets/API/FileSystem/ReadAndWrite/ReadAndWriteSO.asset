@@ -21,7 +21,7 @@ MonoBehaviour:
     availableOptions:
     - "\u540C\u6B65\u6267\u884C"
     - "\u5F02\u6B65\u6267\u884C"
-  - optionName: "data\u7C7B\u578B(\u4EC5\u5199\u5165)"
+  - optionName: "data\u7C7B\u578B\n(\u4EC5\u5199\u5165)"
     availableOptions:
     - string
     - byte[]
@@ -37,7 +37,7 @@ MonoBehaviour:
     - 4
     - 12
     - 20
-  - optionName: "encoding(\u4EC5\u5199\u5165)"
+  - optionName: "encoding\n(\u4EC5\u5199\u5165)"
     availableOptions:
     - null
     - ascii
