@@ -40,17 +40,19 @@ public class ReadAndWrite : Details
         });
     };
     
-    // 条目初始化
+    // 在 Start 方法中初始化
     private void Start()
     {
         // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
             
+        // 检查并创建目录
         if (_fileSystemManager.AccessSync(PathPrefix) != "access:ok")
         {
             _fileSystemManager.MkdirSync(PathPrefix, true);
         }
 
+        // 打开文件，并写入初始数据
         _fd = _fileSystemManager.OpenSync(new OpenSyncOption()
         {
             filePath = Path,
@@ -63,6 +65,7 @@ public class ReadAndWrite : Details
             data = "Original Data "
         });
 
+        // 绑定按钮事件
         GameManager.Instance.detailsController.BindExtraButtonAction(0, Write);
     }
 
@@ -72,6 +75,7 @@ public class ReadAndWrite : Details
     {
         _buffer = new byte[20];
         
+        // 根据参数决定执行同步读取还是异步读取
         if (args[0] == "同步执行")
         {
             ReadSync(args[2], args[3], args[5]);
@@ -85,6 +89,7 @@ public class ReadAndWrite : Details
     // 写入文件
     private void Write()
     {
+        // 根据参数决定执行同步写入还是异步写入
         if (options[0] == "同步执行")
         {
             WriteSync(options[1], options[2], options[3], options[4], options[5]);
@@ -113,6 +118,7 @@ public class ReadAndWrite : Details
             position = position == "null" ? null : (double?)int.Parse(position)
         });
         
+        // 更新读取结果
         UpdateReadResult();
         WX.ShowToast(new ShowToastOption()
         {
@@ -131,11 +137,12 @@ public class ReadAndWrite : Details
         {
             arrayBuffer = _buffer,
             fd = _fd,
-            length = length == "null" ? null : (double?)int.Parse(length),
+            length = length ==            "null" ? null : (double?)int.Parse(length),
             offset = offset == "null" ? null : (double?)int.Parse(offset),
             position = position == "null" ? null : (double?)int.Parse(position),
             success = (res) =>
             {
+                // 更新读取结果
                 UpdateReadResult();
                 WX.ShowModal(new ShowModalOption()
                 {
@@ -183,6 +190,7 @@ public class ReadAndWrite : Details
                 position = position == "null" ? null : (double?)int.Parse(position)
             });
         }
+        // 更新文件内容
         UpdateFileContent();
         WX.ShowModal(new ShowModalOption()
         {

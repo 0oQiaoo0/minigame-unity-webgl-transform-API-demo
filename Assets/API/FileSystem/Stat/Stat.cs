@@ -15,6 +15,7 @@ public class Stat : Details
     private static readonly string Path8 = PathPrefix + "/dir/Eight.txt";
     private static readonly string Path9 = PathPrefix + "/dir/Nine.txt";
     
+    // 失败回调
     private Action<WXStatResponse> onFail = (res) =>
     {
         WX.ShowModal(new ShowModalOption()
@@ -28,11 +29,13 @@ public class Stat : Details
         // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
 
+        // 检查并创建目录
         if (_fileSystemManager.AccessSync(DirPath) != "access:ok")
         {
             _fileSystemManager.MkdirSync(DirPath, true);
         }
 
+        // 创建文件
         _fileSystemManager.OpenSync(new OpenSyncOption()
         {
             filePath = Path5,
@@ -53,13 +56,15 @@ public class Stat : Details
             filePath = Path9,
             flag = "w+"
         });
-        
+
+        // 写入文件内容
         _fileSystemManager.WriteFileSync(Path5, "Five words form this statement.");
         _fileSystemManager.WriteFileSync(Path6, "Six words make up this sentence.");
         _fileSystemManager.WriteFileSync(Path8, "This phrase has a total of eight words.");
         _fileSystemManager.WriteFileSync(Path9, "Here, you'll find a sentence with nine words.");
     }
     
+    // 获取文件状态
     protected override void TestAPI(string[] args)
     {
         if (args[0] == "同步执行")
@@ -72,6 +77,7 @@ public class Stat : Details
         }
     }
     
+    // 同步获取文件状态
     private void RunSync(string path)
     {
         WX.ShowModal(new ShowModalOption()
@@ -88,6 +94,7 @@ public class Stat : Details
         });
     }
     
+    // 异步获取文件状态
     private void RunAsync(string path, string recursive)
     {
         if (recursive == "null")
@@ -137,11 +144,13 @@ public class Stat : Details
         }
     }
     
+    // 清除结果
     private void ClearResults()
     {
         GameManager.Instance.detailsController.KeepFirstNResults(5);
     }
     
+    // 更新结果
     private void UpdateResults(WXStat[] fileStats)
     {
         ClearResults();
@@ -159,6 +168,7 @@ public class Stat : Details
         }
     }
     
+    // 更新结果
     private void UpdateResults(WXStatInfo stats)
     {
         ClearResults();

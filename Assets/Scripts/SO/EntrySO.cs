@@ -29,8 +29,11 @@ public class EntrySO : ScriptableObject
     
     public string entryName;
     
+    [TextArea(1, 3)]
     public string entryAPI;
-    [TextArea(5,15)] public string entryDescription;
+    
+    [TextArea(5, 15)]
+    public string entryDescription;
     
     public List<OptionData> optionList;
     

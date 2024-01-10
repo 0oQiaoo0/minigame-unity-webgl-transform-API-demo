@@ -32,28 +32,33 @@ public class ReadFileAndWriteFile : Details
         });
     };
     
+    // 在 Start 方法中初始化
     private void Start()
     {
         // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
             
+        // 检查并创建目录
         if (_fileSystemManager.AccessSync(PathPrefix) != "access:ok")
         {
             _fileSystemManager.MkdirSync(PathPrefix, true);
         }
 
+        // 创建文件
         var fd = _fileSystemManager.OpenSync(new OpenSyncOption()
         {
             filePath = Path,
             flag = "w+"
         });
         
+        // 写入初始数据
         _fileSystemManager.WriteSync(new WriteSyncStringOption()
         {
             fd = fd,
             data = "Original Data "
         });
 
+        // 绑定按钮事件
         GameManager.Instance.detailsController.BindExtraButtonAction(0, WriteFile);
     }
     
@@ -83,6 +88,7 @@ public class ReadFileAndWriteFile : Details
         }
     }
 
+    // 同步读取文件
     private void ReadFileSync(string encoding, string position, string length)
     {
         if (encoding == "null")
@@ -106,6 +112,7 @@ public class ReadFileAndWriteFile : Details
         });
     }
     
+    // 异步读取文件
     private void ReadFileAsync(string encoding, string position, string length)
     {
         _fileSystemManager.ReadFile(new ReadFileParam()
@@ -133,6 +140,7 @@ public class ReadFileAndWriteFile : Details
         });
     }
 
+    // 同步写入文件
     private void WriteFileSync(string dataType, string encoding)
     {
         if (dataType == "string")
@@ -158,6 +166,7 @@ public class ReadFileAndWriteFile : Details
             }
         }
 
+        // 更新文件内容
         UpdateFileContent();
         WX.ShowToast(new ShowToastOption()
         {
@@ -165,6 +174,7 @@ public class ReadFileAndWriteFile : Details
         });
     }
     
+    // 异步写入文件
     private void WriteFileAsync(string dataType, string encoding)
     {
         if (dataType == "string")
@@ -217,16 +227,19 @@ public class ReadFileAndWriteFile : Details
         }
     }
 
+    // 更新读取结果（字节数组）
     private void UpdateReadResult(byte[] readResult)
     {
         GameManager.Instance.detailsController.ChangeResultContent(0, JsonMapper.ToJson(readResult));
     }
 
+    // 更新读取结果（字符串）
     private void UpdateReadResult(string readResult)
     {
         GameManager.Instance.detailsController.ChangeResultContent(0, readResult);
     }
 
+    // 更新文件内容
     private static void UpdateFileContent()
     {
         // 使用UTF8编码显示文件内容

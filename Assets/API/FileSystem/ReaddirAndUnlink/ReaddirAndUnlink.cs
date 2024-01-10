@@ -9,23 +9,19 @@ public class ReaddirAndUnlink : Details
     // 注意WX.env.USER_DATA_PATH后接字符串需要以/开头
     private static readonly string PathPrefix = WX.env.USER_DATA_PATH + "/ReaddirAndUnlink";
     private static readonly string DirPath = PathPrefix + "/dir";
-    private static readonly string Path1 = PathPrefix + "/hello.txt";
-    private static readonly string Path2 = PathPrefix + "/world.txt";
-    private static readonly string Path3 = PathPrefix + "/dir/abandon.txt";
-
-    // 当前路径
-    private string _oldPath = "/hello.txt";
     
     private void Start()
     {
         // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
 
+        // 检查并创建目录
         if (_fileSystemManager.AccessSync(DirPath) != "access:ok")
         {
             _fileSystemManager.MkdirSync(DirPath, true);
         }
         
+        // 绑定按钮事件
         GameManager.Instance.detailsController.BindExtraButtonAction(0, Unlink);
         GameManager.Instance.detailsController.BindExtraButtonAction(1, ReadDir);
     }
@@ -69,6 +65,7 @@ public class ReaddirAndUnlink : Details
         }
     }
     
+    // 同步创建文件
     private void OpenSync(string filePath)
     {
         _fileSystemManager.OpenSync(new OpenSyncOption()
@@ -83,11 +80,12 @@ public class ReaddirAndUnlink : Details
         });
     }
     
+    // 异步创建文件
     private void OpenAsync(string filePath)
     {
         _fileSystemManager.Open(new OpenOption()
         {
-            filePath = filePath,
+            filePath = PathPrefix + filePath,
             flag = "w+",
             success = (res) =>
             {
@@ -106,6 +104,7 @@ public class ReaddirAndUnlink : Details
         });
     }
     
+    // 同步删除文件
     private void UnlinkSync(string filePath)
     {
         var res = _fileSystemManager.UnlinkSync(PathPrefix + filePath);
@@ -116,11 +115,12 @@ public class ReaddirAndUnlink : Details
         });
     }
     
+    // 异步删除文件
     private void UnlinkAsync(string filePath)
     {
         _fileSystemManager.Unlink(new UnlinkParam()
         {
-            filePath = filePath,
+            filePath = PathPrefix + filePath,
             success = (res) =>
             {
                 WX.ShowToast(new ShowToastOption()
@@ -138,10 +138,12 @@ public class ReaddirAndUnlink : Details
         });
     }
     
+    // 同步获取目录下的文件列表
     private void ReaddirSync()
     {
         var res = _fileSystemManager.ReaddirSync(PathPrefix);
         
+        // 更新文件列表
         UpdateResults(res);
         
         WX.ShowToast(new ShowToastOption()
@@ -150,6 +152,7 @@ public class ReaddirAndUnlink : Details
         });
     }
 
+    // 异步获取目录下的文件列表
     private void ReaddirAsync()
     {
         _fileSystemManager.Readdir(new ReaddirOption()
@@ -157,6 +160,7 @@ public class ReaddirAndUnlink : Details
             dirPath = PathPrefix,
             success = (res) =>
             {
+                // 更新文件列表
                 UpdateResults(res.files);
 
                 WX.ShowModal(new ShowModalOption()
@@ -174,10 +178,13 @@ public class ReaddirAndUnlink : Details
         });
     }
 
+    // 更新文件列表
     private void UpdateResults(string[] fileList)
     {
+        // 清空结果列表
         GameManager.Instance.detailsController.KeepFirstNResults(1);
 
+        // 遍历文件列表，将每个文件添加到结果列表中
         foreach (var file in fileList)
         {
             GameManager.Instance.detailsController.AddResult(new ResultData()

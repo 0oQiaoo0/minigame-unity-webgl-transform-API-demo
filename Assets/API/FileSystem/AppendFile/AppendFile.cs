@@ -15,17 +15,19 @@ public class AppendFile : Details
     private string _stringData = "String Data ";
     private byte[] _bufferData = {66, 117, 102, 102, 101, 114, 32, 68, 97, 116, 97, 32};
     
-    // 回调函数
+    // 成功和失败的回调函数
     private Action<WXTextResponse> onSuccess = (res) =>
     {
+        // 显示成功的模态对话框
         WX.ShowModal(new ShowModalOption()
         {
             content = "AppendFile Success, Result: " + JsonMapper.ToJson(res)
         });
-        UpdateResult();
+        UpdateResult(); // 更新结果
     };
     private Action<WXTextResponse> onFail = (res) =>
     {
+        // 显示失败的模态对话框
         WX.ShowModal(new ShowModalOption()
         {
             content = "AppendFile Fail, Result: " + JsonMapper.ToJson(res)
@@ -37,11 +39,13 @@ public class AppendFile : Details
         // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
             
+        // 检查文件夹是否存在，如果不存在则创建
         if (_fileSystemManager.AccessSync(PathPrefix) != "access:ok")
         {
             _fileSystemManager.MkdirSync(PathPrefix, true);
         }
         
+        // 打开文件并写入数据
         var fd = _fileSystemManager.OpenSync(new OpenSyncOption()
         {
             filePath = Path,
@@ -54,21 +58,24 @@ public class AppendFile : Details
             data = "Original Data "
         });
 
+        // 绑定额外的按钮操作
         GameManager.Instance.detailsController.BindExtraButtonAction(0, ResetFile);
     }
     
+    // 测试 API
     protected override void TestAPI(string[] args)
     {
         if (args[0] == "同步执行")
         {
-            RunSync(args[1], args[2]);
+            RunSync(args[1], args[2]); // 同步执行
         }
         else
         {
-            RunAsync(args[1], args[2]);
+            RunAsync(args[1], args[2]); // 异步执行
         }
     }
     
+    // 异步追加文件
     private void RunAsync(string dataType, string encoding)
     {
         if (dataType == "byte[]")
@@ -121,6 +128,7 @@ public class AppendFile : Details
         }
     }
 
+    // 同步追加文件
     private void RunSync(string dataType, string encoding)
     {
         if (dataType == "byte[]")
@@ -145,22 +153,26 @@ public class AppendFile : Details
                 _fileSystemManager.AppendFileSync(Path, _stringData, encoding);
             }
         }
+
+        UpdateResult(); // 更新结果
         
+        // 显示成功的提示
         WX.ShowToast(new ShowToastOption()
         {
             title = "AppendFileSync Success"
         });
-        
-        UpdateResult();
     }
 
+    // 更新文件内容显示结果
     private static void UpdateResult()
     {
         GameManager.Instance.detailsController.ChangeResultContent(0, _fileSystemManager.ReadFileSync(Path, "utf8"));
     }
 
+    // 重置文件内容
     private void ResetFile()
     {
+        // 重新打开文件并写入原始数据
         var fd = _fileSystemManager.OpenSync(new OpenSyncOption()
         {
             filePath = Path,
@@ -171,8 +183,10 @@ public class AppendFile : Details
             fd = fd,
             data = "Original Data "
         });
-        UpdateResult();
         
+        UpdateResult(); // 更新结果
+        
+        // 显示已重置文件的提示
         WX.ShowToast(new ShowToastOption()
         {
             title = "已重置文件"

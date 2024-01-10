@@ -5,11 +5,13 @@ public class LocalCacheFile : Details
 {
     private WXFileSystemManager _fileSystemManager;
     
+    // 在 Start 方法中初始化
     private void Start()
     {
         // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
 
+        // 绑定按钮事件
         GameManager.Instance.detailsController.BindExtraButtonAction(0, GenerateCacheFile);
         GameManager.Instance.detailsController.BindExtraButtonAction(1, ClearCacheFile);
         GameManager.Instance.detailsController.BindExtraButtonAction(2, GetCacheFileInfo);
@@ -47,6 +49,7 @@ public class LocalCacheFile : Details
         });
     }
     
+    // 测试API方法
     protected override void TestAPI(string[] args)
     {
         RefreshCacheFileList();
@@ -149,7 +152,7 @@ public class LocalCacheFile : Details
             },
             fail = (res) =>
             {
-                WX.ShowModal(new ShowModalOption()
+                WX.ShowModal(new                ShowModalOption()
                 {
                     content = "GetSavedFileList Fail, Result: " + JsonMapper.ToJson(res)
                 });
@@ -167,6 +170,7 @@ public class LocalCacheFile : Details
             {
                 if (res.fileList.Length == 0)
                 {
+                    // 如果没有缓存文件，提示用户
                     WX.ShowModal(new ShowModalOption()
                     {
                         content = "请先生成缓存文件！"
@@ -181,6 +185,7 @@ public class LocalCacheFile : Details
                         filePath = res.fileList[0].filePath,
                         success = (res2) =>
                         {
+                            // 显示文件信息
                             WX.ShowModal(new ShowModalOption()
                             {
                                 content = "GetFileInfo Success, Result: " + JsonMapper.ToJson(res2)
@@ -188,6 +193,7 @@ public class LocalCacheFile : Details
                         },
                         fail = (res2) =>
                         {
+                            // 显示错误信息
                             WX.ShowModal(new ShowModalOption()
                             {
                                 content = "GetFileInfo Fail, Result: " + JsonMapper.ToJson(res2)
@@ -198,6 +204,7 @@ public class LocalCacheFile : Details
             },
             fail = (res) =>
             {
+                // 显示错误信息
                 WX.ShowModal(new ShowModalOption()
                 {
                     content = "GetSavedFileList Fail, Result: " + JsonMapper.ToJson(res)

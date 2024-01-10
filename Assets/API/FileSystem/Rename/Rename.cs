@@ -21,11 +21,13 @@ public class Rename : Details
         // 获取全局唯一的文件管理器
         _fileSystemManager = WX.GetFileSystemManager();
 
+        // 检查并创建目录
         if (_fileSystemManager.AccessSync(DirPath) != "access:ok")
         {
             _fileSystemManager.MkdirSync(DirPath, true);
         }
             
+        // 创建并写入初始数据到文件
         var fd = _fileSystemManager.OpenSync(new OpenSyncOption()
         {
             filePath = Path1,
@@ -38,6 +40,7 @@ public class Rename : Details
         });
     }
     
+    // 重命名文件
     protected override void TestAPI(string[] args)
     {
         if (args[0] == "同步执行")
@@ -50,6 +53,7 @@ public class Rename : Details
         }
     }
     
+    // 异步重命名文件
     private void RunAsync(string newPath)
     {   
        _fileSystemManager.Rename(new RenameOption()
@@ -75,6 +79,7 @@ public class Rename : Details
        });
     }
     
+    // 同步重命名文件
     private void RunSync(string newPath)
     {
         _fileSystemManager.RenameSync(PathPrefix + _oldPath, PathPrefix + newPath);
@@ -87,6 +92,7 @@ public class Rename : Details
         });
     }
 
+    // 更新结果
     private void UpdateResults()
     {
         GameManager.Instance.detailsController.SetResultActive(0, _fileSystemManager.AccessSync(Path1) == "access:ok");

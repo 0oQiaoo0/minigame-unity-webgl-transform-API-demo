@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: APISO
   m_EditorClassIdentifier: 
   categoryList:
+  - {fileID: 11400000, guid: 587fe4b03da9d44779ac921ffdb216a7, type: 2}
   - {fileID: 11400000, guid: 56f316e0e10ba419bbf19bd7a68bfc4c, type: 2}
   - {fileID: 11400000, guid: 6f0972f5fdc56c543b23c9873d760bf5, type: 2}
   abilityList:
