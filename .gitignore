@@ -80,3 +80,6 @@ crashlytics-build.properties
 
 # WXAssetsTools
 /TextToolDatas/*
+
+# Idea
+.idea/
