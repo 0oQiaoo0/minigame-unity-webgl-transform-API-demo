@@ -24,6 +24,6 @@ public class Ability : MonoBehaviour
     public void OnClick()
     {
         // 加载对应的场景
-        GameManager.Instance.LoadScene(abilitySO.abilitySceneName);
+        GameManager.Instance.LoadScene(abilitySO.AbilitySceneName);
     }
 }

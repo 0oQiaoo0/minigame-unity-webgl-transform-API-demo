@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/VideoScene.unity
     guid: 31d3a442fa08047a9a3c03974777c699
+  - enabled: 1
+    path: Assets/Scenes/InputFieldScene.unity
+    guid: ffdcf2ba4494242da86b2150d6989499
+  - enabled: 1
+    path: Assets/Scenes/PlayerPrefsScene.unity
+    guid: a75f69b44a1434b28a1d89e25ac2611b
   m_configObjects: {}
