@@ -19,11 +19,19 @@ public class Category : MonoBehaviour
     [Header("Expand")]
     [SerializeField] private float unfoldAlpha = 0.5f;
     private bool _isExpanded = false;
+    
+    [Header("Button")]
+    [SerializeField] private Button button;
 
     private void Awake()
     {
         // 获取父对象的 RectTransform 组件
         _contentRectTransform = transform.parent.GetComponent<RectTransform>();
+    }
+
+    private void Start()
+    {
+        button.onClick.AddListener(OnClick);
     }
 
     // 初始化 Category，设置对应的 CategorySO 和条目

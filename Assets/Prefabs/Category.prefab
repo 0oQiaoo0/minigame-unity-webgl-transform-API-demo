@@ -94,9 +94,9 @@ MonoBehaviour:
   categoryImage: {fileID: 8096728560625853146}
   entryPrefab: {fileID: 2896306486225466143, guid: 1057e4acbe4db40b795b9e1b6f13669f,
     type: 3}
-  entryBlocksTransform: {fileID: 3971439339495448623}
   entries: {fileID: 3971439339495448622}
   unfoldAlpha: 0.5
+  button: {fileID: 2893921988234410194}
 --- !u!114 &4292390963270033986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,18 +497,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4979161004950272650}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9160366862429333447}
-        m_MethodName: OnClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1327571430102421785
 MonoBehaviour:
   m_ObjectHideFlags: 0
