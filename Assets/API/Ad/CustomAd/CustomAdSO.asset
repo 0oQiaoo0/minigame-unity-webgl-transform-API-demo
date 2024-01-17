@@ -25,5 +25,5 @@ MonoBehaviour:
   initialButtonText: "\u521B\u5EFA\u5E7F\u544A"
   extraButtonList:
   - buttonText: "\u5207\u6362\u5E7F\u544A\u72B6\u6001"
-  - buttonText: "\u6467\u6BC1\u5E7F\u544A"
+  - buttonText: "\u9500\u6BC1\u5E7F\u544A"
   initialResultList: []

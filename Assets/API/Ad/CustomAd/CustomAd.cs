@@ -65,7 +65,7 @@ public class CustomAd : Details
             _customAd.Hide();
             WX.ShowToast(new ShowToastOption()
             {
-                title = "Hide CustomAd Complete"
+                title = "已隐藏广告"
             });
         }
         else
@@ -73,7 +73,7 @@ public class CustomAd : Details
             _customAd.Show();
             WX.ShowToast(new ShowToastOption()
             {
-                title = "Show CustomAd Complete"
+                title = "已展示广告"
             });
         }
     }
@@ -83,7 +83,7 @@ public class CustomAd : Details
         _customAd.Destroy();
         WX.ShowToast(new ShowToastOption()
         {
-            title = "Destroy CustomAd Complete"
+            title = "已销毁广告"
         });
     }
 

@@ -51,7 +51,7 @@ public class BannerAd : Details
             _bannerAd.Hide();
             WX.ShowToast(new ShowToastOption()
             {
-                title = "Hide BannerAd Complete"
+                title = "已隐藏广告"
             });
         }
         else
@@ -59,7 +59,7 @@ public class BannerAd : Details
             _bannerAd.Show();
             WX.ShowToast(new ShowToastOption()
             {
-                title = "Show BannerAd Complete"
+                title = "已展示广告"
             });
         }
     }
@@ -69,7 +69,7 @@ public class BannerAd : Details
         _bannerAd.Destroy();
         WX.ShowToast(new ShowToastOption()
         {
-            title = "Destroy BannerAd Complete"
+            title = "已销毁广告"
         });
     }
 
