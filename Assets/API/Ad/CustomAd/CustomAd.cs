@@ -10,8 +10,8 @@ public class CustomAd : Details
     
     private void Start()
     {
-        GameManager.Instance.detailsController.BindExtraButtonAction(0, SwitchCustomAdState);
-        GameManager.Instance.detailsController.BindExtraButtonAction(1, DestroyCustomAd);
+        GameManager.Instance.detailsController.BindExtraButtonAction(0, SwitchAdState);
+        GameManager.Instance.detailsController.BindExtraButtonAction(1, DestroyAd);
     }
 
     // 创建原生模板广告组件并挂载事件
@@ -58,7 +58,7 @@ public class CustomAd : Details
     }
 
     // 切换广告显示状态
-    private void SwitchCustomAdState()
+    private void SwitchAdState()
     {
         if (_isShow)
         {
@@ -78,7 +78,7 @@ public class CustomAd : Details
         }
     }
 
-    private void DestroyCustomAd()
+    private void DestroyAd()
     {
         _customAd.Destroy();
         WX.ShowToast(new ShowToastOption()
