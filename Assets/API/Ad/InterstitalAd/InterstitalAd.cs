@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using WeChatWASM;
 
-public class RewardedVideoAd : Details
+public class InterstitalAd : Details
 {
-    private WXRewardedVideoAd _rewardedVideoAd;
+    private WXInterstitialAd _interstitialAd;
     
     private void Start()
     {
@@ -12,39 +12,39 @@ public class RewardedVideoAd : Details
         GameManager.Instance.detailsController.BindExtraButtonAction(1, DestroyAd);
     }
 
-    // 创建激励视频广告组件并挂载事件、预加载广告
+    // 创建插屏广告并挂载事件、预加载广告
     protected override void TestAPI(string[] args)
     {
-        // 创建激励视频广告组件
-        _rewardedVideoAd = WX.CreateRewardedVideoAd(new WXCreateRewardedVideoAdParam()
+        // 创建插屏广告
+        _interstitialAd = WX.CreateInterstitialAd(new WXCreateInterstitialAdParam()
         {
             // adUnitId 请填写自己的广告位 ID
             adUnitId = "adunit-xxxxxxxxxxxxxxxx"
         });
         
-        _rewardedVideoAd.OnLoad((res) =>
+        _interstitialAd.OnLoad((res) =>
         {
             WX.ShowModal(new ShowModalOption()
             {
                 content = "RewardedVideoAd OnLoad Result:" + JsonUtility.ToJson(res)
             });
         });
-        _rewardedVideoAd.OnError((res) =>
+        _interstitialAd.OnError((res) =>
         {
             WX.ShowModal(new ShowModalOption()
             {
                 content = "RewardedVideoAd onError Result:" + JsonUtility.ToJson(res)
             });
         });
-        _rewardedVideoAd.OnClose((res) =>
+        _interstitialAd.OnClose(() =>
         {
             WX.ShowModal(new ShowModalOption()
             {
-                content = "RewardedVideoAd onClose Result:" + JsonUtility.ToJson(res)
+                content = "RewardedVideoAd onClose"
             });
         });
         // 预加载广告
-        _rewardedVideoAd.Load();
+        _interstitialAd.Load();
         
         WX.ShowToast(new ShowToastOption()
         {
@@ -55,7 +55,7 @@ public class RewardedVideoAd : Details
     // 展示广告
     private void ShowAd()
     {
-        _rewardedVideoAd.Show();
+        _interstitialAd.Show();
         WX.ShowToast(new ShowToastOption()
         {
             title = "已展示广告"
@@ -65,7 +65,7 @@ public class RewardedVideoAd : Details
     // 销毁广告
     private void DestroyAd()
     {
-        _rewardedVideoAd.Destroy();
+        _interstitialAd.Destroy();
         WX.ShowToast(new ShowToastOption()
         {
             title = "已销毁广告"
@@ -74,6 +74,6 @@ public class RewardedVideoAd : Details
 
     private void OnDestroy()
     {
-        _rewardedVideoAd.Destroy();
+        _interstitialAd.Destroy();
     }
 }

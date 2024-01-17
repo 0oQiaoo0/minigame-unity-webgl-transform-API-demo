@@ -10,6 +10,7 @@ public class CustomAd : Details
     
     private void Start()
     {
+        // 绑定按钮事件
         GameManager.Instance.detailsController.BindExtraButtonAction(0, SwitchAdState);
         GameManager.Instance.detailsController.BindExtraButtonAction(1, DestroyAd);
     }
@@ -17,6 +18,7 @@ public class CustomAd : Details
     // 创建原生模板广告组件并挂载事件
     protected override void TestAPI(string[] args)
     {
+        // 创建原生模板广告组件
         _customAd = WX.CreateCustomAd(new WXCreateCustomAdParam()
         {
             // adUnitId 请填写自己的广告位 ID
@@ -62,6 +64,7 @@ public class CustomAd : Details
     {
         if (_isShow)
         {
+            // 隐藏广告
             _customAd.Hide();
             WX.ShowToast(new ShowToastOption()
             {
@@ -70,6 +73,7 @@ public class CustomAd : Details
         }
         else
         {
+            // 展示广告
             _customAd.Show();
             WX.ShowToast(new ShowToastOption()
             {
@@ -78,6 +82,7 @@ public class CustomAd : Details
         }
     }
 
+    // 销毁广告
     private void DestroyAd()
     {
         _customAd.Destroy();

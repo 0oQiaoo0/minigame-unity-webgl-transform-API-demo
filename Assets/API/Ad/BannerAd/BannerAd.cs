@@ -9,6 +9,7 @@ public class BannerAd : Details
     
     private void Start()
     {
+        // 绑定按钮事件
         GameManager.Instance.detailsController.BindExtraButtonAction(0, SwitchAdState);
         GameManager.Instance.detailsController.BindExtraButtonAction(1, DestroyAd);
     }
@@ -18,6 +19,7 @@ public class BannerAd : Details
     protected override void TestAPI(string[] args)
     {
         // adUnitId 请填写自己的广告位 ID
+        // 创建预设的 Banner 广告
         _bannerAd = WX.CreateFixedBottomMiddleBannerAd("adunit-xxxxxxxxxxxxxxxx", 30, 200);
         
         _bannerAd.OnLoad((res) =>
@@ -41,6 +43,11 @@ public class BannerAd : Details
                 content = "BannerAd onResize Result:" + JsonUtility.ToJson(res)
             });
         });
+        
+        WX.ShowToast(new ShowToastOption()
+        {
+            title = "已创建广告"
+        });
     }
 
     // 切换广告显示状态
@@ -48,6 +55,7 @@ public class BannerAd : Details
     {
         if (_isShow)
         {
+            // 隐藏广告
             _bannerAd.Hide();
             WX.ShowToast(new ShowToastOption()
             {
@@ -56,6 +64,7 @@ public class BannerAd : Details
         }
         else
         {
+            // 展示广告
             _bannerAd.Show();
             WX.ShowToast(new ShowToastOption()
             {
@@ -64,6 +73,7 @@ public class BannerAd : Details
         }
     }
 
+    // 销毁广告
     private void DestroyAd()
     {
         _bannerAd.Destroy();
