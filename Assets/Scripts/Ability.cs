@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Ability : MonoBehaviour
@@ -9,6 +10,14 @@ public class Ability : MonoBehaviour
     [Header("References")]
     [SerializeField] private Text abilityText;
     [SerializeField] private Image abilityImage;
+    
+    [Header("Button")]
+    [SerializeField] private Button button;
+
+    private void Start()
+    {
+        button.onClick.AddListener(OnClick);
+    }
 
     // 初始化 Ability，设置对应的 AbilitySO 和文本、图片
     public void Init(AbilitySO so)
