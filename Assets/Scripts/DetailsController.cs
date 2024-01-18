@@ -116,6 +116,12 @@ public class DetailsController : MonoBehaviour
         startButtonText.text = text;
     }
     
+    // 更改额外按钮的文本
+    public void ChangeExtraButtonText(int index, string text)
+    {
+        extraButtonBlockObjects[index].GetComponent<ButtonController>().ChangeButtonText(text);
+    }
+    
     // 绑定额外按钮的操作
     public void BindExtraButtonAction(int index, UnityAction action)
     {

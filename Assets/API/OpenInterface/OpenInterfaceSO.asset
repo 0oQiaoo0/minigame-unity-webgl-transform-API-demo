@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d040911b51640ea8a6e857528c3a0d, type: 3}
-  m_Name: InputFieldSO
+  m_Script: {fileID: 11500000, guid: 4a9e19ed69c041c408533b50f5572d0f, type: 3}
+  m_Name: OpenInterfaceSO
   m_EditorClassIdentifier: 
-  abilityName: "\u8F93\u5165\u680F"
-  abilitySprite: {fileID: 0}
+  categoryName: "\u5F00\u653E\u63A5\u53E3"
+  categorySprite: {fileID: 0}
+  entryList:
+  - {fileID: 11400000, guid: 2c8c997508e96423fa1031b948386d44, type: 2}
