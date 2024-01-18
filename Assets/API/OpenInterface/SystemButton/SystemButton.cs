@@ -9,10 +9,6 @@ public class SystemButton : Details
 
     private void Start()
     {
-        CreateGameClubButton();
-
-        CreateFeedbackButton();
-
         var result = WX.GetLaunchOptionsSync();
         Debug.Log(JsonUtility.ToJson(result));
 
