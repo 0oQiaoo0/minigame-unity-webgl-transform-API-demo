@@ -1,6 +1,6 @@
-# Unity WebGL 微信小游戏适配方案 API-Demo
+# Unity WebGL 微信小游戏适配方案示例
 
-​	微信小游戏Unity示例源码。
+​	Unity微信小游戏示例源码。
 
 ## 导入项目与配置
 
